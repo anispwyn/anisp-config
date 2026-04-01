@@ -1,9 +1,14 @@
 builds:
   - include:
-    - "*.x86_64-linux.*"
-    - "nixosConfigurations.*"
+      - "*.x86_64-linux.*"
+      - "nixosConfigurations.*"
     branch:
       - main
 
   - include:
-    - "checks.*.*"
+      - "checks.*.*"
+    exclude:
+      - "*.x86_64-linux.*"
+      - "nixosConfigurations.*"
+    branch:
+      - update_flake_lock_action
