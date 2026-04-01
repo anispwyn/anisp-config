@@ -1,7 +1,9 @@
 keys:
-  - &anisp_cutie CE60148E02175769E7216CC399D060B8596496C3
+  - &anisp_cutie age183wu4fhfkl7z8k37v5enfcpca24wwtw6m7c4kzgeks9tecgqesuqasuc9x
+  - &anisp_root age1c2f5mtxdvgq5ez3rrntj9lr9j60equwzdzq2xswxcr7kvl5xcgcsl96t3f
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
-      - pgp:
+      - age:
           - *anisp_cutie
+          - *anisp_root

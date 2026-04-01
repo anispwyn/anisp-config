@@ -1,8 +1,4 @@
-{
-  inputs,
-  lib,
-  ...
-}: {
+{inputs, ...}: {
   imports = [inputs.nixcord.homeModules.nixcord];
 
   programs.nixcord = {

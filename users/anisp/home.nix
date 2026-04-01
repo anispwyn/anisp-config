@@ -6,6 +6,7 @@
   imports = [./home-modules];
 
   home = {
+    homeDirectory = "/home/anisp";
     stateVersion = "25.11";
     shell.enableFishIntegration = true;
     packages = with pkgs;
@@ -88,7 +89,6 @@
         pear-desktop
         vivaldi-ffmpeg-codecs
         anki
-        discordo
       ]
       ++ [
         inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-lazer-bin

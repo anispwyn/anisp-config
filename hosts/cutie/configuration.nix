@@ -85,7 +85,8 @@
   sops = {
     defaultSopsFile = ../../secrets/anisp.yaml;
 
-    gnupg.home = "/root/.gnupg";
+    age.keyFile = "/var/lib/sops/keys.txt";
+    age.generateKey = true;
 
     secrets = {
       nextdns_profile = {};

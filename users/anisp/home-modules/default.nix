@@ -5,7 +5,7 @@
     ./git.nix
     ./hyprland.nix
     ./niri.nix
-    ./nixcord.nix
+    ./discord.nix
     ./nvf.nix
     ./terminal.nix
     ./nix-index-database.nix
@@ -13,5 +13,6 @@
     ./media.nix
     ./neovide.nix
     ./xresources.nix
+    ./sops.nix
   ];
 }
