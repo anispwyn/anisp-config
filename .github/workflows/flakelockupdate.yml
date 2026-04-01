@@ -1,0 +1,39 @@
+name: "Flake.lock: update Nix dependencies"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 12 * * *"
+
+jobs:
+  nix-flake-update:
+    permissions:
+      contents: write
+      id-token: write
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: samueldr/lix-gha-installer-action@v2026-02-22
+        with:
+          extra_nix_config: |
+            extra-experimental-features = nix-command flakes
+      - uses: DeterminateSystems/update-flake-lock@main
+        with:
+          pr-title: "Update Nix flake inputs"
+          pr-labels: |
+            dependencies
+            automated
+          token: ${{ secrets.GH_PAT }}
+      - name: Enable auto-merge for Nix lock updates
+        run: |
+          sleep 10
+          PR_URL=$(gh pr list --label automated --limit 1 --json url -q '.[0].url')
+          if [ -n "$PR_URL" ]; then
+            gh pr merge --auto --merge --delete-branch "$PR_URL"
+          else
+            echo "No automated PR found."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}

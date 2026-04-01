@@ -1,0 +1,9 @@
+builds:
+  - include:
+    - "*.x86_64-linux.*"
+    - "nixosConfigurations.*"
+    branch:
+      - main
+
+  - include:
+    - "checks.*.*"
