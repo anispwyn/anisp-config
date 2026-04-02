@@ -7,8 +7,5 @@ builds:
 
   - include:
       - "checks.*.*"
-    exclude:
-      - "*.x86_64-linux.*"
-      - "nixosConfigurations.*"
     branch:
       - update_flake_lock_action
