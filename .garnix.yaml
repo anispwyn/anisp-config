@@ -7,5 +7,3 @@ builds:
 
   - include:
       - "checks.*.*"
-    branch:
-      - update_flake_lock_action
