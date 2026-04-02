@@ -26,6 +26,8 @@ jobs:
             dependencies
             automated
           token: ${{ secrets.GH_PAT }}
+          git-author-name: anispwyn
+          git-author-email: anispwyn@users.noreply.github.com
       - name: Enable auto-merge for Nix lock updates
         run: |
           sleep 10
