@@ -28,6 +28,16 @@ in {
     enable = true;
     settings = {
       vim = {
+        extraPlugins = with pkgs.vimPlugins; {
+          "easy-dotnet-nvim" = {
+            package = easy-dotnet-nvim;
+            setup = "require('easy-dotnet').setup()";
+          };
+          "roslyn-nvim" = {
+            package = roslyn-nvim;
+            setup = "require('rolsyn-nvim').setup()";
+          };
+        };
         luaConfigRC.neovideScale = lib.hm.dag.entryAnywhere ''
           local change_scale_factor = function(delta)
             vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
@@ -85,8 +95,6 @@ in {
         globals = {
           maplocalleader = ",";
           mapleader = " ";
-          neovide_text_gamma = 0.8;
-          neovide_text_contrast = 0.3;
         };
         withNodeJs = true;
         withPython3 = true;
@@ -718,7 +726,10 @@ in {
 
           zig = {
             enable = true;
-            lsp.enable = true;
+          };
+          csharp = {
+            enable = true;
+            lsp.servers = ["roslyn_ls"];
           };
         };
         keymaps = [
