@@ -35,7 +35,7 @@ in {
           };
           "roslyn-nvim" = {
             package = roslyn-nvim;
-            setup = "require('rolsyn-nvim').setup()";
+            setup = "require('roslyn').setup()";
           };
         };
         luaConfigRC.neovideScale = lib.hm.dag.entryAnywhere ''

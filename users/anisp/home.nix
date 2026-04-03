@@ -89,6 +89,7 @@
         pear-desktop
         vivaldi-ffmpeg-codecs
         anki
+        dotnetCorePackages.sdk_11_0-bin
       ]
       ++ [
         inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-lazer-bin
