@@ -110,6 +110,7 @@ in {
         };
 
         ui = {
+          ui2.enable = true;
           noice = {
             enable = true;
             setupOpts = {

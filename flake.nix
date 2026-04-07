@@ -5,10 +5,6 @@
     nixcord.url = "github:FlameFlag/nixcord";
     nix-gaming.url = "github:fufexan/nix-gaming";
     flakelight.url = "github:nix-community/flakelight";
-    nix-citizen = {
-      url = "github:LovingMelody/nix-citizen";
-      inputs.nix-gaming.follows = "nix-gaming";
-    };
     animesteam = {
       url = "github:an-anime-team/anime-games-launcher/";
       inputs.nixpkgs.follows = "nixpkgs";

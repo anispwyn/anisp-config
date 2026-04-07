@@ -94,7 +94,6 @@
         inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-lazer-bin
         inputs.zmx.packages.${pkgs.stdenv.hostPlatform.system}.zmx
         inputs.animesteam.packages.${pkgs.stdenv.hostPlatform.system}.default
-        inputs.nix-citizen.packages.${pkgs.stdenv.hostPlatform.system}.rsi-launcher
       ];
   };
 }
