@@ -72,6 +72,14 @@
     gamescope.enable = true;
     steam = {
       enable = true;
+      protontricks.package = pkgs.protontricks.overrideAttrs {
+        src = pkgs.fetchFromGitHub {
+          owner = "Matoking";
+          repo = "protontricks";
+          tag = "older tag";
+          hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+        };
+      };
       package = pkgs.steam.override {
         extraLibraries = p:
           with p; [
