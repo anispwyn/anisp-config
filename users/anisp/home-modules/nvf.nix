@@ -6,7 +6,6 @@
 }: let
   vuels = with pkgs; (vue-language-server.overrideAttrs (finalAttrs: prevAttrs: {
     version = "3.2.5";
-
     src = fetchFromGitHub {
       owner = "vuejs";
       repo = "language-tools";
@@ -74,7 +73,7 @@ in {
           shiftround = true;
           shiftwidth = 2;
           showmode = false;
-          showtabline = 2;
+          showtabline = 1;
           signcolumn = "yes";
           smartcase = true;
           splitbelow = true;
@@ -110,9 +109,12 @@ in {
         };
 
         ui = {
-          ui2.enable = true;
-          noice = {
+          ui2 = {
             enable = true;
+            setupOpts.msg.targets = "msg";
+          };
+          noice = {
+            enable = false;
             setupOpts = {
               routes = [
                 {
@@ -569,6 +571,15 @@ in {
             enable = true;
           };
         };
+        tabline = {
+          nvimBufferline = {
+            enable = true;
+            setupOpts.options = {
+              always_show_bufferline = false;
+              numbers = "none";
+            };
+          };
+        };
         binds = {
           hardtime-nvim.enable = true;
           whichKey = {
@@ -631,6 +642,7 @@ in {
             vue
             v
           ];
+          textobjects.enable = true;
           indent.enable = true;
           enable = true;
         };
@@ -1803,7 +1815,7 @@ in {
             key = "<leader>ua";
             mode = "n";
             lua = true;
-            action = "function() vim.g.autopairs_enabled = not vim.g.autopairs_enabled end";
+            action = "function() if require('nvim-autopairs').state.disabled then require('nvim-autopairs').enable() else require('nvim-autopairs').disable() end end";
             silent = true;
             desc = "Toggle autopairs";
           }
@@ -1830,7 +1842,7 @@ in {
             key = "<leader>uf";
             mode = "n";
             lua = true;
-            action = "function() vim.b.autoformat = not vim.b.autoformat end";
+            action = "function() Snacks.toggle.new({ name = 'Auto Format (Buffer)', get = function() return not vim.b.disableFormatSave end, set = function(state) vim.b.disableFormatSave = not state end }):toggle() end";
             silent = true;
             desc = "Toggle autoformat (buffer)";
           }
@@ -1838,7 +1850,7 @@ in {
             key = "<leader>uF";
             mode = "n";
             lua = true;
-            action = "function() vim.g.autoformat = not vim.g.autoformat end";
+            action = "function() Snacks.toggle.new({ name = 'Auto Format (Global)', get = function() return vim.g.formatsave end, set = function(state) vim.g.formatsave = state end }):toggle() end";
             silent = true;
             desc = "Toggle autoformat (global)";
           }
@@ -1979,7 +1991,7 @@ in {
             key = "<leader>uz";
             mode = "n";
             lua = true;
-            action = "function() vim.g.minipairs_disable = not vim.g.minipairs_disable end";
+            action = "function() require('colorizer').toggle_buffer() end";
             silent = true;
             desc = "Toggle color highlighting";
           }
