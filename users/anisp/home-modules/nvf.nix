@@ -27,16 +27,16 @@ in {
     enable = true;
     settings = {
       vim = {
-        extraPlugins = with pkgs.vimPlugins; {
-          "easy-dotnet-nvim" = {
-            package = easy-dotnet-nvim;
-            setup = "require('easy-dotnet').setup()";
-          };
-          "roslyn-nvim" = {
-            package = roslyn-nvim;
-            setup = "require('roslyn').setup()";
-          };
-        };
+        # extraPlugins = with pkgs.vimPlugins; {
+        #   "easy-dotnet-nvim" = {
+        #     package = easy-dotnet-nvim;
+        #     setup = "require('easy-dotnet').setup()";
+        #   };
+        #   "roslyn-nvim" = {
+        #     package = roslyn-nvim;
+        #     setup = "require('roslyn').setup()";
+        #   };
+        # };
         luaConfigRC.neovideScale = lib.hm.dag.entryAnywhere ''
           local change_scale_factor = function(delta)
             vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
@@ -143,7 +143,7 @@ in {
               bigfile.enabled = true;
               gitbrowse.enabled = true;
               indent.enabled = true;
-              notifier.enabled = true;
+              notifier.enabled = false;
               quickfile.enabled = true;
               rename.enabled = true;
               scope.enabled = true;
@@ -727,7 +727,7 @@ in {
           ts = {
             enable = true;
             extensions = {
-              ts-error-translator.enable = true;
+              ts-error-translator.enable = false;
             };
             extraDiagnostics.enable = false;
             format = {
@@ -741,7 +741,7 @@ in {
             enable = true;
           };
           csharp = {
-            enable = true;
+            enable = false;
             lsp.servers = ["roslyn_ls"];
           };
         };
