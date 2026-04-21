@@ -16,6 +16,7 @@
       {id = "mnjggcdmjocbbbhaepdhchncahnbgone";} # sponsorblock
       {id = "cjpalhdlnbpafiamejdnhcphjbkeiagm";} # ublock origin
       {id = "likgccmbimhjbgkjambclfkhldnlhbnn";} # yomitan
+      {id = "jdkknkkbebbapilgoeccciglkfbmbnfm";} # Apollo graphql devtools
     ];
   };
   programs.zen-browser = {
