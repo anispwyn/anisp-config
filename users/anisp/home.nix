@@ -87,7 +87,6 @@
         grim
         slurp
         pear-desktop
-        vivaldi-ffmpeg-codecs
         anki
       ]
       ++ [

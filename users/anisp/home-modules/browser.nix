@@ -7,6 +7,10 @@
 }: {
   imports = [inputs.zen-browser.homeModules.twilight];
   programs.vivaldi = {
+    package = pkgs.vivaldi.override {
+      enableWidevine = true;
+      proprietaryCodecs = true;
+    };
     enable = true;
     extensions = [
       {id = "ammjkodgmmoknidbanneddgankgfejfh";} # 7tv

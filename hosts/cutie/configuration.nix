@@ -36,7 +36,7 @@
   users.users.anisp = {
     shell = pkgs.fish;
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager" "input" "docker"];
+    extraGroups = ["wheel" "networkmanager" "input" "podman"];
     openssh = {
       authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOHDiVWG/LvNyd46LYg3aqCEqXOdMVxGAO+lMY5Je65m"];
     };
@@ -93,6 +93,7 @@
       wifi_ssid_name = {};
       wifi_username = {};
       wifi_password = {};
+      hermes-secret = {format = "yaml";};
     };
 
     templates = {

@@ -169,9 +169,24 @@
     ''
   );
   virtualisation = {
-    docker = {
-      enable = true;
+    podman = {
+      enable = false;
       autoPrune.enable = true;
+      dockerSocket.enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings = {dns_enabled = true;};
     };
   };
+
+  # security.sudo.extraRules = [
+  #   {
+  #     users = ["anisp"];
+  #     commands = [
+  #       {
+  #         command = "/run/current-system/sw/bin/podman";
+  #         options = ["NOPASSWD"];
+  #       }
+  #     ];
+  #   }
+  # ];
 }
