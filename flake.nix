@@ -5,6 +5,10 @@
     nixcord.url = "github:FlameFlag/nixcord";
     nix-gaming.url = "github:fufexan/nix-gaming";
     flakelight.url = "github:nix-community/flakelight";
+    nfsm = {
+      url = "github:gvolpe/nfsm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hermes-agent = {
       url = "github:NousResearch/hermes-agent";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -16,9 +20,6 @@
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    zmx = {
-      url = "github:neurosnap/zmx";
     };
     sops-nix = {
       url = "github:mic92/sops-nix";

@@ -70,7 +70,7 @@
         inherit (pkgs.firefox-addons) buildFirefoxXpiAddon;
         oldtwitter = buildFirefoxXpiAddon rec {
           pname = "oldtwitter";
-          version = "1.9.6.2";
+          version = "1.9.6.4";
           addonId = "oldtwitter@dimden.dev";
           url = "https://github.com/dimdenGD/OldTwitter/releases/download/v${version}/OldTwitterFirefox.zip";
           sha256 = "sha256-FjuWsaCuqTJfkp3ekY+RY7gkDlet1EibtjS1sBpiIfk=";

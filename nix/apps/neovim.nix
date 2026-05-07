@@ -1,1 +1,1 @@
-{self, ...}: self.nixosConfigurations.cutie.config.home-manager.users."anisp".programs.nvf.finalPackage
+{outputs, ...}: outputs.nixosConfigurations.cutie.config.home-manager.users."anisp".programs.nvf.finalPackage

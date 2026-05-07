@@ -1,8 +1,4 @@
-{
-  inputs,
-  src,
-  ...
-}: {
+{inputs, ...}: {
   imports = [
     inputs.dms.homeModules.dank-material-shell
     inputs.dms.homeModules.niri
@@ -32,7 +28,7 @@
     enableAudioWavelength = true;
     enableClipboardPaste = true;
     session = {
-      wallpaperPath = "${src}/users/anisp/assets/Wallpapers/igiveup.jpg";
+      wallpaperPath = ../assets/Wallpapers/143734710_p0.png;
       isLightMode = false;
     };
     clipboardSettings = {
@@ -461,12 +457,14 @@
           borderEnabled = false;
           centerWidgets = [
             {
+              id = "music";
               enabled = true;
-              id = "musicLyrics";
+              mediaSize = 3;
             }
             {
-              enabled = true;
               id = "clock";
+              enabled = true;
+              clockCompactMode = false;
             }
           ];
           enabled = true;

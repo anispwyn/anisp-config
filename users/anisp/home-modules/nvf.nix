@@ -3,40 +3,19 @@
   lib,
   pkgs,
   ...
-}: let
-  vuels = with pkgs; (vue-language-server.overrideAttrs (finalAttrs: prevAttrs: {
-    version = "3.2.5";
-    src = fetchFromGitHub {
-      owner = "vuejs";
-      repo = "language-tools";
-      rev = "v${finalAttrs.version}";
-      hash = "sha256-WvxZz3Rtv1AWWVJjPiUaddoyBQXUsnucg/QXCKtNXbk=";
-    };
-
-    pnpmDeps = fetchPnpmDeps {
-      inherit (finalAttrs) version src;
-      inherit (prevAttrs) pname;
-      fetcherVersion = 1;
-      hash = "sha256-rc0oq+dujIhCa+axSj5RjXsHKzh5BCpNAJ6w1vnCtt8=";
-    };
-  }));
-in {
+}: {
   imports = [inputs.nvf.homeManagerModules.default];
 
   programs.nvf = {
     enable = true;
     settings = {
       vim = {
-        # extraPlugins = with pkgs.vimPlugins; {
-        #   "easy-dotnet-nvim" = {
-        #     package = easy-dotnet-nvim;
-        #     setup = "require('easy-dotnet').setup()";
-        #   };
-        #   "roslyn-nvim" = {
-        #     package = roslyn-nvim;
-        #     setup = "require('roslyn').setup()";
-        #   };
-        # };
+        extraPlugins = with pkgs.vimPlugins; {
+          "easy-dotnet-nvim" = {
+            package = easy-dotnet-nvim;
+            setup = "require('easy-dotnet').setup()";
+          };
+        };
         luaConfigRC.neovideScale = lib.hm.dag.entryAnywhere ''
           local change_scale_factor = function(delta)
             vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
@@ -240,6 +219,10 @@ in {
           };
         };
         lsp = {
+          presets = {
+            tailwindcss-language-server.enable = true;
+            roslyn-ls.enable = true;
+          };
           enable = true;
           formatOnSave = true;
           inlayHints.enable = true;
@@ -377,107 +360,6 @@ in {
                 parameterNames = true;
                 rangeVariableTypes = true;
               };
-            };
-
-            vtsls = {
-              cmd = ["vtsls" "--stdio"];
-              init_options = {
-                hostInfo = "neovim";
-              };
-              filetypes = [
-                "javascript"
-                "javascriptreact"
-                "typescript"
-                "vue"
-                "typescriptreact"
-              ];
-              settings = {
-                vtsls = {
-                  tsserver = {
-                    globalPlugins = [
-                      {
-                        name = "@vue/typescript-plugin";
-                        # own or others
-                        location = lib.generators.mkLuaInline ''
-                          vim.env.VUE_TS_PLUGIN_PATH or "${vuels}/lib/language-tools/packages/language-server"
-                        '';
-                        languages = ["vue"];
-                        configNamespace = "typescript";
-                        enableForWorkspaceTypeScriptVersions = true;
-                      }
-                    ];
-                  };
-                };
-              };
-              root_dir = lib.generators.mkLuaInline ''
-                function(bufnr, on_dir)
-                  local root_markers = { 'package-lock.json', 'yarn.lock', 'pnpm-lock.yaml', 'bun.lockb', 'bun.lock' }
-                  root_markers = vim.fn.has('nvim-0.11.3') == 1 and { root_markers, { '.git' } }
-                    or vim.list_extend(root_markers, { '.git' })
-                  local deno_root = vim.fs.root(bufnr, { 'deno.json', 'deno.jsonc' })
-                  local deno_lock_root = vim.fs.root(bufnr, { 'deno.lock' })
-                  local project_root = vim.fs.root(bufnr, root_markers)
-                  if deno_lock_root and (not project_root or #deno_lock_root > #project_root) then
-                    return
-                  end
-                  if deno_root and (not project_root or #deno_root >= #project_root) then
-                    return
-                  end
-                  on_dir(project_root or vim.fn.getcwd())
-                end
-              '';
-            };
-            vue_ls = {
-              cmd = ["vue-language-server" "--stdio"];
-              filetypes = ["vue"];
-              root_markers = ["package.json"];
-              on_init = lib.generators.mkLuaInline ''
-                function(client)
-                  local retries = 0
-
-                  ---@param _ lsp.ResponseError
-                  ---@param result any
-                  ---@param context lsp.HandlerContext
-                  local function typescriptHandler(_, result, context)
-                    local ts_client = vim.lsp.get_clients({ bufnr = context.bufnr, name = 'ts_ls' })[1]
-                      or vim.lsp.get_clients({ bufnr = context.bufnr, name = 'vtsls' })[1]
-                      or vim.lsp.get_clients({ bufnr = context.bufnr, name = 'typescript-tools' })[1]
-
-                    if not ts_client then
-                      -- there can sometimes be a short delay until `ts_ls`/`vtsls` are attached so we retry for a few times until it is ready
-                      if retries <= 10 then
-                        retries = retries + 1
-                        vim.defer_fn(function()
-                          typescriptHandler(_, result, context)
-                        end, 100)
-                      else
-                        vim.notify(
-                          'Could not find `ts_ls`, `vtsls`, or `typescript-tools` lsp client required by `vue_ls`.',
-                          vim.log.levels.ERROR
-                        )
-                      end
-                      return
-                    end
-
-                    local param = unpack(result)
-                    local id, command, payload = unpack(param)
-                    ts_client:exec_cmd({
-                      title = 'vue_request_forward', -- You can give title anything as it's used to represent a command in the UI, `:h Client:exec_cmd`
-                      command = 'typescript.tsserverRequest',
-                      arguments = {
-                        command,
-                        payload,
-                      },
-                    }, { bufnr = context.bufnr }, function(_, r)
-                      local response_data = { { id, r and r.body } }
-                      ---@diagnostic disable-next-line: param-type-mismatch
-                      client:notify('tsserver/response', response_data)
-                    end)
-                  end
-
-                  client.handlers['tsserver/request'] = typescriptHandler
-                end
-              '';
             };
           };
         };
@@ -639,7 +521,6 @@ in {
         treesitter = {
           autotagHtml = true;
           grammars = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
-            vue
             v
           ];
           textobjects.enable = true;
@@ -652,6 +533,12 @@ in {
           enableFormat = true;
           enableTreesitter = true;
           enableExtraDiagnostics = true;
+          vue = {
+            enable = true;
+            format.enable = false;
+            extraDiagnostics.enable = false;
+            lsp.servers = ["vtsls"];
+          };
           clang = {
             enable = true;
             lsp = {
@@ -721,10 +608,7 @@ in {
           sql = {
             enable = true;
           };
-          tailwind = {
-            enable = true;
-          };
-          ts = {
+          typescript = {
             enable = true;
             extensions = {
               ts-error-translator.enable = false;
@@ -741,8 +625,9 @@ in {
             enable = true;
           };
           csharp = {
-            enable = false;
-            lsp.servers = ["roslyn_ls"];
+            extensions.roslyn-nvim.enable = true;
+            lsp.servers = ["roslyn-ls"];
+            enable = true;
           };
         };
         keymaps = [
@@ -2006,9 +1891,6 @@ in {
         ];
 
         presence.neocord.enable = true;
-        extraPackages = [
-          vuels
-        ];
       };
     };
   };

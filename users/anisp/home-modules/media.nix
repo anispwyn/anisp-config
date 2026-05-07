@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  config,
   ...
 }: {
   imports = [inputs.spicetify-nix.homeManagerModules.spicetify];
@@ -11,8 +12,14 @@
   programs.spicetify = let
     spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.system};
   in {
-    enable = false;
+    enable = true;
     enabledCustomApps = with spicePkgs.apps; [newReleases lyricsPlus betterLibrary];
     enabledExtensions = with spicePkgs.extensions; [trashbin shuffle powerBar wikify songStats lastfm aiBandBlocker volumePercentage beautifulLyrics adblock betterGenres fullScreen];
+  };
+  services.mpd = {
+    enable = true;
+    musicDirectory = /music;
+    enableSessionVariables = false;
+    network.startWhenNeeded = true;
   };
 }

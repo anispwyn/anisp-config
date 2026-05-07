@@ -15,6 +15,12 @@
       hotkey-overlay.skip-at-startup = true;
       clipboard.disable-primary = true;
 
+      spawn-at-startup = [
+        {
+          argv = ["oniri" "-T"];
+        }
+      ];
+
       environment = {
         XDG_CURRENT_DESKTOP = "niri";
       };
@@ -122,13 +128,19 @@
           stiffness = 523;
           epsilon = 0.0001;
         };
-        window-open.kind.easing = {
-          curve = "ease-out-expo";
-          duration-ms = 150;
+        window-open = {
+          kind.easing = {
+            curve = "ease-out-expo";
+            duration-ms = 1400;
+          };
+          custom-shader = builtins.readFile ../assets/niri/window-open.glsl;
         };
-        window-close.kind.easing = {
-          curve = "ease-out-quad";
-          duration-ms = 150;
+        window-close = {
+          kind.easing = {
+            curve = "ease-out-expo";
+            duration-ms = 1400;
+          };
+          custom-shader = builtins.readFile ../assets/niri/window-close.glsl;
         };
         horizontal-view-movement.kind.spring = {
           damping-ratio = 0.85;

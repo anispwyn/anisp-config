@@ -14,5 +14,6 @@
     ./neovide.nix
     ./xresources.nix
     ./sops.nix
+    ./easyeffect.nix
   ];
 }

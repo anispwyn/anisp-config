@@ -36,15 +36,6 @@
     };
     fish = {
       enable = true;
-      interactiveShellInit = ''
-        functions -c fish_prompt _original_fish_prompt 2>/dev/null
-        function fish_prompt --description "Write out the prompt"
-          if set -q ZMX_SESSION
-            echo -n "[$ZMX_SESSION] "
-          end
-          _original_fish_prompt
-        end
-      '';
     };
     zellij = {
       enable = true;
@@ -57,5 +48,6 @@
       enable = true;
       nix-direnv.enable = true;
     };
+    carapace.enable = true;
   };
 }

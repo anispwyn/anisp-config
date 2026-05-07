@@ -86,12 +86,13 @@
         kdePackages.gwenview
         grim
         slurp
+        openssl
         pear-desktop
-        anki
+        blender
+        oniri
       ]
       ++ [
         inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-lazer-bin
-        inputs.zmx.packages.${pkgs.stdenv.hostPlatform.system}.zmx
         inputs.animesteam.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
   };

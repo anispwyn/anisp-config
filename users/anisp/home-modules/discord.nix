@@ -3,7 +3,8 @@
 
   programs.nixcord = {
     enable = true;
-    discord.enable = true;
+    discord.vencord.enable = true;
+    # discord.equicord.enable = true;
     equibop.enable = true;
     quickCss = ''
       /**
