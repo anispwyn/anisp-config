@@ -45,6 +45,7 @@
   ];
 
   services = {
+    flatpak.enable = true;
     playerctld.enable = true;
     sunshine = {
       enable = false;
@@ -169,6 +170,12 @@
     ''
   );
   virtualisation = {
+    waydroid = {
+      enable = true;
+      package = pkgs.waydroid.override {
+        withNftables = true;
+      };
+    };
     podman = {
       enable = false;
       autoPrune.enable = true;

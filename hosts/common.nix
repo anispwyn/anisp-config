@@ -65,6 +65,14 @@
     };
   };
 
+  xdg = {
+    portal = {
+      enable = true;
+      configPackages = [pkgs.gnome-session];
+      extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    };
+  };
+
   programs = {
     fish.enable = true;
     ssh.askPassword = pkgs.lib.mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
@@ -135,6 +143,7 @@
       xdg-utils
       fzf
       bat
+      jq
       ripgrep
       git
       wget

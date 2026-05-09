@@ -17,7 +17,7 @@
     enabledExtensions = with spicePkgs.extensions; [trashbin shuffle powerBar wikify songStats lastfm aiBandBlocker volumePercentage beautifulLyrics adblock betterGenres fullScreen];
   };
   services.mpd = {
-    enable = true;
+    enable = false;
     musicDirectory = /music;
     enableSessionVariables = false;
     network.startWhenNeeded = true;

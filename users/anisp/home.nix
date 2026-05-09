@@ -63,9 +63,6 @@
             }
           )
         )
-        proton-vpn
-        proton-vpn-cli
-        proton-pass-cli
         qbittorrent-enhanced
         tetrio-desktop
         gsettings-desktop-schemas
@@ -73,7 +70,6 @@
         mangohud
         ryubing
         umu-launcher
-        jq
         btop
         hoppscotch
         playerctl
@@ -90,6 +86,18 @@
         pear-desktop
         blender
         oniri
+        mindustry
+        (waydroid-helper.overrideAttrs
+          (finalAttrs: oldAttrs: {
+            version = "0.2.9";
+            src = fetchFromGitHub {
+              owner = "ayasa520";
+              repo = "waydroid-helper";
+              tag = "v${finalAttrs.version}";
+              hash = "sha256-6mVb4GPD2NCsvyaqQAOFox0rNIlyOttiaZKbHBS40Rg=";
+            };
+            propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [pkgs.vte-gtk4];
+          }))
       ]
       ++ [
         inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-lazer-bin

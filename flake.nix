@@ -5,10 +5,7 @@
     nixcord.url = "github:FlameFlag/nixcord";
     nix-gaming.url = "github:fufexan/nix-gaming";
     flakelight.url = "github:nix-community/flakelight";
-    nfsm = {
-      url = "github:gvolpe/nfsm";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
     hermes-agent = {
       url = "github:NousResearch/hermes-agent";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -15,5 +15,6 @@
     ./xresources.nix
     ./sops.nix
     ./easyeffect.nix
+    ./flatpak.nix
   ];
 }
