@@ -3,7 +3,6 @@
     ./browser.nix
     ./dms.nix
     ./git.nix
-    ./hyprland.nix
     ./niri.nix
     ./discord.nix
     ./nvf.nix
@@ -14,7 +13,6 @@
     ./neovide.nix
     ./xresources.nix
     ./sops.nix
-    ./easyeffect.nix
     ./flatpak.nix
   ];
 }

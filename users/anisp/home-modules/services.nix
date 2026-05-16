@@ -1,3 +1,6 @@
 {
-  services.kdeconnect.enable = true;
+  services = {
+    easyeffects = {enable = true;};
+    kdeconnect = {enable = true;};
+  };
 }

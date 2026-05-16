@@ -78,7 +78,7 @@
         wl-clipboard
         nautilus
         file-roller
-        p7zip-rar
+        _7zz-rar
         kdePackages.gwenview
         grim
         slurp
@@ -98,6 +98,8 @@
             };
             propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [pkgs.vte-gtk4];
           }))
+        seahorse
+        proton-pass-cli
       ]
       ++ [
         inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-lazer-bin
