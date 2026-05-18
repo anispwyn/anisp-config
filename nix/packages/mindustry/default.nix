@@ -111,7 +111,7 @@ in
 
       mitmCache = gradle.fetchDeps {
         inherit pname;
-        data = ./deps/mindustry/deps.json;
+        data = ./deps/deps.json;
       };
 
       __darwinAllowLocalNetworking = true;

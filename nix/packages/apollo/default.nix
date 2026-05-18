@@ -20,7 +20,7 @@ in
       npmDepsHash = "sha256-FNdZ2YIlbdhwt9BW/rcLOUbPYqMtDW6Pu3jLPU280jY=";
 
       postPatch = ''
-        cp ${./deps/Apollo/package-lock.json} ./package-lock.json
+        cp ${./deps/package-lock.json} ./package-lock.json
       '';
 
       installPhase = ''

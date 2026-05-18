@@ -31,8 +31,8 @@
     settings = {
       experimental-features = ["nix-command" "flakes"];
       trusted-users = ["anisp"];
-      substituters = ["https://niri.cachix.org" "https://ezkea.cachix.org" "https://nix-community.cachix.org" "https://cache.nixos-cuda.org" "https://attic.xuyh0120.win/lantian" "https://nix-gaming.cachix.org" "https://cache.garnix.io"];
-      trusted-public-keys = ["niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964=" "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=" "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
+      substituters = ["https://niri.cachix.org" "https://ezkea.cachix.org" "https://nix-community.cachix.org" "https://cache.nixos-cuda.org" "https://cache.garnix.io"];
+      trusted-public-keys = ["niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964=" "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=" "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
     };
   };
 
@@ -47,10 +47,8 @@
       enable = true;
     };
     soteria.enable = true;
-    pam.services.login.enableGnomeKeyring = true;
   };
   services = {
-    gnome.gnome-keyring.enable = true;
     resolved = {
       enable = true;
     };
@@ -86,6 +84,9 @@
     };
   };
   networking = {
+    hosts = {
+      "127.0.0.1" = ["test.local"];
+    };
     nftables.enable = true;
     networkmanager = {
       enable = true;

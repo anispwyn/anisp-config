@@ -99,10 +99,9 @@
             propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [pkgs.vte-gtk4];
           }))
         seahorse
-        proton-pass-cli
+        osu-lazer-bin
       ]
       ++ [
-        inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-lazer-bin
         inputs.animesteam.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
   };

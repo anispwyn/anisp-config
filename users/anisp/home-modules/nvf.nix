@@ -76,6 +76,7 @@
         };
         withNodeJs = true;
         withPython3 = true;
+        extraPackages = [pkgs.vscode-langservers-extracted];
         preventJunkFiles = true;
         enableLuaLoader = true;
         debugger = {
@@ -278,12 +279,26 @@
               root_dir = lib.generators.mkLuaInline ''
                 function(bufnr, on_dir)
                     local fname = vim.api.nvim_buf_get_name(bufnr)
+                    local root_markers = { '.oxfmtrc.json', '.oxfmtrc.jsonc' }
 
-                    -- Oxfmt resolves configuration by walking upward and using the nearest config file
-                    -- to the file being processed. We therefore compute the root directory by locating
-                    -- the closest `.oxfmtrc.json` / `.oxfmtrc.jsonc` (or `package.json` fallback) above the buffer.
-                    local root_markers = util.insert_package_json({ '.oxfmtrc.json', '.oxfmtrc.jsonc' }, 'oxfmt', fname)
-                    on_dir(vim.fs.dirname(vim.fs.find(root_markers, { path = fname, upward = true })[1]))
+                    -- Check package.json for oxfmt config
+                    local pkg_path = vim.fs.find('package.json', { path = fname, upward = true })[1]
+                    if pkg_path then
+                      local f = io.open(pkg_path, 'r')
+                      if f then
+                        local content = f:read('*a')
+                        f:close()
+                        local ok, pkg = pcall(vim.json.decode, content)
+                        if ok and pkg and pkg.oxfmt then
+                          table.insert(root_markers, 'package.json')
+                        end
+                      end
+                    end
+
+                    local found = vim.fs.find(root_markers, { path = fname, upward = true })[1]
+                    if found then
+                      on_dir(vim.fs.dirname(found))
+                    end
                   end
               '';
             };
@@ -361,6 +376,195 @@
                 rangeVariableTypes = true;
               };
             };
+            eslint = {
+              cmd = lib.generators.mkLuaInline ''
+                function(dispatchers, config)
+                  local cmd = 'vscode-eslint-language-server'
+                  if (config or {}).root_dir then
+                    local local_cmd = vim.fs.joinpath(config.root_dir, 'node_modules/.bin', cmd)
+                    if vim.fn.executable(local_cmd) == 1 then
+                      cmd = local_cmd
+                    end
+                  end
+                  return vim.lsp.rpc.start({ cmd, '--stdio' }, dispatchers)
+                end
+              '';
+              filetypes = [
+                "javascript"
+                "javascriptreact"
+                "typescript"
+                "typescriptreact"
+                "vue"
+                "svelte"
+                "astro"
+                "htmlangular"
+              ];
+              workspace_required = true;
+              on_attach = lib.generators.mkLuaInline ''
+                function(client, bufnr)
+                  vim.api.nvim_buf_create_user_command(bufnr, 'LspEslintFixAll', function()
+                    client:request_sync('workspace/executeCommand', {
+                      command = 'eslint.applyAllFixes',
+                      arguments = {
+                        {
+                          uri = vim.uri_from_bufnr(bufnr),
+                          version = vim.api.nvim_buf_get_var(bufnr, 'changedtick'),
+                        },
+                      },
+                    }, nil, bufnr)
+                  end, {})
+                end
+              '';
+              root_dir = lib.generators.mkLuaInline ''
+                function(bufnr, on_dir)
+                  local filename = vim.api.nvim_buf_get_name(bufnr)
+                  if filename == "" then return end
+
+                  local root_markers = { 'package-lock.json', 'yarn.lock', 'pnpm-lock.yaml', 'bun.lockb', 'bun.lock', '.git' }
+
+                  -- exclude deno
+                  if vim.fs.root(bufnr, { 'deno.json', 'deno.jsonc', 'deno.lock' }) then
+                    return
+                  end
+
+                  local project_root = vim.fs.root(bufnr, root_markers) or vim.fn.getcwd()
+
+                  local eslint_config_files = {
+                    '.eslintrc',
+                    '.eslintrc.js',
+                    '.eslintrc.cjs',
+                    '.eslintrc.yaml',
+                    '.eslintrc.yml',
+                    '.eslintrc.json',
+                    'eslint.config.js',
+                    'eslint.config.mjs',
+                    'eslint.config.cjs',
+                    'eslint.config.ts',
+                    'eslint.config.mts',
+                    'eslint.config.cts',
+                  }
+
+                  local is_buffer_using_eslint = vim.fs.find(eslint_config_files, {
+                    path = filename,
+                    type = 'file',
+                    limit = 1,
+                    upward = true,
+                    stop = vim.fs.dirname(project_root),
+                  })[1]
+
+                  if not is_buffer_using_eslint then
+                    -- Check package.json for eslintConfig
+                    local pkg_path = vim.fs.find('package.json', {
+                      path = filename,
+                      type = 'file',
+                      limit = 1,
+                      upward = true,
+                      stop = vim.fs.dirname(project_root),
+                    })[1]
+
+                    if pkg_path then
+                      local f = io.open(pkg_path, 'r')
+                      if f then
+                        local content = f:read('*a')
+                        f:close()
+                        local ok, pkg = pcall(vim.json.decode, content)
+                        if ok and pkg and pkg.eslintConfig then
+                          is_buffer_using_eslint = pkg_path
+                        end
+                      end
+                    end
+                  end
+
+                  if not is_buffer_using_eslint then
+                    return
+                  end
+
+                  on_dir(project_root)
+                end
+              '';
+              settings = {
+                validate = "on";
+                packageManager = null;
+                useESLintClass = false;
+                experimental = {};
+                codeActionOnSave = {
+                  enable = false;
+                  mode = "all";
+                };
+                format = false;
+                quiet = false;
+                onIgnoredFiles = "off";
+                rulesCustomizations = {};
+                run = "onType";
+                problems = {
+                  shortenToSingleLine = false;
+                };
+                nodePath = "";
+                workingDirectory = {mode = "auto";};
+                codeAction = {
+                  disableRuleComment = {
+                    enable = true;
+                    location = "separateLine";
+                  };
+                  showDocumentation = {
+                    enable = true;
+                  };
+                };
+              };
+              before_init = lib.generators.mkLuaInline ''
+                function(_, config)
+                  -- The "workspaceFolder" is a VSCode concept. It limits how far the
+                  -- server will traverse the file system when locating the ESLint config
+                  -- file (e.g., .eslintrc).
+                  local root_dir = config.root_dir
+
+                  if root_dir then
+                    config.settings = config.settings or {}
+                    config.settings.workspaceFolder = {
+                      uri = root_dir,
+                      name = vim.fn.fnamemodify(root_dir, ':t'),
+                    }
+
+                    -- Support Yarn2 (PnP) projects
+                    local pnp_cjs = root_dir .. '/.pnp.cjs'
+                    local pnp_js = root_dir .. '/.pnp.js'
+                    if type(config.cmd) == 'table' and (vim.uv.fs_stat(pnp_cjs) or vim.uv.fs_stat(pnp_js)) then
+                      config.cmd = vim.list_extend({ 'yarn', 'exec' }, config.cmd)
+                    end
+                  end
+                end
+              '';
+              handlers = {
+                "eslint/openDoc" = lib.generators.mkLuaInline ''
+                  function(_, result)
+                    if result then
+                      vim.ui.open(result.url)
+                    end
+                    return {}
+                  end
+                '';
+                "eslint/confirmESLintExecution" = lib.generators.mkLuaInline ''
+                  function(_, result)
+                    if not result then
+                      return
+                    end
+                    return 4 -- approved
+                  end
+                '';
+                "eslint/probeFailed" = lib.generators.mkLuaInline ''
+                  function()
+                    vim.notify('[lspconfig] ESLint probe failed.', vim.log.levels.WARN)
+                    return {}
+                  end
+                '';
+                "eslint/noLibrary" = lib.generators.mkLuaInline ''
+                  function()
+                    vim.notify('[lspconfig] Unable to find ESLint library.', vim.log.levels.WARN)
+                    return {}
+                  end
+                '';
+              };
+            };
           };
         };
 
@@ -373,6 +577,7 @@
                   args = ["--search-parent-directories" "--respect-ignores" "--stdin-filepath" "$FILENAME" "-"];
                   range_args = lib.generators.mkLuaInline ''
                     function(self, ctx)
+                        local util = require("conform.util")
                         local start_offset, end_offset = util.get_offsets_from_range(ctx.buf, ctx.range)
                         return {
                           "--search-parent-directories",
@@ -411,7 +616,7 @@
                 javascript = ["oxfmt"];
                 typescriptreact = ["oxfmt"];
                 javascriptreact = ["oxfmt"];
-                vue = ["oxfmt"];
+                vue = ["oxfmt" "vue-language-server" "eslint"];
                 lua = ["stylua"];
                 luau = ["stylua"];
               };
@@ -537,7 +742,7 @@
             enable = true;
             format.enable = false;
             extraDiagnostics.enable = false;
-            lsp.servers = ["vtsls"];
+            lsp.servers = ["vue-language-server" "vtsls"];
           };
           clang = {
             enable = true;
@@ -613,12 +818,13 @@
             extensions = {
               ts-error-translator.enable = false;
             };
-            extraDiagnostics.enable = false;
+            extraDiagnostics.enable = true;
             format = {
               enable = false;
               type = ["biome"];
             };
-            lsp.enable = false;
+            lsp.enable = true;
+            lsp.servers = ["typescript-language-server"];
           };
 
           zig = {

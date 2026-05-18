@@ -28,7 +28,7 @@
     enableAudioWavelength = true;
     enableClipboardPaste = true;
     session = {
-      wallpaperPath = ../assets/Wallpapers/143734710_p0.png;
+      # wallpaperPath = ../assets/Wallpapers/143734710_p0.png;
       isLightMode = false;
     };
     clipboardSettings = {

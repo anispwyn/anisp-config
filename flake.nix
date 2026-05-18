@@ -1,16 +1,8 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nix-cachyos-kernel = {
-      url = "github:xddxdd/nix-cachyos-kernel/release";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixcord = {
       url = "github:FlameFlag/nixcord";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nix-gaming = {
-      url = "github:fufexan/nix-gaming";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flakelight = {
@@ -80,7 +72,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
-      url = "github:nix-community/stylix";
+      url = "github:make-42/stylix/step-2-inputmapping-clean-root";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     firefox-addons = {
@@ -100,7 +92,6 @@
       };
       withOverlays = [
         inputs.niri.overlays.niri
-        inputs.nix-cachyos-kernel.overlays.pinned
         inputs.firefox-addons.overlays.default
       ];
       formatters = pkgs: {

@@ -116,6 +116,10 @@
         withNftables = true;
       };
     };
+    docker = {
+      enable = true;
+      autoPrune.enable = true;
+    };
     podman = {
       enable = false;
       autoPrune.enable = true;
