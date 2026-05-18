@@ -99,7 +99,9 @@
             propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [pkgs.vte-gtk4];
           }))
         seahorse
-        osu-lazer-bin
+        (osu-lazer-bin.override {
+          withTachyon = true;
+        })
       ]
       ++ [
         inputs.animesteam.packages.${pkgs.stdenv.hostPlatform.system}.default

@@ -6,25 +6,51 @@
   appimageTools,
   makeWrapper,
   nativeWayland ? true,
+  withTachyon ? false,
 }: let
   pname = "osu-lazer-bin";
-  version = "2026.518.0";
+
+  lazer = {
+    version = "2026.518.0";
+    aarch64-darwin = "sha256-T/uoriXCXfK+HnLqMZ3xQ79qmlT5rVaoeEi5Wgu1Oc4=";
+    x86_64-darwin = "sha256-G/l2WSgl7GcIMHmb86K4qzryMirebe5dmnMrsSlYNfY=";
+    x86_64-linux = "sha256-4LLNjrKEBS77LIbq+O6Xpxj6CvufGDApNqs61HN2JmA=";
+  };
+
+  tachyon = {
+    version = "2026.513.0";
+    aarch64-darwin = "sha256-GKWVpSDF2efL5R6HZ3ggG8PBg96f5G4UqiA63O1M4Qk=";
+    x86_64-darwin = "sha256-8kpkBD7lL3j0t+Y2WLVTF4PvDoZTMAlP+gBH5mahIRc=";
+    x86_64-linux = "sha256-l3a+YTk2Lf83VxE2zgfAZ59UyxKi4PWtRuFDZb1lzME=";
+  };
+
+  useTachyon = withTachyon && (lib.versionOlder lazer.version tachyon.version);
+
+  active =
+    if useTachyon
+    then tachyon
+    else lazer;
+  suffix =
+    if useTachyon
+    then "tachyon"
+    else "lazer";
+  version = active.version;
 
   src =
     {
       aarch64-darwin = fetchzip {
-        url = "https://github.com/ppy/osu/releases/download/${version}-lazer/osu.app.Apple.Silicon.zip";
-        hash = "sha256-T/uoriXCXfK+HnLqMZ3xQ79qmlT5rVaoeEi5Wgu1Oc4=";
+        url = "https://github.com/ppy/osu/releases/download/${version}-${suffix}/osu.app.Apple.Silicon.zip";
+        hash = active.aarch64-darwin;
         stripRoot = false;
       };
       x86_64-darwin = fetchzip {
-        url = "https://github.com/ppy/osu/releases/download/${version}-lazer/osu.app.Intel.zip";
-        hash = "sha256-G/l2WSgl7GcIMHmb86K4qzryMirebe5dmnMrsSlYNfY=";
+        url = "https://github.com/ppy/osu/releases/download/${version}-${suffix}/osu.app.Intel.zip";
+        hash = active.x86_64-darwin;
         stripRoot = false;
       };
       x86_64-linux = fetchurl {
-        url = "https://github.com/ppy/osu/releases/download/${version}-lazer/osu.AppImage";
-        hash = "sha256-4LLNjrKEBS77LIbq+O6Xpxj6CvufGDApNqs61HN2JmA=";
+        url = "https://github.com/ppy/osu/releases/download/${version}-${suffix}/osu.AppImage";
+        hash = active.x86_64-linux;
       };
     }
     .${

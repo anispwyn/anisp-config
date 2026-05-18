@@ -2,43 +2,57 @@
 #!nix-shell -i bash -p bash cacert curl jq nix unzip
 set -euo pipefail
 
-# Navigate to the project root
 cd "$(dirname "$(readlink -f "$0")")/../../.."
 FILE="nix/packages/osu-lazer-bin/default.nix"
 
-new_tag_name="$(curl -s "https://api.github.com/repos/ppy/osu/releases/latest" | jq -r '.name')"
-new_version="${new_tag_name%-lazer}"
-old_version="$(nix eval --raw .#osu-lazer-bin.version)"
+echo "Fetching latest releases from GitHub..."
+releases="$(curl -s "https://api.github.com/repos/ppy/osu/releases")"
 
-if [[ "$new_version" == "$old_version" ]]; then
-    echo "Already up to date."
-    exit 0
-fi
+lazer_tag="$(echo "$releases" | jq -r 'map(select(.tag_name | endswith("-lazer"))) | .[0].tag_name')"
+tachyon_tag="$(echo "$releases" | jq -r 'map(select(.tag_name | endswith("-tachyon"))) | .[0].tag_name')"
 
-echo "Updating osu-lazer-bin from $old_version to $new_version..."
+update_channel() {
+    local channel="$1"
+    local tag="$2"
+    local version="${tag%-$channel}"
+    
+    local old_version=$(grep -A 10 "$channel = {" "$FILE" | grep "version =" | head -n1 | cut -d'"' -f2)
 
-# Update version in the file
-sed -i "s/version = \".*\";/version = \"$new_version\";/" "$FILE"
-
-for pair in \
-    'aarch64-darwin osu.app.Apple.Silicon.zip' \
-    'x86_64-darwin osu.app.Intel.zip' \
-    'x86_64-linux osu.AppImage'
-do
-    set -- $pair
-    echo "Prefetching binary for $1..."
-    prefetch_output=$(nix --extra-experimental-features "nix-command flakes" store prefetch-file --json --hash-type sha256 "https://github.com/ppy/osu/releases/download/$new_tag_name/$2")
-    if [[ "$1" == *"darwin"* ]]; then
-        store_path=$(jq -r '.storePath' <<<"$prefetch_output")
-        tmpdir=$(mktemp -d)
-        unzip -q "$store_path" -d "$tmpdir"
-        hash=$(nix --extra-experimental-features "nix-command flakes" hash path "$tmpdir")
-        rm -r "$tmpdir"
-    else
-        hash=$(jq -r '.hash' <<<"$prefetch_output")
+    if [[ "$version" == "$old_version" ]]; then
+        echo "$channel is already up to date ($version)."
+        return 0
     fi
-    echo "$1 ($2): hash = $hash"
 
-    # Update hash for the specific system
-    sed -i "/$1 = fetch/,/};/ s|hash = \".*\";|hash = \"$hash\";|" "$FILE"
-done
+    echo "Updating $channel from $old_version to $version..."
+    
+    # Update version in the specific block
+    sed -i "/$channel = {/,/};/ s/version = \".*\";/version = \"$version\";/" "$FILE"
+
+    for pair in \
+        'aarch64-darwin osu.app.Apple.Silicon.zip' \
+        'x86_64-darwin osu.app.Intel.zip' \
+        'x86_64-linux osu.AppImage'
+    do
+        set -- $pair
+        echo "Prefetching $channel binary for $1..."
+        prefetch_output=$(nix --extra-experimental-features "nix-command flakes" store prefetch-file --json --hash-type sha256 "https://github.com/ppy/osu/releases/download/$tag/$2")
+        
+        if [[ "$1" == *"darwin"* ]]; then
+            store_path=$(jq -r '.storePath' <<<"$prefetch_output")
+            tmpdir=$(mktemp -d)
+            unzip -q "$store_path" -d "$tmpdir"
+            hash=$(nix --extra-experimental-features "nix-command flakes" hash path "$tmpdir")
+            rm -r "$tmpdir"
+        else
+            hash=$(jq -r '.hash' <<<"$prefetch_output")
+        fi
+        echo "$1 ($2): hash = $hash"
+
+        # Update hash for the specific system in the channel block
+        # We use the system name as the key in the attrset
+        sed -i "/$channel = {/,/};/ s|$1 = \".*\";|$1 = \"$hash\";|" "$FILE"
+    done
+}
+
+update_channel "lazer" "$lazer_tag"
+update_channel "tachyon" "$tachyon_tag"
