@@ -2,11 +2,19 @@
   lib,
   stdenvNoCC,
   fetchurl,
+  gamemode,
   fetchzip,
   appimageTools,
   makeWrapper,
+  pipewire_latency ? "64/44100", # reasonable default
   nativeWayland ? true,
-  withTachyon ? false,
+  gmrun_enable ? true,
+  command_prefix ?
+    if gmrun_enable
+    # won't hurt users even if they don't have it set up
+    then "${gamemode}/bin/gamemoderun"
+    else null,
+  releaseStream ? "lazer",
 }: let
   pname = "osu-lazer-bin";
 
@@ -18,13 +26,13 @@
   };
 
   tachyon = {
-    version = "2026.513.0";
-    aarch64-darwin = "sha256-GKWVpSDF2efL5R6HZ3ggG8PBg96f5G4UqiA63O1M4Qk=";
-    x86_64-darwin = "sha256-8kpkBD7lL3j0t+Y2WLVTF4PvDoZTMAlP+gBH5mahIRc=";
-    x86_64-linux = "sha256-l3a+YTk2Lf83VxE2zgfAZ59UyxKi4PWtRuFDZb1lzME=";
+    version = "2026.522.1";
+    aarch64-darwin = "sha256-um0/qNwR5Cgg/vi1Nh+vMZWohsnm0KZdM9H3tZApbAw=";
+    x86_64-darwin = "sha256-fvS/pH/fCHW3ZjRFJWDwHgUwvdBEwdM6Q6OwW1OL/40=";
+    x86_64-linux = "sha256-qWvjV0H4bo3W/zMrO8/yNJ92ztDKQq1lo6w2Pfx5M2E=";
   };
 
-  useTachyon = withTachyon && (lib.versionOlder lazer.version tachyon.version);
+  useTachyon = releaseStream == "tachyon" && (lib.versionOlder lazer.version tachyon.version);
 
   active =
     if useTachyon
@@ -34,7 +42,7 @@
     if useTachyon
     then "tachyon"
     else "lazer";
-  version = active.version;
+  inherit (active) version;
 
   src =
     {
@@ -130,7 +138,17 @@ in
 
         wrapProgram $out/bin/osu! \
           ${lib.optionalString nativeWayland "--set SDL_VIDEODRIVER wayland"} \
-          --set OSU_EXTERNAL_UPDATE_PROVIDER 1
+          --set PIPEWIRE_LATENCY "${pipewire_latency}" \
+          --set OSU_EXTERNAL_UPDATE_PROVIDER 1 \
+          --set OSU_EXTERNAL_UPDATE_STREAM "${releaseStream}" \
+          --set vblank_mode "0"
+
+        ${
+          # a hack to infiltrate the command in the wrapper
+          lib.optionalString (builtins.isString command_prefix) ''
+            sed -i '$s:exec -a "$0":exec ${command_prefix}:' $out/bin/osu!
+          ''
+        }
 
         install -m 444 -D ${contents}/osu!.desktop -t $out/share/applications
         for i in 16 32 48 64 96 128 256 512 1024; do

@@ -26,6 +26,7 @@
         async-backend = "io_uring";
         auto-update = "off";
         cursor-style = "block";
+        shell-integration-features = "ssh-terminfo,ssh-env";
       };
     };
     foot = {

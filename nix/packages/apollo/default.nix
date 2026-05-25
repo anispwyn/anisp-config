@@ -11,7 +11,7 @@ in
       owner = "ClassicOldSong";
       repo = "Apollo";
       rev = "f253c8f";
-      hash = "sha256-1nRB3GrEm97u0c1cvQ5QoTPcu/NxgOwJoSGCK16bRmI=";
+      hash = "sha256-KLmMeCu6NGGVrHSawk2giVub7fqrjK2nT3+swuKtKEM=";
       fetchSubmodules = true;
     };
     ui = pkgs.buildNpmPackage {

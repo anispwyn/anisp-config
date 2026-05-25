@@ -14,5 +14,6 @@
     ./xresources.nix
     ./sops.nix
     ./flatpak.nix
+    ./reaper.nix
   ];
 }

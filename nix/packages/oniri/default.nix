@@ -5,16 +5,16 @@
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "oniri";
-  version = "1.2.0";
+  version = "1.2.2";
 
   src = fetchFromGitHub {
     owner = "Antiz96";
     repo = "oniri";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-54OA+N2qCbtfbYAEh18D1rUjxvmarZHPaH33maQa4uc=";
+    hash = "sha256-ezSyNY21NgeR067E7tmw29SazBUt+hYpsPavOpPt3L4=";
   };
 
-  cargoHash = "sha256-k1hnveoLOld7ec/FRmdUt8Ayoz45FO1KBkKVlA8E/ss=";
+  cargoHash = "sha256-ue08WszHwDbnXRR3lxcwCrtC2XMpg55BXcj65tS3u1E=";
 
   meta = {
     description = "A tool that automatically maximizes the only window of a niri workspace.";

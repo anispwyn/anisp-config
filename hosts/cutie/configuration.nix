@@ -36,7 +36,14 @@
   users.users.anisp = {
     shell = pkgs.fish;
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager" "input" "podman"];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "input"
+      "podman"
+      "docker"
+      "audio" # musnix
+    ];
     openssh = {
       authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOHDiVWG/LvNyd46LYg3aqCEqXOdMVxGAO+lMY5Je65m"];
     };
