@@ -6,7 +6,7 @@
   imports = [inputs.sops-nix.nixosModules.sops];
 
   sops = {
-    defaultSopsFile = ../secrets/anisp.yaml;
+    defaultSopsFile = ../../secrets/anisp.yaml;
 
     age.keyFile = "/var/lib/sops/keys.txt";
     age.generateKey = true;

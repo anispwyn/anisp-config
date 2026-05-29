@@ -19,7 +19,7 @@
       mappingFunction = x: config.stylix.lib.mappings.base162base24 (config.stylix.lib.mappings.semantic2base16 x);
     };
 
-    image = ../users/anisp/assets/Wallpapers/143781108_p0.jpg;
+    image = ../../../users/anisp/assets/Wallpapers/107191821_p0.jpg;
     # base16Scheme = "${inputs.tt-schemes}/base16/rose-pine.yaml";
     polarity = "dark";
     targets = {

@@ -9,6 +9,6 @@ in {
 
   modules = [
     ../../hosts/cutie
-    ../../modules
+    ../../common
   ];
 }

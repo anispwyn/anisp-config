@@ -3,13 +3,14 @@
   inputs,
   ...
 }: {
-  imports = [./home-modules];
+  imports = [./homeModules];
   home = {
     shell.enableFishIntegration = true;
     homeDirectory = "/home/anisp";
     stateVersion = "25.11";
     packages = with pkgs;
       [
+        # games goes here
         (prismlauncher.override {
           jdks = [
             temurin-bin-25
@@ -25,29 +26,10 @@
           ];
         })
         eden
-        qbittorrent-enhanced
-        tetrio-desktop
-        gsettings-desktop-schemas
-        obs-studio
         mangohud
         ryubing
         umu-launcher
-        btop
-        hoppscotch
-        playerctl
-        rose-pine-cursor
-        gemini-cli-bin
-        wl-clipboard
-        nautilus
-        file-roller
-        _7zz-rar
-        kdePackages.gwenview
-        grim
-        slurp
-        openssl
-        pear-desktop
-        blender
-        oniri
+        tetrio-desktop
         mindustry
         (waydroid-helper.overrideAttrs
           (finalAttrs: oldAttrs: {
@@ -60,18 +42,45 @@
             };
             propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [pkgs.vte-gtk4];
           }))
-        seahorse
         (osu-lazer-bin.override {
           releaseStream = "tachyon";
         })
         heroic
-        antigravity-cli
+
+        # audio production stuff goes here
         reaper
         yabridge
         yabridgectl
+
+        # idk
+        qbittorrent-enhanced
+        gsettings-desktop-schemas
+        obs-studio
+        btop
+        hoppscotch
+        playerctl
+        rose-pine-cursor
+        wl-clipboard
+        nautilus
+        file-roller
+        _7zz-rar
+        kdePackages.gwenview
+        grim
+        slurp
+        openssl
+        pear-desktop
+        blender
+        oniri
+        antigravity-cli
       ]
       ++ [
         inputs.animesteam.packages.${pkgs.stdenv.hostPlatform.system}.default
+        # inputs.accela.packages.${pkgs.stdenv.hostPlatform.system}.default
+        # inputs.slsteam.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
   };
+
+  my.audio.plugins = with pkgs; [
+    vital
+  ];
 }

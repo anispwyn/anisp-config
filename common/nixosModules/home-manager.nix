@@ -9,7 +9,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     users = {
-      anisp = ../users/anisp/home.nix;
+      anisp = ../../users/anisp/home.nix;
     };
     extraSpecialArgs = {
       inherit inputs system;

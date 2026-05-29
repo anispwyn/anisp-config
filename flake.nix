@@ -1,6 +1,18 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+      # do not override
+    };
+    slsteam = {
+      url = "github:AceSLS/SLSsteam/";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    accela = {
+      url = "github:ciscosweater/enter-the-wired";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     musnix = {
       url = "github:musnix/musnix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -94,9 +106,10 @@
           allowUnfree = true;
         };
       };
-      withOverlays = [
-        inputs.niri.overlays.niri
-        inputs.firefox-addons.overlays.default
+      withOverlays = with inputs; [
+        niri.overlays.niri
+        firefox-addons.overlays.default
+        cachyos-kernel.overlays.default
       ];
       formatters = pkgs: {
         "*.nix" = "${pkgs.lib.getExe pkgs.alejandra} .";

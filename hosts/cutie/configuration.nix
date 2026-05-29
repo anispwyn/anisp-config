@@ -1,11 +1,12 @@
 {
   pkgs,
   config,
+  lib,
   ...
 }: {
   boot = {
     kernelParams = ["idle=poll"];
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = lib.mkIf (!config.musnix.kernel.realtime) pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v3;
   };
 
   networking.hostName = "cutie";
@@ -22,7 +23,7 @@
     };
     nvidia = {
       open = true;
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      package = config.boot.kernelPackages.nvidiaPackages.bleeding_edge;
       dynamicBoost.enable = true;
       prime = {
         offload.enable = true;
