@@ -70,10 +70,10 @@
         inherit (pkgs.firefox-addons) buildFirefoxXpiAddon;
         oldtwitter = buildFirefoxXpiAddon rec {
           pname = "oldtwitter";
-          version = "1.9.6.6";
+          version = "1.9.6.7";
           addonId = "oldtwitter@dimden.dev";
           url = "https://github.com/dimdenGD/OldTwitter/releases/download/v${version}/OldTwitterFirefox.zip";
-          sha256 = "sha256-FjuWsaCuqTJfkp3ekY+RY7gkDlet1EibtjS1sBpiIfk=";
+          sha256 = "sha256-ynf3QTlmw5HUoLlkJjF9FICj8VkLor9MiF7BJwFIlyM=";
           meta = with lib; {
             homepage = "https://github.com/dimdenGD/OldTwitter";
             description = "Browser extension to return old Twitter layout from 2015 (and option to use 2018 design). This extension doesn't add any CSS on top of original Twitter. It's fully original client that replaces Twitter, making it much faster than alternatives.";

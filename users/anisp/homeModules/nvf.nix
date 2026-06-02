@@ -668,7 +668,7 @@
           };
         };
         binds = {
-          hardtime-nvim.enable = true;
+          hardtime-nvim.enable = false; # this is getting annoying
           whichKey = {
             enable = true;
             setupOpts = {

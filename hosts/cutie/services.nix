@@ -104,11 +104,13 @@
       enable = true;
     };
   };
-  systemd.services.nextdns.serviceConfig.ExecStart = lib.mkForce (
-    pkgs.writeShellScript "nextdns-start" ''
-      exec ${pkgs.nextdns}/bin/nextdns run -config "$(cat ${config.sops.secrets.nextdns_profile.path})"
-    ''
-  );
+  systemd.services.nextdns.serviceConfig = {
+    ExecStart = lib.mkForce (
+      pkgs.writeShellScript "nextdns-start" ''
+        exec ${pkgs.nextdns}/bin/nextdns run -config "$(cat ${config.sops.secrets.nextdns_profile.path})"
+      ''
+    );
+  };
   virtualisation = {
     waydroid = {
       enable = true;

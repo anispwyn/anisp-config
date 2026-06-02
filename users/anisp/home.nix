@@ -71,7 +71,9 @@
         pear-desktop
         blender
         oniri
-        antigravity-cli
+
+        # bs
+        llm-agents.antigravity-cli
       ]
       ++ [
         inputs.animesteam.packages.${pkgs.stdenv.hostPlatform.system}.default

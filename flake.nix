@@ -1,6 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     cachyos-kernel = {
       url = "github:xddxdd/nix-cachyos-kernel/release";
       # do not override
@@ -88,7 +92,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
-      url = "github:make-42/stylix/step-2-inputmapping-clean-root";
+      url = "github:nix-community/stylix/pull/2337/head";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     firefox-addons = {
@@ -110,6 +114,7 @@
         niri.overlays.niri
         firefox-addons.overlays.default
         cachyos-kernel.overlays.default
+        llm-agents.overlays.default
       ];
       formatters = pkgs: {
         "*.nix" = "${pkgs.lib.getExe pkgs.alejandra} .";

@@ -4,6 +4,9 @@
   lib,
   ...
 }: {
+  imports = [
+    ./nixosModules
+  ];
   boot = {
     kernelParams = ["idle=poll"];
     kernelPackages = lib.mkIf (!config.musnix.kernel.realtime) pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v3;
