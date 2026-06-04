@@ -17,7 +17,9 @@
   time.timeZone = "Asia/Bangkok";
 
   services = {
-    xserver.videoDrivers = ["nvidia"];
+    xserver = {
+      videoDrivers = ["nvidia"];
+    };
   };
   hardware = {
     graphics = {

@@ -7,10 +7,9 @@
     ./discord.nix
     ./nvf.nix
     ./terminal.nix
-    ./nix-index-database.nix
     ./services.nix
+    ./programs.nix
     ./media.nix
-    ./neovide.nix
     ./xresources.nix
     ./sops.nix
     ./flatpak.nix

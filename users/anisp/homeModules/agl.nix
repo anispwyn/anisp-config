@@ -1,8 +1,8 @@
 {inputs, ...}: {
   imports = [inputs.animesteam.homeModules.default];
   programs.agl = {
-    enable = true;
-    anirun.enable = true;
+    enable = false;
+    anirun.enable = false;
     settings = {
       cache = {
         game_manifests.duration = 0;

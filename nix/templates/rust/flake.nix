@@ -15,8 +15,9 @@
     fenix,
     crane,
     ...
-  }:
+  } @ inputs:
     flakelight ./. {
+      inherit inputs;
       withOverlays = [fenix.overlays.default];
 
       packages.default = {pkgs, ...}: let
