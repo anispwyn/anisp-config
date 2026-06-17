@@ -10,10 +10,9 @@
     enable = true;
     settings = {
       vim = {
-        extraPlugins = with pkgs.vimPlugins; {
-          "easy-dotnet-nvim" = {
-            package = easy-dotnet-nvim;
-            setup = "require('easy-dotnet').setup()";
+        lazy.plugins = with pkgs.vimPlugins; {
+          "diffview.nvim" = {
+            package = diffview-nvim;
           };
         };
         luaConfigRC.neovideScale = lib.hm.dag.entryAnywhere ''
@@ -831,7 +830,11 @@
             enable = true;
           };
           csharp = {
-            extensions.roslyn-nvim.enable = true;
+            extensions = {
+              roslyn-nvim = {
+                enable = true;
+              };
+            };
             lsp.servers = ["roslyn-ls"];
             enable = true;
           };

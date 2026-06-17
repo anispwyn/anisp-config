@@ -3,7 +3,7 @@
 
   programs.nixcord = {
     enable = true;
-    discord.vencord.enable = true;
+    discord.vencord.enable = false; # fallback for everything idk
     # discord.equicord.enable = true;
     equibop.enable = true;
     quickCss = ''
@@ -29,14 +29,14 @@
       frameless = true;
       useQuickCss = true;
       plugins = {
-        BlurNSFW.enable = true;
-        ClearURLs.enable = true;
-        LastFMRichPresence = {
+        blurNsfw.enable = true;
+        clearUrls.enable = true;
+        lastFmRichPresence = {
           enable = true;
           hideWithActivity = true;
           username = "fame1219";
         };
-        ReviewDB.enable = true;
+        reviewDb.enable = true;
         callTimer.allCallTimers = true;
         anonymiseFileNames.enable = true;
         betterFolders.enable = false;
@@ -61,6 +61,10 @@
         viewRaw.enable = true;
         whoReacted.enable = true;
         spotifyCrack.enable = true;
+        webScreenShareFixes.enable = true;
+
+        # Equicord stuff
+        fontLoader.enable = true;
       };
     };
   };

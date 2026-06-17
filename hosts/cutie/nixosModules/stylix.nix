@@ -25,6 +25,7 @@
     targets = {
       fontconfig.enable = true;
     };
+
     fonts = {
       sansSerif = {
         package = pkgs.noto-fonts;

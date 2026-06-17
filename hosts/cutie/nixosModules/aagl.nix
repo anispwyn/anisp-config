@@ -1,7 +1,8 @@
 {inputs, ...}: {
   imports = [inputs.aagl.nixosModules.default];
   programs = {
-    sleepy-launcher.enable = true;
-    honkers-launcher.enable = true;
+    sleepy-launcher.enable = false;
+    honkers-launcher.enable = false;
+    anime-game-launcher.enable = true;
   };
 }

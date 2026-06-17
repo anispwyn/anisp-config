@@ -9,14 +9,6 @@
       url = "github:xddxdd/nix-cachyos-kernel/release";
       # do not override
     };
-    slsteam = {
-      url = "github:AceSLS/SLSsteam/";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    accela = {
-      url = "github:ciscosweater/enter-the-wired";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     musnix = {
       url = "github:musnix/musnix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -34,10 +26,6 @@
     };
     hermes-agent = {
       url = "github:NousResearch/hermes-agent";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    animesteam = {
-      url = "github:an-anime-team/anime-games-launcher/";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     spicetify-nix = {
@@ -92,7 +80,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
-      url = "github:nix-community/stylix/pull/2337/head";
+      url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     firefox-addons = {
@@ -113,7 +101,7 @@
       withOverlays = with inputs; [
         niri.overlays.niri
         firefox-addons.overlays.default
-        cachyos-kernel.overlays.default
+        cachyos-kernel.overlays.pinned
         llm-agents.overlays.default
       ];
       formatters = pkgs: {

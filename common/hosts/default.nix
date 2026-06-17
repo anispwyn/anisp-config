@@ -84,6 +84,7 @@
       pinentryPackage = pkgs.pinentry-tty;
       enableSSHSupport = true;
     };
+    virt-manager.enable = config.virtualisation.libvirtd.enable;
   };
   networking = {
     nftables.enable = true;
@@ -92,7 +93,7 @@
     };
     firewall = {
       enable = true;
-      trustedInterfaces = lib.optionals config.services.tailscale.enable ["tailscale0"];
+      trustedInterfaces = lib.optionals config.services.tailscale.enable ["tailscale0"] ++ lib.optionals config.virtualisation.libvirtd.enable ["virbr0"];
       allowedUDPPorts = lib.optional config.services.tailscale.enable config.services.tailscale.port;
       # kdeconnect both udp and tcp
       allowedTCPPortRanges = [
@@ -135,20 +136,22 @@
   };
 
   environment = {
+    sessionVariables.NIXOS_OZONE_WL = 1;
     pathsToLink = ["/share/applications" "/share/xdg-desktop-portal"];
     variables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
     };
-    systemPackages = with pkgs; [
-      gnupg1
-      xdg-utils
-      fzf
-      bat
-      jq
-      ripgrep
-      git
-      wget
-    ];
+    systemPackages = with pkgs; ([
+        gnupg1
+        xdg-utils
+        fzf
+        bat
+        jq
+        ripgrep
+        git
+        wget
+      ]
+      ++ lib.optionals config.virtualisation.libvirtd.enable [pkgs.dnsmasq]);
   };
 }

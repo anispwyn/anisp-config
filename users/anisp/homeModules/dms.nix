@@ -2,7 +2,7 @@
   imports = [
     inputs.dms.homeModules.dank-material-shell
     inputs.dms.homeModules.niri
-    inputs.dms-plugin-registry.modules.default
+    inputs.dms-plugin-registry.homeModules.default
   ];
   programs.dank-material-shell = {
     enable = true;
@@ -28,7 +28,7 @@
     enableAudioWavelength = true;
     enableClipboardPaste = true;
     session = {
-      # wallpaperPath = ../assets/Wallpapers/143734710_p0.png;
+      wallpaperPath = ../assets/Wallpapers/107191821_p0.jpg;
       isLightMode = false;
     };
     clipboardSettings = {

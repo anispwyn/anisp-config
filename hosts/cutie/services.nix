@@ -77,7 +77,7 @@
     };
 
     suwayomi-server = {
-      enable = true;
+      enable = false;
       openFirewall = true;
       settings = {
         server = {
@@ -92,7 +92,7 @@
     };
     flaresolverr = {
       openFirewall = false;
-      enable = true;
+      enable = config.services.suwayomi-server.enable;
     };
     tailscale = {
       enable = true;
@@ -129,6 +129,7 @@
       dockerCompat = true;
       defaultNetwork.settings = {dns_enabled = true;};
     };
+    libvirtd.enable = false;
   };
 
   # security.sudo.extraRules = [

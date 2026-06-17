@@ -43,6 +43,7 @@
     shell = pkgs.fish;
     isNormalUser = true;
     extraGroups = [
+      "libvirtd"
       "wheel"
       "networkmanager"
       "input"
@@ -64,6 +65,7 @@
             xdg-utils
             libxscrnsaver
             libXxf86vm
+            nspr
           ];
       }).run-free
     ];
