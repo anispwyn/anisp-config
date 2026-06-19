@@ -3,7 +3,7 @@
 
   programs.nixcord = {
     enable = true;
-    discord.vencord.enable = false; # fallback for everything idk
+    discord.vencord.enable = true; # fallback for everything idk
     # discord.equicord.enable = true;
     equibop.enable = true;
     quickCss = ''
@@ -64,7 +64,10 @@
         webScreenShareFixes.enable = true;
 
         # Equicord stuff
-        fontLoader.enable = true;
+        fontLoader = {
+          enable = true;
+          selectedFont = "Google Sans";
+        };
       };
     };
   };

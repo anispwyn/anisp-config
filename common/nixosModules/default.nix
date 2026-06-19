@@ -1,7 +1,7 @@
 {
   imports = [
-    ./home-manager.nix
     ./nh.nix
     ./sops.nix
+    ./home-manager.nix
   ];
 }

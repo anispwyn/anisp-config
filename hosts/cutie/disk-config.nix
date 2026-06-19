@@ -66,10 +66,6 @@
                     mountpoint = "/home";
                     mountOptions = ["compress=zstd" "noatime" "discard=async" "space_cache=v2"];
                   };
-                  "@Music" = {
-                    mountpoint = "/music";
-                    mountOptions = ["compress=zstd" "noatime"];
-                  };
                 };
               };
             };
