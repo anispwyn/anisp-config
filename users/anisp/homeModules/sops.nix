@@ -12,6 +12,8 @@
 
     secrets = {
       lastfm_api_key = {};
+      lastfm_password = {};
+      listenbrainz_token = {};
     };
   };
 }

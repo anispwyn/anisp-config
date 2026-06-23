@@ -27,7 +27,7 @@
       autoUpdate = true;
       autoUpdateNotification = true;
       frameless = true;
-      useQuickCss = true;
+      useQuickCss = false;
       plugins = {
         blurNsfw.enable = true;
         clearUrls.enable = true;
@@ -39,7 +39,7 @@
         reviewDb.enable = true;
         callTimer.allCallTimers = true;
         anonymiseFileNames.enable = true;
-        betterFolders.enable = false;
+        betterFolders.enable = true;
         betterSessions.enable = true;
         dearrow.enable = true;
         fakeNitro.enable = true;

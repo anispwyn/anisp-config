@@ -615,7 +615,10 @@
                 javascript = ["oxfmt"];
                 typescriptreact = ["oxfmt"];
                 javascriptreact = ["oxfmt"];
-                vue = ["oxfmt" "vue-language-server" "eslint" {stop_after_first = true;}];
+                vue = {
+                  formatters = ["oxfmt" "lsp"];
+                  stop_after_first = true;
+                };
                 lua = ["stylua"];
                 luau = ["stylua"];
               };

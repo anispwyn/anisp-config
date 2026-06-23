@@ -19,10 +19,10 @@
   pname = "osu-lazer-bin";
 
   lazer = {
-    version = "2026.518.0";
-    aarch64-darwin = "sha256-T/uoriXCXfK+HnLqMZ3xQ79qmlT5rVaoeEi5Wgu1Oc4=";
-    x86_64-darwin = "sha256-G/l2WSgl7GcIMHmb86K4qzryMirebe5dmnMrsSlYNfY=";
-    x86_64-linux = "sha256-4LLNjrKEBS77LIbq+O6Xpxj6CvufGDApNqs61HN2JmA=";
+    version = "2026.620.0";
+    aarch64-darwin = "sha256-SHqi+RFMwYkChmCc0i1X/bmMajVSLaWuNCx9+cDkg7E=";
+    x86_64-darwin = "sha256-WXMyeoTixCNPin+hIK+1v2bX26MWnsQ7ZQGwJQ7jbyc=";
+    x86_64-linux = "sha256-rLom/UwqVOXUk/ayLvekRQMD49p5MB9BA6RCohtuPfg=";
   };
 
   tachyon = {

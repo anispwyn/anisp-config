@@ -9,7 +9,7 @@
   ];
   boot = {
     kernelParams = ["idle=poll"];
-    kernelPackages = lib.mkIf (!config.musnix.kernel.realtime) pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v3;
+    kernelPackages = lib.mkIf (!config.musnix.kernel.realtime) pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3;
   };
 
   networking.hostName = "cutie";
@@ -28,7 +28,7 @@
     };
     nvidia = {
       open = true;
-      package = config.boot.kernelPackages.nvidiaPackages.bleeding_edge;
+      branch = "bleeding_edge";
       dynamicBoost.enable = true;
       prime = {
         offload.enable = true;
@@ -59,6 +59,7 @@
     # etc."systemd/resolved.conf.d/nextdns.conf".source = config.sops.templates."resolved-nextdns".path;
     systemPackages = with pkgs; [
       omen-fan
+      mcp-nixos
       (steam.override {
         extraLibraries = p:
           with p; [

@@ -28,7 +28,9 @@
       mangohud
       ryubing
       umu-launcher
-      tetrio-desktop
+      (tetrio-desktop.override {
+        electron = electron_42;
+      })
       mindustry
       (waydroid-helper.overrideAttrs
         (finalAttrs: oldAttrs: {
@@ -72,6 +74,7 @@
       oniri
       moltorino
       readest
+      nicotine-plus
 
       # bs
       llm-agents.antigravity-cli
