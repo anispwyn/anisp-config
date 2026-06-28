@@ -26,7 +26,7 @@
   };
   services = {
     mpd = {
-      enable = true;
+      enable = false;
       musicDirectory = "${config.home.homeDirectory}/Music";
       enableSessionVariables = false;
       network = {

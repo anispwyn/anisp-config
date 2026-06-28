@@ -52,8 +52,9 @@
       overview.workspace-shadow.enable = false;
       layer-rules = [
         {
-          matches = [{namespace = "^quickshell$";}];
+          matches = [{namespace = "^dms:.*";}];
           place-within-backdrop = true;
+          background-effect.xray = false;
         }
       ];
 
@@ -118,6 +119,7 @@
         {
           matches = [{app-id = "org.quickshell$";}];
           open-floating = true;
+          background-effect.xray = false;
         }
       ];
 
@@ -188,6 +190,11 @@
             options = "grp:alt_shift_toggle";
           };
         };
+      };
+
+      blur = {
+        enable = true;
+        passes = 1;
       };
 
       binds = {

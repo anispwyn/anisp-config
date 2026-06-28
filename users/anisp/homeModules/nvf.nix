@@ -6,6 +6,7 @@
 }: {
   imports = [inputs.nvf.homeManagerModules.default];
 
+  stylix.targets.nvf.enable = false;
   programs.nvf = {
     enable = true;
     settings = {
@@ -15,7 +16,22 @@
             package = diffview-nvim;
           };
         };
+
+        extraPlugins = with pkgs.vimPlugins; {
+          "rose-pine" = {
+            package = rose-pine;
+            setup = "require('rose-pine').setup({
+                variant = 'main',
+                dark_variant = 'main',
+                dim_inactive_windows = false,
+                styles = {
+                  transparency = true,
+                },
+              })";
+          };
+        };
         luaConfigRC.neovideScale = lib.hm.dag.entryAnywhere ''
+          vim.cmd("colorscheme rose-pine")
           local change_scale_factor = function(delta)
             vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
           end

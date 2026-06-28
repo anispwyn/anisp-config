@@ -31,8 +31,8 @@
     settings = {
       experimental-features = ["nix-command" "flakes"];
       trusted-users = ["anisp"];
-      substituters = ["https://niri.cachix.org" "https://ezkea.cachix.org" "https://nix-community.cachix.org" "https://cache.nixos-cuda.org" "https://attic.xuyh0120.win/lantian" "https://cache.numtide.com"];
-      trusted-public-keys = ["niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964=" "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=" "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="];
+      substituters = ["https://niri-epireyn.cachix.org" "https://ezkea.cachix.org" "https://nix-community.cachix.org" "https://cache.nixos-cuda.org" "https://attic.xuyh0120.win/lantian" "https://cache.numtide.com"];
+      trusted-public-keys = ["niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA=" "ezkea.cachix.org-1:ioBmUbJTZIKsHmWWXPe1FSFbeVe+afhfgqgTSNd34eI=" "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=" "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=" "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="];
     };
   };
 
@@ -77,8 +77,6 @@
 
   programs = {
     fish.enable = true;
-    ssh.askPassword = pkgs.lib.mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
-    ssh.enableAskPassword = true;
     gnupg.agent = {
       enable = true;
       pinentryPackage = pkgs.pinentry-tty;

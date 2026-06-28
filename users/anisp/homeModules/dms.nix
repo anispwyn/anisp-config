@@ -1,4 +1,8 @@
-{inputs, ...}: {
+{
+  inputs,
+  lib,
+  ...
+}: {
   imports = [
     inputs.dms.homeModules.dank-material-shell
     inputs.dms.homeModules.niri
@@ -28,14 +32,22 @@
     enableAudioWavelength = true;
     enableClipboardPaste = true;
     session = {
-      wallpaperPath = ../assets/Wallpapers/107191821_p0.jpg;
+      wallpaperPath = ../assets/Wallpapers/HLoAT6paUAA2nXU.jpg;
       isLightMode = false;
     };
     clipboardSettings = {
       maxHistory = 1000;
       autoClearDays = 7;
     };
-    settings = {
+    settings = let
+      opacity = 0.5;
+    in {
+      blurEnabled = true;
+      blurForegroundLayers = true;
+      blurLayerOutlineOpacity = 0.12;
+      blurBorderColor = "outline";
+      blurBorderCustomColor = "#ffffff";
+      blurBorderOpacity = 0;
       currentThemeName = "custom";
       currentThemeCategory = "custom";
       registryThemeVariants = {
@@ -43,14 +55,14 @@
       matugenScheme = "scheme-tonal-spot";
       runUserMatugenTemplates = true;
       matugenTargetMonitor = "";
-      popupTransparency = 1.0;
-      dockTransparency = 1.0;
+      popupTransparency = lib.mkForce opacity;
+      dockTransparency = lib.mkForce opacity;
       widgetBackgroundColor = "sch";
       widgetColorMode = "default";
       controlCenterTileColorMode = "primary";
       buttonColorMode = "primary";
       cornerRadius = 0;
-      niriLayoutGapsOverride = 0;
+      niriLayoutGapsOverride = -1;
       niriLayoutRadiusOverride = -1;
       niriLayoutBorderSize = -1;
       hyprlandLayoutGapsOverride = -1;
@@ -512,7 +524,7 @@
           ];
           scrollXBehavior = "column";
           spacing = 0;
-          transparency = 1;
+          transparency = opacity;
           widgetTransparency = 1;
           autoHideDelay = 1000;
           showOnWindowsOpen = true;

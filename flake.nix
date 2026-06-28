@@ -9,6 +9,10 @@
       url = "github:xddxdd/nix-cachyos-kernel/release";
       # do not override
     };
+    ghostty = {
+      url = "github:ghostty-org/ghostty";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     musnix = {
       url = "github:musnix/musnix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -76,7 +80,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri = {
-      url = "github:sodiboo/niri-flake";
+      url = "github:epireyn/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
@@ -103,6 +107,7 @@
         firefox-addons.overlays.default
         cachyos-kernel.overlays.pinned
         llm-agents.overlays.default
+        ghostty.overlays.default
       ];
       formatters = pkgs: {
         "*.nix" = "${pkgs.lib.getExe pkgs.alejandra} .";
