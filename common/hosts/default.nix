@@ -46,7 +46,6 @@
     polkit = {
       enable = true;
     };
-    soteria.enable = true;
   };
   services = {
     nohang.enable = true;
@@ -129,7 +128,7 @@
       google-fonts
       noto-fonts-cjk-sans
       noto-fonts-color-emoji
-      googlesans-code
+      googlesans-code-nerd
     ];
   };
 

@@ -21,6 +21,7 @@
       {id = "cjpalhdlnbpafiamejdnhcphjbkeiagm";} # ublock origin
       {id = "likgccmbimhjbgkjambclfkhldnlhbnn";} # yomitan
       {id = "jdkknkkbebbapilgoeccciglkfbmbnfm";} # Apollo graphql devtools
+      {id = "bpaoeijjlplfjbagceilcgbkcdjbomjd";} # TTV lol pro
     ];
   };
   programs.zen-browser = {

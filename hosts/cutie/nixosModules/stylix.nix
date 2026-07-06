@@ -32,8 +32,8 @@
         name = "Noto Sans";
       };
       monospace = {
-        package = pkgs.google-sans-code-nerd-font;
-        name = "Google Sans Code NF";
+        package = pkgs.googlesans-code-nerd;
+        name = "Google Sans Code Nerd Font";
       };
     };
   };

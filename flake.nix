@@ -69,7 +69,7 @@
     };
     nvf = {
       url = "github:notashelf/nvf";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs"; break stuff smh
     };
     dms = {
       url = "github:AvengeMedia/DankMaterialShell";

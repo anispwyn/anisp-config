@@ -280,7 +280,7 @@
       launcherLogoContrast = 1;
       launcherLogoSizeOffset = 0;
       fontFamily = "Noto Sans";
-      monoFontFamily = "Google Sans Code NF";
+      monoFontFamily = "Google Sans Code Nerd Font";
       fontWeight = 400;
       fontScale = 1;
       notepadUseMonospace = true;

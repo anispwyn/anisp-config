@@ -1,8 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [./homeModules];
   home = {
     shell.enableFishIntegration = true;
@@ -75,6 +71,12 @@
       moltorino
       readest
       nicotine-plus
+      element-desktop
+
+      # keyring bs
+      proton-authenticator
+      seahorse
+      gcr # HACK https://github.com/nix-community/home-manager/issues/1454
 
       # bs
       llm-agents.antigravity-cli

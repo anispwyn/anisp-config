@@ -32,7 +32,7 @@
       };
     };
     foot = {
-      enable = true;
+      enable = false;
       settings = {
         main.shell = "zellij -l welcome attach --create welcome"; # idk how and where this come from
       };
@@ -41,7 +41,7 @@
       enable = true;
     };
     zellij = {
-      enable = true;
+      enable = false;
       settings = {
         simplified_ui = true;
         pane_frames = false;
@@ -52,5 +52,8 @@
       nix-direnv.enable = true;
     };
     carapace.enable = true;
+    oh-my-posh = {
+      enable = false;
+    };
   };
 }

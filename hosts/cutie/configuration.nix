@@ -9,7 +9,11 @@
   ];
   boot = {
     kernelParams = ["idle=poll"];
-    kernelPackages = lib.mkIf (!config.musnix.kernel.realtime) pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3;
+    kernelPackages = lib.mkIf (!config.musnix.kernel.realtime) (
+      if !config.virtualisation.libvirtd.enable
+      then pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3
+      else pkgs.linuxPackages_latest
+    );
   };
 
   networking.hostName = "cutie";
