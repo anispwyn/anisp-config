@@ -22,6 +22,7 @@
       {id = "likgccmbimhjbgkjambclfkhldnlhbnn";} # yomitan
       {id = "jdkknkkbebbapilgoeccciglkfbmbnfm";} # Apollo graphql devtools
       {id = "bpaoeijjlplfjbagceilcgbkcdjbomjd";} # TTV lol pro
+      {id = "gppongmhjkpfnbhagpmjfkannfbllamg";} # wappalyzer
     ];
   };
   programs.zen-browser = {

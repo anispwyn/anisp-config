@@ -52,8 +52,5 @@
       nix-direnv.enable = true;
     };
     carapace.enable = true;
-    oh-my-posh = {
-      enable = false;
-    };
   };
 }

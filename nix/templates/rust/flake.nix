@@ -8,6 +8,10 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -51,5 +55,12 @@
       devShell.packages = pkgs: [
         pkgs.fenix.default.toolchain
       ];
+
+      formatter = pkgs:
+        (inputs.treefmt-nix.lib.evalModule pkgs {
+          projectRootFile = "flake.nix";
+          programs.alejandra.enable = true;
+          programs.rustfmt.enable = true;
+        }).config.build.wrapper;
     };
 }

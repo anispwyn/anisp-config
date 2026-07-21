@@ -15,6 +15,11 @@
       hotkey-overlay.skip-at-startup = true;
       clipboard.disable-primary = true;
 
+      outputs = {
+        "eDP-1" = {
+          enable = true;
+        };
+      };
       spawn-at-startup = [
         {
           argv = ["oniri" "-T"];
@@ -56,9 +61,17 @@
           place-within-backdrop = true;
           background-effect.xray = false;
         }
+        {
+          matches = [{namespace = "^dms:notification.*$";}];
+          block-out-from = "screencast";
+        }
       ];
 
       window-rules = [
+        {
+          matches = [{title = ".env";}];
+          block-out-from = "screencast";
+        }
         {
           matches = [{app-id = "^org\\.wezfurlong\\.wezterm$";}];
           default-column-width = {};

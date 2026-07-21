@@ -18,7 +18,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixcord = {
-      url = "github:FlameFlag/nixcord";
+      url = "github:4evy/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flakelight = {
@@ -67,12 +67,16 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nvf = {
-      url = "github:notashelf/nvf";
-      # inputs.nixpkgs.follows = "nixpkgs"; break stuff smh
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     dms = {
       url = "github:AvengeMedia/DankMaterialShell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dms-plugin-registry = {
@@ -91,6 +95,10 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.1.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = {flakelight, ...} @ inputs:
     flakelight ./. {
@@ -106,13 +114,17 @@
         niri.overlays.niri
         firefox-addons.overlays.default
         cachyos-kernel.overlays.pinned
-        llm-agents.overlays.default
         ghostty.overlays.default
       ];
-      formatters = pkgs: {
-        "*.nix" = "${pkgs.lib.getExe pkgs.alejandra} .";
-        "*.yml" = "${pkgs.lib.getExe pkgs.oxfmt} --wrtie '*.yml'";
-        "*.yaml" = "${pkgs.lib.getExe pkgs.oxfmt} --wrtie '*.yaml'";
-      };
+      formatter = pkgs:
+        (inputs.treefmt-nix.lib.evalModule pkgs {
+          projectRootFile = "flake.nix";
+          programs.alejandra.enable = true;
+          settings.formatter.oxfmt = {
+            command = pkgs.lib.getExe pkgs.oxfmt;
+            options = ["--write"];
+            includes = ["*.yml" "*.yaml"];
+          };
+        }).config.build.wrapper;
     };
 }

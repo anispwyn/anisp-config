@@ -5,7 +5,7 @@
     ./git.nix
     ./niri.nix
     ./discord.nix
-    ./nvf.nix
+    ./nixvim.nix
     ./terminal.nix
     ./services.nix
     ./programs.nix

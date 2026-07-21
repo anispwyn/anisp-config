@@ -6,7 +6,10 @@
 }: {
   boot = {
     loader = {
-      systemd-boot.enable = true;
+      systemd-boot.enable =
+        if config.boot.lanzaboote.enable
+        then false
+        else true;
       efi.canTouchEfiVariables = true;
       timeout = 0;
     };
