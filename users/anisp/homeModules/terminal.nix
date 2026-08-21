@@ -27,8 +27,6 @@
         auto-update = "off";
         cursor-style = "block";
         shell-integration-features = "ssh-terminfo,ssh-env";
-        background-opacity = "0.8";
-        background-blur = "2";
       };
     };
     foot = {

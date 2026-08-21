@@ -31,7 +31,7 @@
       plugins = {
         blurNsfw.enable = true;
         clearUrls.enable = true;
-        lastFmRichPresence = {
+        musicRichPresence = {
           enable = true;
           hideWithActivity = true;
           username = "fame1219";
@@ -54,7 +54,7 @@
         relationshipNotifier.enable = true;
         shikiCodeblocks = {
           enable = true;
-          theme = "https://raw.githubusercontent.com/shikijs/textmate-grammars-themes/bc5436518111d87ea58eb56d97b3f9bec30e6b83/packages/tm-themes/themes/rose-pine.json";
+          theme = "https://cdn.jsdelivr.net/gh/shikijs/textmate-grammars-themes@bc5436518111d87ea58eb56d97b3f9bec30e6b83/packages/tm-themes/themes/rose-pine.json";
         };
         showHiddenChannels.enable = true;
         showMeYourName.enable = true;

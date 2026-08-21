@@ -9,7 +9,6 @@
   programs.vivaldi = {
     package = pkgs.vivaldi.override {
       enableWidevine = true;
-      proprietaryCodecs = true;
     };
     enable = true;
     extensions = [
@@ -23,12 +22,13 @@
       {id = "jdkknkkbebbapilgoeccciglkfbmbnfm";} # Apollo graphql devtools
       {id = "bpaoeijjlplfjbagceilcgbkcdjbomjd";} # TTV lol pro
       {id = "gppongmhjkpfnbhagpmjfkannfbllamg";} # wappalyzer
+      {id = "bhchdcejhohfmigjafbampogmaanbfkg";} # user agent switcher
     ];
   };
   programs.zen-browser = {
     enable = true;
     policies = {
-      AutofillAddressEnabled = true;
+      AutofillAddressEnabled = false;
       AutofillCreditCardEnabled = false;
       DisableAppUpdate = true;
       DisableFeedbackCommands = true;
@@ -50,32 +50,59 @@
       id = 0;
       name = "anisp";
       path = "anisp";
-      # spacesForce = true;
-      # spaces = {
-      #   "Everything" = {
-      #     id = "be5a5603-239b-4da4-be96-55136f11266a";
-      #     position = 1000;
-      #     icon = "chrome://browser/skin/zen-icons/selectable/cafe.svg";
-      #   };
-      #   "Social Media" = {
-      #     id = "1ea0e54e-2a0c-4200-a4a5-5ac4a03220c4";
-      #     position = 2000;
-      #     icon = "chrome://browser/skin/zen-icons/selectable/people.svg";
-      #   };
-      #   "Entertainment" = {
-      #     id = "cdb12dd5-adb5-4a0c-ae5e-92ca1306bc71";
-      #     position = 3000;
-      #     icon = "chrome://browser/skin/zen-icons/selectable/music.svg";
-      #   };
-      # };
+      presets.betterfox.enable = true;
+      spacesForce = false;
+      spaces = {
+        "Everything" = {
+          id = "be5a5603-239b-4da4-be96-55136f11266a";
+          position = 1;
+          icon = "chrome://browser/skin/zen-icons/selectable/cafe.svg";
+        };
+        "Social Media" = {
+          id = "1ea0e54e-2a0c-4200-a4a5-5ac4a03220c4";
+          position = 2;
+          icon = "chrome://browser/skin/zen-icons/selectable/people.svg";
+          pins = {
+            "Twitter" = {
+              id = "69a5ef1a-1e02-4dc6-ab8d-e7a6642685a3";
+              url = "https://x.com";
+              position = 1;
+            };
+            "Reddit" = {
+              id = "9499e34d-e4a1-462c-bace-e89c11a7af3e";
+              url = "https://reddit.com";
+              position = 2;
+            };
+            "Facebook" = {
+              id = "16f558be-7ff6-4efd-b0e6-a1280054bc9d";
+              url = "https://facebook.com";
+              position = 3;
+            };
+            "Instagram" = {
+              id = "93508ad2-798d-4e83-9e4f-90d8ec37f6dc";
+              url = "https://instagram.com";
+              position = 4;
+            };
+          };
+        };
+        "Entertainment" = {
+          id = "cdb12dd5-adb5-4a0c-ae5e-92ca1306bc71";
+          position = 3;
+          icon = "chrome://browser/skin/zen-icons/selectable/music.svg";
+        };
+      };
+      sine = {
+        enable = true;
+        mods = ["Arc-2.0"];
+      };
       extensions = let
         inherit (pkgs.firefox-addons) buildFirefoxXpiAddon;
         oldtwitter = buildFirefoxXpiAddon rec {
           pname = "oldtwitter";
-          version = "1.9.6.7";
+          version = "1.9.8";
           addonId = "oldtwitter@dimden.dev";
           url = "https://github.com/dimdenGD/OldTwitter/releases/download/v${version}/OldTwitterFirefox.zip";
-          sha256 = "sha256-ynf3QTlmw5HUoLlkJjF9FICj8VkLor9MiF7BJwFIlyM=";
+          sha256 = "sha256-2PLvHDiDs15CnKJd9k58Fd2Ni4ghbK6pBDSiIj4qK+Y=";
           meta = with lib; {
             homepage = "https://github.com/dimdenGD/OldTwitter";
             description = "Browser extension to return old Twitter layout from 2015 (and option to use 2018 design). This extension doesn't add any CSS on top of original Twitter. It's fully original client that replaces Twitter, making it much faster than alternatives.";
@@ -98,9 +125,33 @@
           };
         };
 
+        ttvLolPro = buildFirefoxXpiAddon rec {
+          pname = "ttv-lol-pro";
+          version = "2.6.2";
+          addonId = "{76ef94a4-e3d0-4c6f-961a-d38a429a332b}";
+          url = "https://addons.mozilla.org/firefox/downloads/file/4797584/ttv_lol_pro-${version}.xpi";
+          sha256 = "sha256-1eMt+1HOBQ/EIhctezru5KpLGOYPaHg7VW5b8053EP4=";
+          meta = with lib; {
+            homepage = "https://github.com/younesaassila/ttv-lol-pro";
+            description = "TTV LOL PRO removes most livestream ads from Twitch.";
+            license = lib.licenses.gpl3;
+            mozPermissions = [
+              "proxy"
+              "storage"
+              "webRequest"
+              "webRequestBlocking"
+              "https://*.live-video.net/*"
+              "https://*.ttvnw.net/*"
+              "https://*.twitch.tv/*"
+              "https://perfprod.com/ttvlolpro/telemetry"
+            ];
+            platforms = platforms.all;
+          };
+        };
+
         yomitan = buildFirefoxXpiAddon rec {
           pname = "yomitan";
-          version = "26.2.17.0";
+          version = "26.7.29.0";
           addonId = "{6b733b82-9261-47ee-a595-2dda294a4d08}";
           url = "https://addons.mozilla.org/firefox/downloads/file/4676339/yomitan-${version}";
           sha256 = "sha256-8Ci4HTFaknOcGYXxIodTwC9O+5i5/+H7TwDp6B/OysA=";
@@ -125,7 +176,17 @@
       in {
         force = true;
 
-        packages = (with pkgs.firefox-addons; [ublock-origin wappalyzer proton-pass sponsorblock web-scrobbler seventv]) ++ [oldtwitter yomitan];
+        packages =
+          (with pkgs.firefox-addons; [
+            ublock-origin
+            wappalyzer
+            proton-pass
+            sponsorblock
+            web-scrobbler
+            seventv
+            user-agent-string-switcher
+          ])
+          ++ [oldtwitter yomitan ttvLolPro];
         settings = {
           "uBlock0@raymondhill.net" = {
             settings = {selectedFilterLists = ["ublock-filters" "ublock-badware" "ublock-privacy" "ublock-quick-fixes" "ublock-unbreak" "easylist" "easyprivacy" "urlhaus-1" "plowe-0" "fanboy-cookiemonster" "ublock-cookies-easylist" "adguard-cookies" "ublock-cookies-adguard" "fanboy-ai-suggestions" "easylist-chat" "easylist-newsletters" "easylist-notifications" "easylist-annoyances" "adguard-mobile-app-banners" "adguard-other-annoyances" "adguard-popup-overlays" "adguard-widgets" "ublock-annoyances"];};
@@ -451,9 +512,13 @@
       };
       settings = {
         "xpinstall.signatures.required" = false;
+        "mousewheel.min_line_scroll_amount" = 50;
         "general.autoScroll" = true;
       };
     };
   };
-  stylix.targets.zen-browser.profileNames = ["anisp"];
+  stylix.targets.zen-browser = {
+    enable = false;
+    profileNames = ["anisp"];
+  };
 }

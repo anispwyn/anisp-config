@@ -19,17 +19,17 @@
   pname = "osu-lazer-bin";
 
   lazer = {
-    version = "2026.711.0";
-    aarch64-darwin = "sha256-XwfNO38dDaUmu/3AEgRwV0VW6JrAUCxWD6Wt0Ew23Eo=";
-    x86_64-darwin = "sha256-9W8UwLh2ZWv2PRJ/FPvGddXIFxfYBOD/BvaCt1YIO4s=";
-    x86_64-linux = "sha256-KyA5UCvb9epk7jRtdG5wl0LzKc6/D2rkw5EJQxIaihw=";
+    version = "2026.804.2";
+    aarch64-darwin = "sha256-gyqZUMrdiTls+XwbhYQpd8Hi3mjaNgtPO5c1gfJxG4g=";
+    x86_64-darwin = "sha256-M8j0DPxwEojqWM+Nni23XJyvIW75/eFm83pgnUmB0yE=";
+    x86_64-linux = "sha256-0K/dyvIwrlBzcexYDCCilNknJdEZja1OTfAotP6MvjY=";
   };
 
   tachyon = {
-    version = "2026.716.0";
-    aarch64-darwin = "sha256-hIseH6OsGtUyvhsS0m7sJYpkJhL8Zw98y3r7ZDkTUMA=";
-    x86_64-darwin = "sha256-9//N2XUUmlsHUbmaw8CHeJe+A9JKxxWxwpfbSCnVRVc=";
-    x86_64-linux = "sha256-9oEWDvySL66vc2BRZi2IvZF7B2t54eFY/LfbL6AGgS4=";
+    version = "2026.819.0";
+    aarch64-darwin = "sha256-GpzDQrEMEDSgNgru18/aklYqFJhhYU5kk/3Pg1Sa/Sg=";
+    x86_64-darwin = "sha256-RDqxkMfqRkDoELpt62hRjW1qIwdn5hx4bF+Di9t+ovw=";
+    x86_64-linux = "sha256-RzkjZWW7EqAQuFkSPAVlMLAGEwStYcq+nedmkxDgEQI=";
   };
 
   useTachyon = releaseStream == "tachyon" && (lib.versionOlder lazer.version tachyon.version);

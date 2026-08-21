@@ -113,7 +113,7 @@
   };
   virtualisation = {
     waydroid = {
-      enable = true;
+      enable = false;
       package = pkgs.waydroid.override {
         withNftables = true;
       };

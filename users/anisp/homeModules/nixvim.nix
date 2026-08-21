@@ -76,25 +76,7 @@
         dark_variant = "main";
         dim_inactive_windows = false;
         styles = {
-          transparency = true;
-        };
-        highlight_groups = {
-          FloatBorder = {
-            fg = "muted";
-            bg = "NONE";
-          };
-          BlinkCmpMenuBorder = {
-            fg = "muted";
-            bg = "NONE";
-          };
-          BlinkCmpDocBorder = {
-            fg = "muted";
-            bg = "NONE";
-          };
-          BlinkCmpSignatureHelpBorder = {
-            fg = "muted";
-            bg = "NONE";
-          };
+          transparency = false;
         };
       };
     };
@@ -235,7 +217,7 @@
           filetypes = ["luau"];
           rootMarkers = [".git"];
         };
-        volar.enable = true;
+        vue_ls.enable = true;
         vtsls.enable = true;
         # ts_ls.enable = true;
         denols.enable = true;
@@ -280,7 +262,7 @@
       enable = true;
       settings = {
         format_on_save = {
-          timeout_ms = 500;
+          timeout_ms = 3000;
           lsp_fallback = true;
         };
         formatters_by_ft = {
@@ -288,7 +270,9 @@
           javascript = ["oxfmt"];
           typescriptreact = ["oxfmt"];
           javascriptreact = ["oxfmt"];
-          vue = ["oxfmt" "lsp" {stop_after_first = true;}];
+          vue = {
+            __raw = ''{ "oxfmt", "lsp", stop_after_first = true }'';
+          };
           lua = ["stylua"];
           luau = ["stylua"];
           go = ["gofumpt"];
@@ -324,21 +308,21 @@
           oxfmt = {
             command = {
               __raw = ''
-                function(dispatchers, config)
-                    local cmd = 'oxfmt'
-                    local local_cmd = (config or {}).root_dir and config.root_dir .. '/node_modules/.bin/oxfmt'
+                function(self, ctx)
+                    local root = require("conform.util").root_file({ "package.json", ".git" })(self, ctx)
+                    local local_cmd = root and root .. "/node_modules/.bin/oxfmt"
                     if local_cmd and vim.fn.executable(local_cmd) == 1 then
-                      cmd = local_cmd
+                      return local_cmd
                     end
-                    return cmd
+                    return "oxfmt"
                   end
               '';
             };
             args = ["--stdin-filepath" "$FILENAME"];
             cwd = {
-              __raw = ''require("conform.util").root_file({ ".oxfmtrc.json",".oxfmtrc.jsonc" })'';
+              __raw = ''require("conform.util").root_file({ ".oxfmtrc.json", ".oxfmtrc.jsonc", "package.json" })'';
             };
-            require_cwd = true;
+            require_cwd = false;
             stdin = true;
           };
         };
@@ -1621,30 +1605,12 @@
         key = "<leader>lf";
         action.__raw = ''
           function()
-            local file = vim.api.nvim_buf_get_name(0)
-            if file == "" then return end
-            vim.notify("Running nix fmt...", vim.log.levels.INFO)
-            vim.cmd("w") -- Save before formatting
-            vim.fn.jobstart({"nix", "fmt", file}, {
-              on_exit = function(id, code)
-                if code == 0 then
-                  vim.schedule(function()
-                    vim.cmd("checktime")
-                    vim.notify("nix fmt finished successfully", vim.log.levels.INFO)
-                  end)
-                else
-                  vim.schedule(function()
-                    vim.notify("nix fmt failed or not applicable, falling back to conform/lsp", vim.log.levels.WARN)
-                    require("conform").format({ async = true, lsp_fallback = true })
-                  end)
-                end
-              end
-            })
+            require("conform").format({ async = true, lsp_fallback = true })
           end
         '';
         options = {
           silent = true;
-          desc = "Format Document (nix fmt -> fallback)";
+          desc = "Format Document (Conform/LSP)";
         };
       }
       {
@@ -1652,27 +1618,12 @@
         key = "<leader>lF";
         action.__raw = ''
           function()
-            vim.notify("Running nix fmt on entire project...", vim.log.levels.INFO)
-            vim.cmd("wa") -- Save all buffers before formatting
-            vim.fn.jobstart({"nix", "fmt"}, {
-              on_exit = function(id, code)
-                if code == 0 then
-                  vim.schedule(function()
-                    vim.cmd("checktime")
-                    vim.notify("nix fmt (project) finished successfully", vim.log.levels.INFO)
-                  end)
-                else
-                  vim.schedule(function()
-                    vim.notify("nix fmt (project) failed", vim.log.levels.WARN)
-                  end)
-                end
-              end
-            })
+            require("conform").format({ async = true, lsp_fallback = true })
           end
         '';
         options = {
           silent = true;
-          desc = "Format Project (nix fmt)";
+          desc = "Format Document (Conform/LSP)";
         };
       }
 

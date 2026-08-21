@@ -129,12 +129,12 @@
       launcherLastMode = "all";
       launcherLastFileSearchType = "all";
       launcherLastQuery = "";
-      launcherQueryHistory = [
-        "nixpkgs"
-        "aaaa"
-        "disc"
-        "pear"
-      ];
+      # launcherQueryHistory = [
+      #   "nixpkgs"
+      #   "aaaa"
+      #   "disc"
+      #   "pear"
+      # ];
       appDrawerLastMode = "apps";
       niriOverviewLastMode = "apps";
       settingsSidebarExpandedIds = ",workspaces_widgets,dock_launcher,displays,applications,system,power_security,";
@@ -146,7 +146,7 @@
       autoClearDays = 7;
     };
     settings = let
-      opacity = 0.5;
+      opacity = 1;
     in {
       currentThemeName = "custom";
       currentThemeCategory = "custom";
@@ -160,7 +160,7 @@
       dockTransparency = lib.mkForce opacity;
       widgetBackgroundColor = "sch";
       widgetBackgroundCustomColor = "#6750A4";
-      widgetBackgroundCustomStrength = 0.5;
+      widgetBackgroundCustomStrength = opacity;
       widgetColorMode = "default";
       controlCenterTileColorMode = "primary";
       buttonColorMode = "primary";
@@ -206,7 +206,7 @@
       modalElevationEnabled = true;
       popoutElevationEnabled = true;
       barElevationEnabled = false;
-      blurEnabled = true;
+      blurEnabled = false;
       blurForegroundLayers = true;
       blurLayerOutlineOpacity = 0.12;
       blurBorderColor = "outline";

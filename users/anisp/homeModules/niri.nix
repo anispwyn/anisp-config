@@ -5,6 +5,38 @@
   ...
 }: {
   imports = [inputs.niri.homeModules.niri];
+
+  xdg.configFile.niri-sidebar = {
+    target = "niri-sidebar/config.toml";
+    source = pkgs.writers.writeTOML "config.toml" {
+      geometry = {
+        width = 800;
+        height = 530;
+        gap = 1;
+      };
+      margins = {
+        top = 50;
+        right = 10;
+        left = 10;
+        bottom = 10;
+      };
+      interaction = {
+        position = "right";
+        peek = 10;
+        focus_peek = 100;
+        sticky = true;
+      };
+      window_rule = [
+        {
+          title = "^Picture in picture$";
+          width = 800;
+          height = 450;
+          focus_peek = 510;
+          auto_add = true;
+        }
+      ];
+    };
+  };
   programs.niri = {
     package = pkgs.niri-unstable;
     enable = true;
@@ -22,7 +54,10 @@
       };
       spawn-at-startup = [
         {
-          argv = ["oniri" "-T"];
+          argv = ["oniri" "-T" "-R"];
+        }
+        {
+          argv = ["niri-sidebar" "listen"];
         }
       ];
 
@@ -68,6 +103,11 @@
       ];
 
       window-rules = [
+        {
+          matches = [{is-floating = true;}];
+          min-width = 100;
+          min-height = 100;
+        }
         {
           matches = [{title = ".env";}];
           block-out-from = "screencast";
@@ -126,6 +166,9 @@
               title = "^Picture-in-Picture$";
             }
             {app-id = "zoom";}
+            {
+              title = "^Picture in picture$"; # vivaldi
+            }
           ];
           open-floating = true;
         }
@@ -215,7 +258,11 @@
           action.spawn = "ghostty";
           hotkey-overlay.title = "Open Terminal";
         };
-        "Mod+B".action.spawn = "vivaldi";
+        "Mod+B".action.spawn = "zen-twilight";
+
+        "Mod+S".action.spawn = ["niri-sidebar" "toggle-window"];
+        "Mod+A".action.spawn = ["niri-sidebar" "toggle-visibility"];
+        "Mod+Z".action.spawn = ["niri-sidebar" "focus"];
 
         "Mod+Space" = {
           action.spawn = ["dms" "ipc" "call" "spotlight" "toggle"];

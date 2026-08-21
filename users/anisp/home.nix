@@ -26,9 +26,8 @@
         ryubing
         umu-launcher
         (tetrio-desktop.override {
-          electron = electron_42;
+          electron = electron_43;
         })
-        mindustry
         (waydroid-helper.overrideAttrs
           (finalAttrs: oldAttrs: {
             version = "0.2.9";
@@ -55,7 +54,7 @@
         gsettings-desktop-schemas
         obs-studio
         btop
-        hoppscotch
+        bruno
         playerctl
         rose-pine-cursor
         wl-clipboard
@@ -63,17 +62,15 @@
         file-roller
         _7zz-rar
         kdePackages.gwenview
-        grim
-        slurp
         openssl
         pear-desktop
-        blender
         oniri
+        niri-sidebar
         moltorino
-        readest
         nicotine-plus
         element-desktop
-        krita
+        figma-agent
+        feishin
 
         jetbrains.datagrip
 
@@ -84,6 +81,8 @@
       ]
       ++ [
         inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.antigravity-cli
+        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code
+        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-desktop
       ];
   };
 

@@ -5,10 +5,6 @@
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    cachyos-kernel = {
-      url = "github:xddxdd/nix-cachyos-kernel/release";
-      # do not override
-    };
     ghostty = {
       url = "github:ghostty-org/ghostty";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -27,10 +23,6 @@
     };
     nix-flatpak = {
       url = "github:gmodena/nix-flatpak";
-    };
-    hermes-agent = {
-      url = "github:NousResearch/hermes-agent";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
@@ -113,18 +105,7 @@
       withOverlays = with inputs; [
         niri.overlays.niri
         firefox-addons.overlays.default
-        cachyos-kernel.overlays.pinned
         ghostty.overlays.default
       ];
-      formatter = pkgs:
-        (inputs.treefmt-nix.lib.evalModule pkgs {
-          projectRootFile = "flake.nix";
-          programs.alejandra.enable = true;
-          settings.formatter.oxfmt = {
-            command = pkgs.lib.getExe pkgs.oxfmt;
-            options = ["--write"];
-            includes = ["*.yml" "*.yaml"];
-          };
-        }).config.build.wrapper;
     };
 }
