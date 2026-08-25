@@ -475,7 +475,7 @@
               timelineType = "algo";
               showtopictweets = true;
               darkmode = true;
-              savePreferredQuality = false;
+              savePreferredQuality = true;
               noBigFont = false;
               language = "en";
               displaySensitiveContent = false;
@@ -512,7 +512,7 @@
       };
       settings = {
         "xpinstall.signatures.required" = false;
-        "mousewheel.min_line_scroll_amount" = 50;
+        "mousewheel.min_line_scroll_amount" = 30;
         "general.autoScroll" = true;
       };
     };

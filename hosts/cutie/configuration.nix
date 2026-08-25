@@ -3,7 +3,17 @@
     ./nixosModules
   ];
   boot = {
-    kernelParams = ["idle=poll"];
+    kernelParams = [
+      "idle=poll"
+      "clearcpuid=514"
+      "vsyscall=emulate"
+    ];
+    kernelModules = ["ntsync"];
+    kernel = {
+      sysctl = {
+        "vm.max_map_count" = 2147483642;
+      };
+    };
     kernelPackages = pkgs.linuxPackages_testing;
   };
 
