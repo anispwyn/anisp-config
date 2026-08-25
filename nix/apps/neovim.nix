@@ -4,5 +4,5 @@
   ...
 }: {
   type = "app";
-  program = lib.getExe outputs.nixosConfigurations.cutie.config.home-manager.users."anisp".programs.nixvim.finalPackage;
+  program = lib.getExe outputs.nixosConfigurations.cutie.config.home-manager.users."anisp".programs.nixvim.build.package;
 }
