@@ -58,7 +58,6 @@
         Domains = "~.";
       };
     };
-    desktopManager.plasma6.enable = false;
     scx = {
       enable = false;
       scheduler = "scx_rustland";
@@ -143,4 +142,9 @@
   #     ];
   #   }
   # ];
+
+  my.desktop = {
+    enable = true;
+    presets = "niri";
+  };
 }

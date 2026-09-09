@@ -56,16 +56,10 @@
         btop
         bruno
         playerctl
-        rose-pine-cursor
         wl-clipboard
-        nautilus
-        file-roller
         _7zz-rar
-        kdePackages.gwenview
         openssl
         pear-desktop
-        oniri
-        niri-sidebar
         moltorino
         nicotine-plus
         element-desktop
@@ -77,7 +71,6 @@
         # keyring bs
         proton-authenticator
         seahorse
-        gcr # HACK https://github.com/nix-community/home-manager/issues/1454
       ]
       ++ [
         inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.antigravity-cli

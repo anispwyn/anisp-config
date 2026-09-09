@@ -15,7 +15,19 @@
     in {
       enable = true;
       enabledCustomApps = with spicePkgs.apps; [newReleases lyricsPlus betterLibrary];
-      enabledExtensions = with spicePkgs.extensions; [trashbin shuffle powerBar wikify songStats lastfm aiBandBlocker volumePercentage beautifulLyrics adblock betterGenres fullScreen];
+      enabledExtensions = with spicePkgs.extensions;
+        [trashbin shuffle powerBar wikify songStats lastfm aiBandBlocker volumePercentage beautifulLyrics adblock betterGenres fullScreen]
+        ++ [
+          {
+            src = pkgs.fetchFromGitHub {
+              owner = "janakchoudharydev";
+              repo = "spicetify-glide";
+              rev = "edd8e64f2d5009514eacc0195c9861aefb790dd0";
+              hash = "sha256-bGYTe7f9LPRrqvM9NMOB463hlSbj8kyejXs9AdvIP38=";
+            };
+            name = "glide.js";
+          }
+        ];
     };
     ncmpcpp = {
       enable = config.services.mpd.enable;

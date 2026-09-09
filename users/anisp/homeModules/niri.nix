@@ -6,37 +6,37 @@
 }: {
   imports = [inputs.niri.homeModules.niri];
 
-  xdg.configFile.niri-sidebar = {
-    target = "niri-sidebar/config.toml";
-    source = pkgs.writers.writeTOML "config.toml" {
-      geometry = {
-        width = 800;
-        height = 530;
-        gap = 1;
-      };
-      margins = {
-        top = 50;
-        right = 10;
-        left = 10;
-        bottom = 10;
-      };
-      interaction = {
-        position = "right";
-        peek = 10;
-        focus_peek = 100;
-        sticky = true;
-      };
-      window_rule = [
-        {
-          title = "^Picture in picture$";
-          width = 800;
-          height = 450;
-          focus_peek = 510;
-          auto_add = true;
-        }
-      ];
-    };
-  };
+  # xdg.configFile.niri-sidebar = {
+  #   target = "niri-sidebar/config.toml";
+  #   source = pkgs.writers.writeTOML "config.toml" {
+  #     geometry = {
+  #       width = 800;
+  #       height = 530;
+  #       gap = 1;
+  #     };
+  #     margins = {
+  #       top = 50;
+  #       right = 10;
+  #       left = 10;
+  #       bottom = 10;
+  #     };
+  #     interaction = {
+  #       position = "right";
+  #       peek = 10;
+  #       focus_peek = 100;
+  #       sticky = true;
+  #     };
+  #     window_rule = [
+  #       {
+  #         title = "^Picture in picture$";
+  #         width = 800;
+  #         height = 450;
+  #         focus_peek = 510;
+  #         auto_add = true;
+  #       }
+  #     ];
+  #   };
+  # };
   programs.niri = {
     package = pkgs.niri-unstable;
     enable = true;
@@ -46,7 +46,6 @@
       screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
       hotkey-overlay.skip-at-startup = true;
       clipboard.disable-primary = true;
-
       outputs = {
         "eDP-1" = {
           enable = true;
@@ -56,9 +55,9 @@
         {
           argv = ["oniri" "-T" "-R"];
         }
-        {
-          argv = ["niri-sidebar" "listen"];
-        }
+        # {
+        #   argv = ["niri-sidebar" "listen"];
+        # }
       ];
 
       environment = {
@@ -101,13 +100,12 @@
           block-out-from = "screencast";
         }
       ];
-
       window-rules = [
-        {
-          matches = [{is-floating = true;}];
-          min-width = 100;
-          min-height = 100;
-        }
+        # {
+        #   matches = [{is-floating = true;}];
+        #   min-width = 100;
+        #   min-height = 100;
+        # }
         {
           matches = [{title = ".env";}];
           block-out-from = "screencast";
@@ -232,6 +230,7 @@
           epsilon = 0.0001;
         };
       };
+
       input = {
         focus-follows-mouse.enable = true;
         touchpad = {
@@ -255,14 +254,14 @@
 
       binds = {
         "Mod+T" = {
-          action.spawn = "ghostty";
+          action.spawn = ["ghostty" "+new-window"];
           hotkey-overlay.title = "Open Terminal";
         };
-        "Mod+B".action.spawn = "zen-twilight";
+        "Mod+B".action.spawn = "vivaldi";
 
-        "Mod+S".action.spawn = ["niri-sidebar" "toggle-window"];
-        "Mod+A".action.spawn = ["niri-sidebar" "toggle-visibility"];
-        "Mod+Z".action.spawn = ["niri-sidebar" "focus"];
+        # "Mod+S".action.spawn = ["niri-sidebar" "toggle-window"];
+        # "Mod+A".action.spawn = ["niri-sidebar" "toggle-visibility"];
+        # "Mod+Z".action.spawn = ["niri-sidebar" "focus"];
 
         "Mod+Space" = {
           action.spawn = ["dms" "ipc" "call" "spotlight" "toggle"];

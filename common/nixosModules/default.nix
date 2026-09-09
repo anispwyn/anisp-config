@@ -4,5 +4,6 @@
     ./sops.nix
     ./home-manager.nix
     ./lanzaboote.nix
+    ./desktop.nix
   ];
 }

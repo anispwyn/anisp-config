@@ -1,10 +1,6 @@
-{inputs, ...}: let
-  system = "x86_64-linux";
-in {
-  inherit system;
-
+{inputs, ...}: {
   specialArgs = {
-    inherit inputs system;
+    inherit inputs;
   };
 
   modules = [

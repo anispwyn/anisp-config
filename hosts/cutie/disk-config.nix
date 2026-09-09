@@ -53,7 +53,7 @@
             };
             root = {
               priority = 3;
-              size = "60%";
+              size = "100%";
               content = {
                 type = "btrfs";
                 extraArgs = ["-f"];

@@ -25,9 +25,7 @@
       backspace = "indent,eol,start,nostop";
       breakindent = true;
       cmdheight = 0;
-      completeopt = "menu,menuone,noselect";
       confirm = true;
-      copyindent = true;
       cursorline = true;
       diffopt = "internal,filler,closeoff,algorithm:histogram,linematch:60";
       expandtab = true;
@@ -38,8 +36,6 @@
       linebreak = true;
       mouse = "a";
       number = true;
-      preserveindent = true;
-      pumheight = 10;
       relativenumber = true;
       shiftround = true;
       shiftwidth = 2;
@@ -91,10 +87,13 @@
       enable = true;
       settings = {
         animate.enabled = true;
+        dim.enable = true;
         bigfile.enabled = true;
-        gitbrowse.enabled = true;
+        bufdelete.enabled = true;
+        gitbrowse.enabled = false;
         indent.enabled = true;
-        notifier.enabled = false;
+        notifier.enabled = true;
+        picker.enabled = false;
         quickfile.enabled = true;
         rename.enabled = true;
         scope.enabled = true;
@@ -103,7 +102,7 @@
         terminal.enabled = true;
         toggle.enabled = true;
         words.enabled = true;
-        zen.enabled = true;
+        zen.enabled = false;
       };
     };
 
@@ -190,9 +189,7 @@
     plugins.web-devicons.enable = true;
 
     plugins.todo-comments.enable = true;
-    plugins.fidget.enable = true;
     plugins.treesitter-context.enable = true;
-    plugins.trouble.enable = true;
 
     diagnostic = {
       settings = {
@@ -262,8 +259,14 @@
       enable = true;
       settings = {
         format_on_save = {
-          timeout_ms = 3000;
-          lsp_fallback = true;
+          __raw = ''
+            function(bufnr)
+              if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+                return
+              end
+              return { timeout_ms = 3000, lsp_fallback = true }
+            end
+          '';
         };
         formatters_by_ft = {
           typescript = ["oxfmt"];
@@ -337,6 +340,13 @@
     plugins.gitsigns = {
       enable = true;
       settings = {
+        current_line_blame = true;
+        current_line_blame_opts = {
+          delay = 200;
+          virt_text = true;
+          virt_text_pos = "eol";
+        };
+        current_line_blame_formatter = "   <author>, <author_time:%Y-%m-%d> • <summary>";
         on_attach = {
           __raw = ''
             function(bufnr)
@@ -347,36 +357,19 @@
                 vim.keymap.set(mode, l, r, opts)
               end
 
-              -- Navigation
               map('n', ']c', function()
                 if vim.wo.diff then return ']c' end
                 vim.schedule(function() gs.next_hunk() end)
                 return '<Ignore>'
-              end, {expr = true, desc = "Next Hunk"})
+              end, {expr = true, desc = "Next Change"})
 
               map('n', '[c', function()
                 if vim.wo.diff then return '[c' end
                 vim.schedule(function() gs.prev_hunk() end)
                 return '<Ignore>'
-              end, {expr = true, desc = "Prev Hunk"})
+              end, {expr = true, desc = "Prev Change"})
 
-              -- Actions
-              map('n', '<leader>hs', gs.stage_hunk, {desc = "Stage Hunk"})
-              map('n', '<leader>hr', gs.reset_hunk, {desc = "Reset Hunk"})
-              map('v', '<leader>hs', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end, {desc = "Stage Hunk"})
-              map('v', '<leader>hr', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end, {desc = "Reset Hunk"})
-              map('n', '<leader>hS', gs.stage_buffer, {desc = "Stage Buffer"})
-              map('n', '<leader>hu', gs.undo_stage_hunk, {desc = "Undo Stage Hunk"})
-              map('n', '<leader>hR', gs.reset_buffer, {desc = "Reset Buffer"})
-              map('n', '<leader>hP', gs.preview_hunk, {desc = "Preview Hunk"})
-              map('n', '<leader>hb', function() gs.blame_line{full=true} end, {desc = "Blame Line"})
-              map('n', '<leader>tb', gs.toggle_current_line_blame, {desc = "Toggle Blame"})
-              map('n', '<leader>hd', '<cmd>DiffviewOpen -- %<CR>', {desc = "Diff This"})
-              map('n', '<leader>hD', '<cmd>DiffviewOpen<CR>', {desc = "Diff Project"})
-              map('n', '<leader>td', gs.toggle_deleted, {desc = "Toggle Deleted"})
-
-              -- Text object
-              map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>', {desc = "Select Hunk"})
+              map('n', '<leader>hb', function() gs.blame_line({ full = true }) end, { desc = "Blame Line (Popup)" })
             end
           '';
         };
@@ -739,10 +732,8 @@
     ];
 
     extraConfigLua = ''
-      -- 1. Colorscheme & Neovide Scale Factor Configuration
       vim.cmd("colorscheme rose-pine")
 
-      -- Change scale factor for Neovide (gui client) with Ctrl+Equal / Ctrl+Minus
       local change_scale_factor = function(delta)
         vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
       end
@@ -753,22 +744,17 @@
         change_scale_factor(1/1.25)
       end)
 
-      -- 2. Neovim 0.12+ Experimental UI2 Layer Configuration
-      -- Safely enable native floating command-line and non-interrupting message grid
       pcall(function()
         require('vim._core.ui2').enable({
           msg = { targets = "msg" }
         })
       end)
 
-      -- Gopher.nvim Setup (Go development utility)
       pcall(function()
         require('gopher').setup({})
       end)
 
-      -- 3. Custom LSP: oxfmt (Oxc Formatter)
       vim.lsp.config('oxfmt', {
-        -- Detect and execute local node_modules/.bin/oxfmt if present, falling back to global
         cmd = function(dispatchers, config)
           local cmd = 'oxfmt'
           local local_cmd = (config or {}).root_dir and config.root_dir .. '/node_modules/.bin/oxfmt'
@@ -783,7 +769,6 @@
           "handlebars", "css", "scss", "less", "graphql", "markdown"
         },
         workspace_required = true,
-        -- Determine root path by searching up for .oxfmtrc config files or package.json configured with oxfmt
         root_dir = function(bufnr, on_dir)
           local filename = vim.api.nvim_buf_get_name(bufnr)
           local root_markers = { '.oxfmtrc.json', '.oxfmtrc.jsonc' }
@@ -809,9 +794,7 @@
       })
       vim.lsp.enable('oxfmt')
 
-      -- 4. Custom LSP: oxlint (Oxc Linter)
       vim.lsp.config('oxlint', {
-        -- Detect and execute local node_modules/.bin/oxlint if present
         cmd = function(dispatchers, config)
           local cmd = 'oxlint'
           local local_cmd = (config or {}).root_dir and config.root_dir .. '/node_modules/.bin/oxlint'
@@ -826,7 +809,6 @@
         },
         root_markers = { ".oxlintrc.json", "oxlint.config.ts" },
         workspace_required = true,
-        -- Register user command to apply all linter automatic fixes
         on_attach = function(client, bufnr)
           vim.api.nvim_buf_create_user_command(bufnr, 'LspOxlintFixAll', function()
             client:exec_cmd({
@@ -838,7 +820,6 @@
             desc = 'Apply Oxlint automatic fixes',
           })
         end,
-        -- Enable type-aware linting dynamically if typescript is present in the configuration file
         before_attach = function(init_params, config)
           local settings = config.settings or {}
 
@@ -866,9 +847,7 @@
       })
       vim.lsp.enable('oxlint')
 
-      -- 5. LSP Setup: eslint (ESLint Language Server)
       vim.lsp.config('eslint', {
-        -- Detect and execute local node_modules/.bin/eslint if present
         cmd = function(dispatchers, config)
           local cmd = 'vscode-eslint-language-server'
           if (config or {}).root_dir then
@@ -884,7 +863,6 @@
           "vue", "svelte", "astro", "htmlangular"
         },
         workspace_required = true,
-        -- Register buffer-local command to run ESLint automatic fixes
         on_attach = function(client, bufnr)
           vim.api.nvim_buf_create_user_command(bufnr, 'LspEslintFixAll', function()
             client:request_sync('workspace/executeCommand', {
@@ -900,7 +878,6 @@
             desc = 'Fix all ESLint auto-fixable problems',
           })
         end,
-        -- Resolve project root directory, excluding Deno environments, and verifying config existence
         root_dir = function(bufnr, on_dir)
           local filename = vim.api.nvim_buf_get_name(bufnr)
           if filename == "" then return end
@@ -983,7 +960,6 @@
             },
           },
         },
-        -- Map root directory to VSCode-compatible workspaceFolder schema & support Yarn PnP
         before_init = function(_, config)
           local root_dir = config.root_dir
           if root_dir then
@@ -1000,7 +976,6 @@
             end
           end
         end,
-        -- Register VSCode-compatible LSP custom event handlers
         handlers = {
           ["eslint/openDoc"] = function(_, result)
             if result then
@@ -1012,7 +987,7 @@
             if not result then
               return
             end
-            return 4 -- Auto-approved
+            return 4
           end,
           ["eslint/probeFailed"] = function()
             vim.notify('[vim.lsp.config] ESLint probe failed.', vim.log.levels.WARN)
@@ -1026,7 +1001,23 @@
       })
       vim.lsp.enable('eslint')
 
-      -- Neo-tree Title Restore Configuration
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("lsp_disable_non_file_uris", { clear = true }),
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and (client.name == "nixd" or client.name == "clangd") then
+            local bufname = vim.api.nvim_buf_get_name(args.buf)
+            if bufname:match("^%a+://") and not bufname:match("^file://") then
+              vim.schedule(function()
+                if vim.api.nvim_buf_is_valid(args.buf) then
+                  vim.lsp.buf_detach_client(args.buf, args.data.client_id)
+                end
+              end)
+            end
+          end
+        end,
+      })
+
       vim.g.neotree_title_restore_enabled = true
       vim.g.neotree_prev_title = nil
 
@@ -1039,7 +1030,6 @@
             vim.opt.titlestring = ""
           end
         else
-          -- Save title for regular file buffers only
           if vim.bo.buftype == "" then
             local filename = vim.fn.expand("%:t")
             if filename == "" then
@@ -1269,7 +1259,7 @@
       {
         mode = "n";
         key = "<leader>bc";
-        action.__raw = "function() vim.cmd('%bd|e#|bd#') end";
+        action.__raw = "function() Snacks.bufdelete.other() end";
         options = {
           silent = true;
           desc = "Close all buffers except the current";
@@ -1278,7 +1268,7 @@
       {
         mode = "n";
         key = "<leader>bC";
-        action = "<cmd>%bd<CR>";
+        action.__raw = "function() Snacks.bufdelete.all() end";
         options = {
           silent = true;
           desc = "Close all buffers";
@@ -1287,16 +1277,16 @@
       {
         mode = "n";
         key = "<leader>bd";
-        action = "<cmd>FzfLua buffers<CR>";
+        action.__raw = "function() Snacks.bufdelete() end";
         options = {
           silent = true;
-          desc = "Delete a buffer tab with interactive picker";
+          desc = "Close current buffer";
         };
       }
       {
         mode = "n";
         key = "<leader>bl";
-        action.__raw = "function() vim.cmd('BufferLineCloseRight') end";
+        action.__raw = "function() vim.cmd('BufferLineCloseLeft') end";
         options = {
           silent = true;
           desc = "Close all buffers to the left of the current";
@@ -1314,7 +1304,7 @@
       {
         mode = "n";
         key = "<leader>br";
-        action.__raw = "function() vim.cmd('BufferLineCloseLeft') end";
+        action.__raw = "function() vim.cmd('BufferLineCloseRight') end";
         options = {
           silent = true;
           desc = "Close all buffers to the right of the current";
@@ -1332,7 +1322,7 @@
       {
         mode = "n";
         key = "<leader>bsi";
-        action.__raw = "function() vim.cmd('BufferLineSortByRelativeDirectory') end";
+        action.__raw = "function() vim.cmd('BufferLineSortById') end";
         options = {
           silent = true;
           desc = "Sort buffers by buffer number";
@@ -1368,7 +1358,7 @@
       {
         mode = "n";
         key = "<leader>b\\";
-        action = "<cmd>FzfLua buffers<CR>";
+        action.__raw = "function() vim.cmd('split'); require('fzf-lua').buffers() end";
         options = {
           silent = true;
           desc = "Open a buffer tab in a new horizontal split with interactive picker";
@@ -1377,7 +1367,7 @@
       {
         mode = "n";
         key = "<leader>b|";
-        action = "<cmd>FzfLua buffers<CR>";
+        action.__raw = "function() vim.cmd('vsplit'); require('fzf-lua').buffers() end";
         options = {
           silent = true;
           desc = "Open a buffer tab in a new vertical split with interactive picker";
@@ -1419,50 +1409,32 @@
           desc = "Toggle comment of current line";
         };
       }
-      {
-        mode = "n";
-        key = "gco";
-        action = "o<Esc>gcc";
-        options = {
-          silent = true;
-          desc = "Insert comment below current line";
-        };
-      }
-      {
-        mode = "n";
-        key = "gcO";
-        action = "O<Esc>gcc";
-        options = {
-          silent = true;
-          desc = "Insert comment above current line";
-        };
-      }
 
       {
         mode = "n";
         key = "<leader>xx";
-        action = "<cmd>Trouble diagnostics toggle<CR>";
+        action = "<cmd>FzfLua diagnostics_workspace<CR>";
         options = {
           silent = true;
-          desc = "Trouble diagnostics (Workspace)";
+          desc = "Workspace Diagnostics [FzfLua]";
         };
       }
       {
         mode = "n";
         key = "<leader>xX";
-        action = "<cmd>Trouble diagnostics toggle filter.buf=0<CR>";
+        action = "<cmd>FzfLua diagnostics_document<CR>";
         options = {
           silent = true;
-          desc = "Trouble diagnostics (Buffer)";
+          desc = "Buffer Diagnostics [FzfLua]";
         };
       }
       {
         mode = "n";
         key = "<leader>xq";
-        action = "<cmd>Trouble qflist toggle<CR>";
+        action = "<cmd>FzfLua quickfix<CR>";
         options = {
           silent = true;
-          desc = "Trouble Quickfix";
+          desc = "Quickfix List [FzfLua]";
         };
       }
       {
@@ -1504,10 +1476,10 @@
       {
         mode = "n";
         key = "<leader>xl";
-        action = "<cmd>Trouble loclist toggle<CR>";
+        action = "<cmd>FzfLua loclist<CR>";
         options = {
           silent = true;
-          desc = "Trouble Loclist";
+          desc = "Location List [FzfLua]";
         };
       }
       {
@@ -1584,15 +1556,6 @@
       }
       {
         mode = "n";
-        key = "<leader>li";
-        action = "<cmd>LspInfo<CR>";
-        options = {
-          silent = true;
-          desc = "LSP Info";
-        };
-      }
-      {
-        mode = "n";
         key = "K";
         action = "<cmd>lua vim.lsp.buf.hover({ border = 'single' })<CR>";
         options = {
@@ -1613,50 +1576,10 @@
           desc = "Format Document (Conform/LSP)";
         };
       }
-      {
-        mode = "n";
-        key = "<leader>lF";
-        action.__raw = ''
-          function()
-            require("conform").format({ async = true, lsp_fallback = true })
-          end
-        '';
-        options = {
-          silent = true;
-          desc = "Format Document (Conform/LSP)";
-        };
-      }
 
       {
         mode = "n";
-        key = "<leader>lS";
-        action = "<cmd>FzfLua lsp_document_symbols<CR>";
-        options = {
-          silent = true;
-          desc = "Document Symbols";
-        };
-      }
-      {
-        mode = "n";
-        key = "gl";
-        action = "<cmd>lua vim.diagnostic.open_float()<CR>";
-        options = {
-          silent = true;
-          desc = "Line Diagnostics";
-        };
-      }
-      {
-        mode = "n";
         key = "<leader>ld";
-        action = "<cmd>lua vim.diagnostic.open_float()<CR>";
-        options = {
-          silent = true;
-          desc = "Line Diagnostics";
-        };
-      }
-      {
-        mode = "n";
-        key = "<C-W>d";
         action = "<cmd>lua vim.diagnostic.open_float()<CR>";
         options = {
           silent = true;
@@ -1675,15 +1598,6 @@
       {
         mode = "n";
         key = "<leader>la";
-        action = "<cmd>lua vim.lsp.buf.code_action()<CR>";
-        options = {
-          silent = true;
-          desc = "Code Actions";
-        };
-      }
-      {
-        mode = "n";
-        key = "gra";
         action = "<cmd>lua vim.lsp.buf.code_action()<CR>";
         options = {
           silent = true;
@@ -1711,15 +1625,6 @@
       {
         mode = "n";
         key = "<leader>lr";
-        action = "<cmd>lua vim.lsp.buf.rename()<CR>";
-        options = {
-          silent = true;
-          desc = "Rename";
-        };
-      }
-      {
-        mode = "n";
-        key = "grn";
         action = "<cmd>lua vim.lsp.buf.rename()<CR>";
         options = {
           silent = true;
@@ -1818,15 +1723,6 @@
       }
       {
         mode = "n";
-        key = "gO";
-        action = "<cmd>FzfLua lsp_document_symbols<CR>";
-        options = {
-          silent = true;
-          desc = "Document Symbol";
-        };
-      }
-      {
-        mode = "n";
         key = "gD";
         action = "<cmd>lua vim.lsp.buf.declaration()<CR>";
         options = {
@@ -1859,15 +1755,6 @@
         options = {
           silent = true;
           desc = "Implementation";
-        };
-      }
-      {
-        mode = "n";
-        key = "grr";
-        action = "<cmd>lua vim.lsp.buf.references()<CR>";
-        options = {
-          silent = true;
-          desc = "References";
         };
       }
       {
@@ -2097,15 +1984,6 @@
       }
       {
         mode = "n";
-        key = "<leader>dh";
-        action = "<cmd>lua require('dapui').eval()<CR>";
-        options = {
-          silent = true;
-          desc = "Debugger Hover";
-        };
-      }
-      {
-        mode = "n";
         key = "<leader>f<CR>";
         action = "<cmd>FzfLua resume<CR>";
         options = {
@@ -2286,6 +2164,15 @@
       }
       {
         mode = "n";
+        key = "<leader>gg";
+        action = "<cmd>Neogit<CR>";
+        options = {
+          silent = true;
+          desc = "Open Neogit";
+        };
+      }
+      {
+        mode = "n";
         key = "<leader>gs";
         action = "<cmd>Neogit<CR>";
         options = {
@@ -2318,15 +2205,6 @@
         options = {
           silent = true;
           desc = "Git Commits (current file)";
-        };
-      }
-      {
-        mode = "n";
-        key = "<leader>go";
-        action.__raw = "function() Snacks.gitbrowse() end";
-        options = {
-          silent = true;
-          desc = "Git browse (open)";
         };
       }
       {
@@ -2376,33 +2254,6 @@
       }
       {
         mode = "n";
-        key = "<leader>hd";
-        action = "<cmd>DiffviewOpen -- %<CR>";
-        options = {
-          silent = true;
-          desc = "Diff Current File [Diffview]";
-        };
-      }
-      {
-        mode = "n";
-        key = "<leader>hD";
-        action = "<cmd>DiffviewOpen<CR>";
-        options = {
-          silent = true;
-          desc = "Diff Project [Diffview]";
-        };
-      }
-      {
-        mode = "n";
-        key = "<leader>hq";
-        action = "<cmd>DiffviewClose<CR>";
-        options = {
-          silent = true;
-          desc = "Close Diffview";
-        };
-      }
-      {
-        mode = "n";
         key = "<leader>tf";
         action.__raw = "function() Snacks.terminal.toggle(nil, {win={position='float'}}) end";
         options = {
@@ -2429,53 +2280,8 @@
         };
       }
       {
-        mode = "n";
-        key = "<leader>tl";
-        action = "<cmd>Neogit<CR>";
-        options = {
-          silent = true;
-          desc = "Open Toggle Neogit";
-        };
-      }
-      {
-        mode = "n";
-        key = "<leader>tn";
-        action.__raw = "function() Snacks.terminal.toggle('node') end";
-        options = {
-          silent = true;
-          desc = "Open Toggle node";
-        };
-      }
-      {
-        mode = "n";
-        key = "<leader>tp";
-        action.__raw = "function() Snacks.terminal.toggle('python') end";
-        options = {
-          silent = true;
-          desc = "Open Toggle Python";
-        };
-      }
-      {
-        mode = "n";
-        key = "<leader>tt";
-        action.__raw = "function() Snacks.terminal.toggle() end";
-        options = {
-          silent = true;
-          desc = "Open Toggle btm";
-        };
-      }
-      {
         mode = ["n" "t"];
         key = "<F7>";
-        action.__raw = "function() Snacks.terminal.toggle() end";
-        options = {
-          silent = true;
-          desc = "Toggle Current Terminal";
-        };
-      }
-      {
-        mode = ["n" "t"];
-        key = "<C-'>";
         action.__raw = "function() Snacks.terminal.toggle() end";
         options = {
           silent = true;
@@ -2494,10 +2300,10 @@
       {
         mode = "n";
         key = "<leader>ub";
-        action.__raw = "function() Snacks.toggle.option('background', { off = 'light', on = 'dark' }):toggle() end";
+        action = "<cmd>Gitsigns toggle_current_line_blame<CR>";
         options = {
           silent = true;
-          desc = "Toggle light/dark background";
+          desc = "Toggle Git Blame (Line)";
         };
       }
       {
@@ -2512,7 +2318,7 @@
       {
         mode = "n";
         key = "<leader>uf";
-        action.__raw = "function() Snacks.toggle.new({ name = 'Auto Format (Buffer)', get = function() return not vim.b.disableFormatSave end, set = function(state) vim.b.disableFormatSave = not state end }):toggle() end";
+        action.__raw = "function() Snacks.toggle.new({ name = 'Auto Format (Buffer)', get = function() return not vim.b.disable_autoformat end, set = function(state) vim.b.disable_autoformat = not state end }):toggle() end";
         options = {
           silent = true;
           desc = "Toggle autoformat (buffer)";
@@ -2521,7 +2327,7 @@
       {
         mode = "n";
         key = "<leader>uF";
-        action.__raw = "function() Snacks.toggle.new({ name = 'Auto Format (Global)', get = function() return vim.g.formatsave end, set = function(state) vim.g.formatsave = state end }):toggle() end";
+        action.__raw = "function() Snacks.toggle.new({ name = 'Auto Format (Global)', get = function() return not vim.g.disable_autoformat end, set = function(state) vim.g.disable_autoformat = not state end }):toggle() end";
         options = {
           silent = true;
           desc = "Toggle autoformat (global)";
@@ -2592,15 +2398,6 @@
       }
       {
         mode = "n";
-        key = "<leader>up";
-        action.__raw = "function() Snacks.toggle.option('paste'):toggle() end";
-        options = {
-          silent = true;
-          desc = "Toggle paste mode";
-        };
-      }
-      {
-        mode = "n";
         key = "<leader>us";
         action.__raw = "function() Snacks.toggle.option('spell'):toggle() end";
         options = {
@@ -2653,16 +2450,6 @@
           desc = "Toggle diagnostics virtual lines";
         };
       }
-
-      {
-        mode = "n";
-        key = "<leader>uu";
-        action.__raw = "function() vim.g.url_highlight = not vim.g.url_highlight end";
-        options = {
-          silent = true;
-          desc = "Toggle URL highlighting";
-        };
-      }
       {
         mode = "n";
         key = "<leader>uz";
@@ -2672,15 +2459,15 @@
           desc = "Toggle color highlighting";
         };
       }
-      {
-        mode = "n";
-        key = "<leader>uZ";
-        action.__raw = "function() Snacks.toggle.zen():toggle() end";
-        options = {
-          silent = true;
-          desc = "Toggle Zen mode";
-        };
-      }
+      # {
+      #   mode = "n";
+      #   key = "<leader>uZ";
+      #   action.__raw = "function() Snacks.toggle.zen():toggle() end";
+      #   options = {
+      #     silent = true;
+      #     desc = "Toggle Zen mode";
+      #   };
+      # }
       {
         mode = ["n" "o" "x"];
         key = "s";

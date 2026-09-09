@@ -46,9 +46,6 @@
   };
   security = {
     rtkit.enable = true;
-    polkit = {
-      enable = true;
-    };
   };
   services = {
     nohang.enable = true;
@@ -72,8 +69,6 @@
   xdg = {
     portal = {
       enable = true;
-      configPackages = [pkgs.gnome-session];
-      extraPortals = [pkgs.xdg-desktop-portal-gtk];
     };
   };
 

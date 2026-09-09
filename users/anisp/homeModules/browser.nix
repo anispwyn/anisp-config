@@ -475,7 +475,7 @@
               timelineType = "algo";
               showtopictweets = true;
               darkmode = true;
-              savePreferredQuality = true;
+              savePreferredQuality = false;
               noBigFont = false;
               language = "en";
               displaySensitiveContent = false;
