@@ -1,6 +1,7 @@
 {
   imports = [
     ./browser.nix
+    ./desktop.nix
     ./git.nix
     ./discord.nix
     ./nixvim.nix

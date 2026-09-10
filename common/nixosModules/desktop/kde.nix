@@ -15,5 +15,26 @@ in {
       enable = lib.mkDefault true;
       wayland.enable = lib.mkDefault true;
     };
+
+    services.gnome.gnome-keyring.enable = true;
+
+    security.pam.services = {
+      login.kwallet.enable = lib.mkForce false;
+      kde.kwallet.enable = lib.mkForce false;
+      kde.enableGnomeKeyring = true;
+    };
+
+    xdg.portal.config.kde = {
+      default = ["kde"];
+      "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
+    };
+
+    environment.etc."xdg/kwalletrc".text = ''
+      [Wallet]
+      Enabled=false
+
+      [org.freedesktop.secrets]
+      apiEnabled=false
+    '';
   };
 }

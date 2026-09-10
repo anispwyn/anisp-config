@@ -9,7 +9,11 @@
   programs.vivaldi = {
     package = pkgs.vivaldi.override {
       enableWidevine = true;
+      commandLineArgs = "--password-store=gnome-libsecret";
     };
+    commandLineArgs = [
+      "--password-store=gnome-libsecret"
+    ];
     enable = true;
     extensions = [
       {id = "lppmekppnliemjclknbagdhoocikieoi";} # 7tv

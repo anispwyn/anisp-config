@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   cfg = config.my.desktop;
@@ -8,11 +9,12 @@
     if cfg.preset != null
     then cfg.preset
     else cfg.presets;
+  isNiri = cfg.enable && presetName == "niri";
 in {
   imports = [
-    ./desktop/niri.nix
-    ./desktop/kde.nix
-    ./desktop/gnome.nix
+    ./dms.nix
+    ./niri.nix
+    ./plasma.nix
   ];
 
   options.my.desktop = {
@@ -29,14 +31,14 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    home-manager.sharedModules = [
-      {
-        my.desktop = {
-          enable = lib.mkDefault cfg.enable;
-          presets = lib.mkDefault presetName;
-        };
-      }
+  config = lib.mkIf isNiri {
+    home.packages = with pkgs; [
+      nautilus
+      file-roller
+      kdePackages.gwenview
+      rose-pine-cursor
+      oniri
+      gcr_4 # HACK https://github.com/nix-community/home-manager/issues/1454
     ];
   };
 }

@@ -1,14 +1,24 @@
 {
+  config,
   inputs,
   lib,
   ...
-}: {
+}: let
+  cfg = config.my.desktop;
+  presetName =
+    if cfg.preset != null
+    then cfg.preset
+    else cfg.presets;
+  isNiri = cfg.enable && presetName == "niri";
+in {
   imports = [
     inputs.dms.homeModules.dank-material-shell
     inputs.dms.homeModules.niri
     inputs.dms-plugin-registry.homeModules.default
   ];
-  programs.dank-material-shell = {
+
+  config = lib.mkIf isNiri {
+    programs.dank-material-shell = {
     enable = true;
     managePluginSettings = true;
     plugins = {
@@ -267,4 +277,5 @@
       configVersion = 16;
     };
   };
+};
 }

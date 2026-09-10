@@ -1,9 +1,17 @@
 {
+  config,
   lib,
   inputs,
   pkgs,
   ...
-}: {
+}: let
+  cfg = config.my.desktop;
+  presetName =
+    if cfg.preset != null
+    then cfg.preset
+    else cfg.presets;
+  isNiri = cfg.enable && presetName == "niri";
+in {
   imports = [inputs.niri.homeModules.niri];
 
   # xdg.configFile.niri-sidebar = {
@@ -37,7 +45,8 @@
   #     ];
   #   };
   # };
-  programs.niri = {
+  config = lib.mkIf isNiri {
+    programs.niri = {
     package = pkgs.niri-unstable;
     enable = true;
     settings = {
@@ -489,4 +498,5 @@
       };
     };
   };
+};
 }
