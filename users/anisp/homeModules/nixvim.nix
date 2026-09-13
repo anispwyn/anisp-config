@@ -669,6 +669,10 @@
             group = "Git";
           }
           {
+            __unkeyed-1 = "<leader>j";
+            group = "Jujutsu";
+          }
+          {
             __unkeyed-1 = "<leader>l";
             group = "LSP";
           }
@@ -729,6 +733,16 @@
         };
         doCheck = false;
       })
+      (pkgs.vimUtils.buildVimPlugin {
+        name = "neojj";
+        src = pkgs.fetchFromGitHub {
+          owner = "NicholasZolton";
+          repo = "neojj";
+          rev = "v1.6.2";
+          hash = "sha256-qAQW/KnygYjUiDVO0CATw5Fttj6RQofExwVUNEfQqTs=";
+        };
+        doCheck = false;
+      })
     ];
 
     extraConfigLua = ''
@@ -752,6 +766,10 @@
 
       pcall(function()
         require('gopher').setup({})
+      end)
+
+      pcall(function()
+        require('neojj').setup({})
       end)
 
       vim.lsp.config('oxfmt', {
@@ -2160,6 +2178,15 @@
         options = {
           silent = true;
           desc = "Live Grep (include hidden files)";
+        };
+      }
+      {
+        mode = "n";
+        key = "<leader>jj";
+        action = "<cmd>Neojj<CR>";
+        options = {
+          silent = true;
+          desc = "Open Neojj";
         };
       }
       {

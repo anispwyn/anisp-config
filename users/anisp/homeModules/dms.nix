@@ -78,6 +78,7 @@ in {
       showBattery = false;
       showBatteryPercent = false;
       mediaUseAlbumArtAccent = true;
+      spotlightBarShowModeChips = true;
       useAutoLocation = true;
       weatherEnabled = false;
       dashTabs = [
@@ -147,10 +148,6 @@ in {
       lockScreenNotificationMode = 2;
       notificationCompactMode = true;
       notificationShowTimeoutBar = true;
-      dankIslandFloating = true;
-      dankIslandNotificationExpand = true;
-      dankIslandHomeStatusSlot = "left";
-      dankIslandHomeCompactTight = true;
       osdMediaPlaybackEnabled = true;
       osdPowerProfileEnabled = true;
       barConfigs = [
@@ -274,7 +271,7 @@ in {
         };
       };
       clipboardEnterToPaste = true;
-      configVersion = 16;
+      configVersion = 18;
     };
   };
 };

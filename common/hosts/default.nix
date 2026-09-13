@@ -132,20 +132,18 @@
 
   environment = {
     sessionVariables.NIXOS_OZONE_WL = 1;
-    pathsToLink = ["/share/applications" "/share/xdg-desktop-portal"];
+    pathsToLink = [
+      "/share/applications"
+      "/share/xdg-desktop-portal"
+      "/share/color-schemes"
+      "/share/plasma"
+    ];
     variables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
     };
     systemPackages = with pkgs; ([
-        gnupg1
-        xdg-utils
-        fzf
-        bat
-        jq
-        ripgrep
         git
-        wget
       ]
       ++ lib.optionals config.virtualisation.libvirtd.enable [pkgs.dnsmasq]);
   };

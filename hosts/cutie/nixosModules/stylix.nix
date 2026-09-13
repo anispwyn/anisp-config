@@ -27,6 +27,12 @@
     };
 
     fonts = {
+      sizes = {
+        applications = 10;
+        terminal = 10;
+        desktop = 10;
+        popups = 10;
+      };
       sansSerif = {
         package = pkgs.noto-fonts;
         name = "Noto Sans";

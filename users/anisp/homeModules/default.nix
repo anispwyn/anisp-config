@@ -12,7 +12,6 @@
     ./xresources.nix
     ./sops.nix
     ./flatpak.nix
-    ./music-production.nix
     ./ime.nix
   ];
 }

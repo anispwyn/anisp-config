@@ -17,4 +17,14 @@
       };
     };
   };
+
+  programs.jujutsu = {
+    enable = true;
+    settings = {
+      user = {
+        name = "anispwyn";
+        email = "anisphia_wynn_palettia@proton.me";
+      };
+    };
+  };
 }

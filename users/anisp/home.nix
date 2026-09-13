@@ -28,28 +28,18 @@
         (tetrio-desktop.override {
           electron = electron_43;
         })
-        (waydroid-helper.overrideAttrs
-          (finalAttrs: oldAttrs: {
-            version = "0.2.9";
-            src = fetchFromGitHub {
-              owner = "ayasa520";
-              repo = "waydroid-helper";
-              tag = "v${finalAttrs.version}";
-              hash = "sha256-6mVb4GPD2NCsvyaqQAOFox0rNIlyOttiaZKbHBS40Rg=";
-            };
-            propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [pkgs.vte-gtk4];
-          }))
         (osu-lazer-bin.override {
           releaseStream = "tachyon";
         })
         heroic
 
-        # audio production stuff goes here
-        reaper
-        yabridge
-        yabridgectl
-
         # idk
+        gnupg1
+        xdg-utils
+        fzf
+        bat
+        jq
+        ripgrep
         qbittorrent-enhanced
         gsettings-desktop-schemas
         obs-studio
@@ -63,7 +53,6 @@
         moltorino
         nicotine-plus
         element-desktop
-        figma-agent
         feishin
 
         jetbrains.datagrip
@@ -77,8 +66,4 @@
         inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode2
       ];
   };
-
-  my.audio.plugins = with pkgs; [
-    vital
-  ];
 }
