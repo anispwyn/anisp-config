@@ -7,19 +7,19 @@
   osuSrc = fetchFromGitHub {
     owner = "ppy";
     repo = "osu";
-    rev = "6ccef8736c8eca923885be52818d1ab367145fd8";
-    hash = "sha256-HuIthP1nJvQ0+BzsoQDv88IYk3TFd3J916AbkymITIU=";
+    rev = "fe30ae7eea2beeb1f0d3a5ce8dde12bb78ca3f48";
+    hash = "sha256-SX6xmIaxiwal/NQTpMGCsoiANtUQC6qyX0ddgeUi+0g=";
   };
 in
   buildDotnetModule (finalAttrs: {
     pname = "lazer-calculator";
-    version = "0.2.0-20260530.0";
+    version = "0.6.1-20260729-main.0";
 
     src = fetchFromGitHub {
       owner = "tosuapp";
       repo = "lazer-calculator";
       rev = "v${finalAttrs.version}";
-      hash = "sha256-OImrh/NTIPonC2SMOjshoIMmMAiCsEeJm/XZVPwhD54=";
+      hash = "sha256-OGsqZ2V7R4K8VsUqMJ8/rMEhNXzJVz4yBaibTHU5CJU=";
     };
 
     sourceRoot = "source/lib";

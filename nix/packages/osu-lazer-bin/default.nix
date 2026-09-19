@@ -26,10 +26,10 @@
   };
 
   tachyon = {
-    version = "2026.911.0";
-    aarch64-darwin = "sha256-yAXTX3Q87860G3QByabukraV1sF4xZCR4gOg7vPX4+g=";
-    x86_64-darwin = "sha256-ygzwIgFljyMqk9eLSOgvd4OklxneCrV1/xyuOLJJuFs=";
-    x86_64-linux = "sha256-dBzpN5UcyPXYf/QheiTDYOSLCJc71Nou47dF0adulN8=";
+    version = "2026.918.0";
+    aarch64-darwin = "sha256-NN3ziGjqgdowCAqKdJtv/bkEbhhmzOvA4f5JzS9UMEQ=";
+    x86_64-darwin = "sha256-4q3EVN6ACK6wDz+3iUBo7gkUoxoDXrOuML17Tksibyc=";
+    x86_64-linux = "sha256-4wwtNWDqghwuJyvKz8pXuy0UfKAlwamV7UW82im6CFQ=";
   };
 
   useTachyon = releaseStream == "tachyon" && (lib.versionOlder lazer.version tachyon.version);
