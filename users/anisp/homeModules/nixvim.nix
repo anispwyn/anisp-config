@@ -252,6 +252,7 @@
         sqls.enable = true;
         svelte.enable = true;
         slint_lsp.enable = true;
+        basedpyright.enable = true;
       };
     };
 
