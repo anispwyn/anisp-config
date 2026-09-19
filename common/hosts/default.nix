@@ -73,6 +73,7 @@
   };
 
   programs = {
+    openvpn3.enable = true;
     fish.enable = true;
     gnupg.agent = {
       enable = true;
@@ -85,9 +86,6 @@
     nftables.enable = true;
     networkmanager = {
       enable = true;
-      plugins = with pkgs; [
-        networkmanager-openvpn
-      ];
     };
     firewall = {
       enable = true;
