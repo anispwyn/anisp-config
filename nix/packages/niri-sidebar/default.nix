@@ -1,6 +1,7 @@
 {
   lib,
   fetchFromGitHub,
+  nix-update-script,
   rustPlatform,
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -16,10 +17,14 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-zZlfwAxWE1ZZy6k7QoBOamCGigGShd89sD27vfvgR00=";
 
+  passthru.updateScript = nix-update-script {
+    extraArgs = ["--flake"];
+  };
+
   meta = {
     description = "A lightweight, external sidebar manager for the Niri window manager.";
     homepage = "https://github.com/Vigintillionn/niri-sidebar";
     license = lib.licenses.gpl3;
-    maintainers = ["anispwyn"];
+    maintainers = [(lib.maintainers.anispwyn or {name = "anispwyn";})];
   };
 })

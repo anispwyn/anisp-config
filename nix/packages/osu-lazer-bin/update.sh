@@ -2,7 +2,14 @@
 #!nix-shell -i bash -p bash cacert curl jq nix unzip
 set -euo pipefail
 
-cd "$(dirname "$(readlink -f "$0")")/../../.."
+# The updater runs this with the repository as the working directory, but when
+# the flake is a store copy $0 no longer points inside the checkout, so find
+# the root by walking up to flake.nix.
+while [[ $PWD != / && ! -e flake.nix ]]; do cd ..; done
+[[ -e flake.nix ]] || {
+    echo "error: flake.nix not found; run this from the nixos repository" >&2
+    exit 1
+}
 FILE="nix/packages/osu-lazer-bin/default.nix"
 
 echo "Fetching latest releases from GitHub..."

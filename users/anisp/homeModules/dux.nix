@@ -12,9 +12,9 @@
   isNiri = cfg.enable && presetName == "niri";
 in {
   imports = [
-    inputs.dms.homeModules.dank-material-shell
-    inputs.dms.homeModules.niri
-    inputs.dms-plugin-registry.homeModules.default
+    inputs.dux.homeModules.dank-material-shell
+    inputs.dux.homeModules.niri
+    inputs.dux-plugin-registry.homeModules.default
   ];
 
   config = lib.mkIf isNiri {
@@ -52,7 +52,7 @@ in {
             vrrOnDemand = true;
           };
         };
-        configVersion = 6;
+        configVersion = 7;
       };
       clipboardSettings = {
         maxHistory = 1000;
@@ -62,26 +62,33 @@ in {
         currentThemeName = "custom";
         currentThemeCategory = "custom";
         widgetBackgroundCustomStrength = 1;
-        radiusStrength = 0;
+        widgetColorMode = "default";
+        radiusStrength = 50;
+        radiusMode = "scale";
         clockFormat = "12h";
         showSeconds = true;
         padHours12Hour = true;
+        enableRippleEffects = true;
+        scrollbarsEnabled = true;
         blurBorderOpacity = 0;
+        blurForegroundLayers = true;
         useAutoLocation = true;
         weatherEnabled = false;
         fontFamily = "Noto Sans";
         monoFontFamily = "Google Sans Code Nerd Font";
+        textRenderType = 0;
         textRenderQuality = 4;
+        niriLayoutRadiusOverride = 0;
         dockConfigs = [
           {
             id = "dock";
             name = "Dock";
-            enabled = true;
+            enabled = false;
             screenPreferences = [
               "all"
             ];
             showOnLastDisplay = true;
-            position = 2;
+            position = 1;
             mode = "compact";
             taskbarAlign = "center";
             widgetExpansion = "popout";
@@ -120,6 +127,10 @@ in {
             showTrash = false;
             trashFileManager = "default";
             trashCustomCommand = "";
+            magnification = false;
+            magnificationScale = 130;
+            magnificationProfile = "parabolic";
+            magnificationExpand = false;
             order = [];
             widgets = [
               {
@@ -131,6 +142,7 @@ in {
                 id = "dock_apps";
                 widgetId = "appsDock";
                 enabled = true;
+                appsDockColorizeActive = false;
               }
               {
                 id = "dock_trash";
@@ -140,19 +152,24 @@ in {
             ];
           }
         ];
+        dmsWindowsFloatingSeeded = ["niri"];
         keyboardLayouts = "us,th";
         keyboardOptions = "grp:alt_shift_toggle";
-        springBounce = 2;
-        motionEffect = 2;
+        audioMono = false;
+        springBounce = 0;
+        motionEffect = 3;
         barElevationEnabled = false;
+        focusRingEnabled = true;
+        focusRingWidth = 1.5;
+        focusRingColor = "primary";
         blurredWallpaperLayer = true;
         mediaLyricsProviders = [
           {
-            id = "lrclib";
+            id = "betterlyrics";
             enabled = true;
           }
           {
-            id = "betterlyrics";
+            id = "kugou";
             enabled = true;
           }
           {
@@ -160,12 +177,21 @@ in {
             enabled = true;
           }
           {
+            id = "lrclib";
+            enabled = true;
+          }
+          {
             id = "lyricsplus";
+            enabled = true;
+          }
+          {
+            id = "youtubemusic";
             enabled = true;
           }
         ];
         niriOverviewOverlayEnabled = false;
         spotlightBarShowModeChips = true;
+        dashTabPosition = "left";
         dashTabs = [
           {
             id = "overview";
@@ -191,6 +217,10 @@ in {
             id = "notifications";
             enabled = false;
           }
+          {
+            id = "wellbeing";
+            enabled = true;
+          }
         ];
         dashCards = [
           {
@@ -202,46 +232,78 @@ in {
             id = "calendar";
             w = 3;
             h = 3;
+            col = 0;
+            row = 0;
           }
           {
             id = "user";
             w = 3;
             h = 1;
+            col = 3;
+            row = 0;
           }
           {
             id = "media";
             w = 3;
             h = 2;
+            col = 3;
+            row = 1;
           }
           {
             id = "cpu";
             w = 1;
             h = 1;
+            col = 6;
+            row = 0;
           }
           {
             id = "network";
             w = 1;
             h = 1;
+            col = 7;
+            row = 0;
           }
           {
             id = "memory";
             w = 1;
             h = 1;
+            col = 6;
+            row = 1;
           }
           {
             id = "sysmon";
             w = 1;
             h = 1;
+            col = 7;
+            row = 1;
           }
           {
             id = "disk";
             w = 1;
             h = 1;
+            col = 6;
+            row = 2;
           }
           {
             id = "clock";
             w = 1;
             h = 1;
+            col = 7;
+            row = 2;
+          }
+          {
+            id = "notifications";
+            w = 5;
+            h = 3;
+            col = 3;
+            row = 3;
+          }
+          {
+            id = "wellbeing";
+            w = 3;
+            h = 3;
+            col = 0;
+            row = 3;
           }
         ];
         dashOptions = {
@@ -250,12 +312,14 @@ in {
           };
           overview = {
             panelColumns = 8;
+            panelRows = 4;
           };
           media = {
             animatedArt = true;
             panelColumns = 8;
           };
         };
+        iconThemePerMode = false;
         cursorSettings = {
           niri = {
             hideWhenTyping = true;
@@ -263,11 +327,8 @@ in {
           size = 16;
           theme = "BreezeX-RosePineDawn-Linux";
         };
-        launcherLogoMode = "os";
-        launcherLogoColorOverride = "primary";
         acMonitorTimeout = 300;
         acLockTimeout = 180;
-        runDmsMatugenTemplates = false;
         matugenTemplateGtk = false;
         matugenTemplateNiri = false;
         matugenTemplateHyprland = false;
@@ -290,15 +351,17 @@ in {
         matugenTemplateEmacs = false;
         matugenTemplateZed = false;
         matugenTemplateNeovimSetBackground = false;
-        lockScreenNotificationMode = 2;
         notificationCompactMode = true;
         notificationShowTimeoutBar = true;
+        osdAlwaysShowValue = false;
+        osdPosition = 5;
         osdMediaPlaybackEnabled = true;
         osdPowerProfileEnabled = true;
         osdWorkspaceEnabled = true;
         barConfigs = [
           {
-            autoHide = true;
+            attachToScreenEdge = false;
+            autoHide = false;
             autoHideDelay = 1000;
             autoHideStrict = false;
             borderEnabled = false;
@@ -316,13 +379,27 @@ in {
               }
             ];
             enabled = true;
+            followInterfaceStyle = true;
             gothCornerRadiusOverride = false;
-            gothCornersEnabled = true;
+            gothCornersEnabled = false;
             hoverPopouts = false;
             id = "default";
-            innerPadding = 0;
+            innerPadding = -4;
+            islandHomeClockDisplay = "both";
+            islandHomeCompactTight = true;
+            islandNotificationExpand = false;
+            islandNotificationPopups = true;
+            islandSatelliteBackground = false;
+            islandSatelliteGothCorners = false;
+            islandSatellitePosition = "edges";
+            islandSatellitesEnabled = true;
             leftWidgets = [
-              "launcherButton"
+              {
+                id = "launcherButton";
+                enabled = true;
+                launcherLogoMode = "os";
+                launcherLogoColorOverride = "primary";
+              }
               "workspaceSwitcher"
               "focusedWindow"
             ];
@@ -333,7 +410,7 @@ in {
             noBackground = true;
             openOnOverview = true;
             popupGapsAuto = true;
-            position = 1;
+            position = 0;
             rightWidgets = [
               {
                 enabled = true;
@@ -355,8 +432,8 @@ in {
               {
                 enabled = true;
                 id = "memUsage";
-                showSwap = false;
                 showInGb = true;
+                showSwap = false;
               }
               {
                 enabled = true;
@@ -389,7 +466,10 @@ in {
                 ];
               }
             ];
-            scrollXBehavior = "column";
+            screenPreferences = [
+              "all"
+            ];
+            scrollXBehavior = "focusWindow";
             shadowIntensity = 0;
             showOnWindowsOpen = true;
             spacing = 0;
@@ -398,37 +478,164 @@ in {
             useOverlayLayer = false;
             widgetOutlineEnabled = false;
             widgetTransparency = 1;
-            followInterfaceStyle = true;
+            widgetFollowInterfaceStyle = true;
+            island = false;
+            dot = false;
+            islandNotch = false;
+            islandFloating = false;
+            islandPlacement = "free";
+            islandAlongOffset = 0;
+            islandReserveThickness = 40;
+            clickThrough = false;
+          }
+          {
+            attachToScreenEdge = false;
+            autoHide = true;
+            autoHideDelay = 1000;
+            autoHideStrict = false;
+            borderEnabled = false;
+            bottomGap = 0;
+            centerWidgets = [
+              {
+                enabled = true;
+                id = "music";
+                mediaSize = 3;
+              }
+              {
+                clockCompactMode = false;
+                enabled = true;
+                id = "clock";
+              }
+            ];
+            enabled = false;
+            followInterfaceStyle = false;
+            gothCornerRadiusOverride = false;
+            gothCornersEnabled = false;
+            hoverPopouts = false;
+            id = "dot1792599672251";
+            innerPadding = -4;
+            islandHomeClockDisplay = "both";
+            islandHomeCompactTight = true;
+            islandNotificationExpand = false;
+            islandNotificationPopups = true;
+            islandSatelliteBackground = false;
+            islandSatelliteGothCorners = false;
+            islandSatellitePosition = "edges";
+            islandSatellitesEnabled = true;
+            leftWidgets = [
+              {
+                id = "launcherButton";
+                enabled = true;
+                launcherLogoMode = "os";
+                launcherLogoColorOverride = "primary";
+              }
+              "workspaceSwitcher"
+              "focusedWindow"
+            ];
+            maximizeDetection = true;
+            maximizeWidgetIcons = false;
+            maximizeWidgetText = false;
+            name = "Dot";
+            noBackground = true;
+            openOnOverview = true;
+            popupGapsAuto = true;
+            position = 0;
+            rightWidgets = [
+              {
+                enabled = true;
+                id = "dankKDEConnect";
+              }
+              {
+                enabled = true;
+                id = "systemTray";
+                trayUseInlineExpansion = false;
+              }
+              {
+                enabled = true;
+                id = "clipboard";
+              }
+              {
+                enabled = true;
+                id = "cpuUsage";
+              }
+              {
+                enabled = true;
+                id = "memUsage";
+                showInGb = true;
+                showSwap = false;
+              }
+              {
+                enabled = true;
+                id = "notificationButton";
+              }
+              {
+                enabled = true;
+                id = "controlCenterButton";
+                showAudioPercent = false;
+                showMicIcon = false;
+                showMicPercent = false;
+                showBrightnessIcon = false;
+                showBrightnessPercent = false;
+                showBatteryIcon = false;
+                showPrinterIcon = false;
+                showIdleInhibitorIcon = false;
+                showDoNotDisturbIcon = false;
+                controlCenterGroupOrder = [
+                  "network"
+                  "vpn"
+                  "bluetooth"
+                  "audio"
+                  "microphone"
+                  "brightness"
+                  "battery"
+                  "printer"
+                  "screenSharing"
+                  "idleInhibitor"
+                  "doNotDisturb"
+                ];
+              }
+            ];
             screenPreferences = [
               "all"
             ];
-            islandHomeClockDisplay = "both";
-            islandHomeCompactTight = true;
-            islandNotificationPopups = true;
-            islandNotificationExpand = false;
-            islandSatellitesEnabled = true;
-            islandSatellitePosition = "edges";
-            islandSatelliteBackground = false;
-            islandSatelliteGothCorners = false;
-            attachToScreenEdge = false;
+            scrollXBehavior = "focusWindow";
+            shadowIntensity = 0;
+            showOnWindowsOpen = true;
+            spacing = 0;
+            squareCorners = true;
+            transparency = 1;
+            useOverlayLayer = false;
+            widgetOutlineEnabled = false;
+            widgetTransparency = 1;
+            widgetFollowInterfaceStyle = true;
+            island = false;
+            dot = true;
+            islandNotch = false;
+            islandFloating = false;
+            islandPlacement = "free";
+            islandAlongOffset = 0;
+            islandReserveThickness = 40;
+            showOnLastDisplay = true;
+            islandRouteLauncher = "follow";
           }
         ];
         builtInPluginSettings = {
-          dms_clipboard_search = {
+          dux_clipboard_search = {
             trigger = "cb";
           };
-          dms_power = {
+          dux_power = {
             trigger = "pw";
           };
-          dms_qr_generator = {
+          dux_qr_generator = {
             trigger = "qrg";
           };
-          dms_settings_search = {
+          dux_settings_search = {
             trigger = "?";
           };
         };
         clipboardEnterToPaste = true;
-        configVersion = 28;
+        frameEnabled = false;
+        configVersion = 42;
       };
     };
   };

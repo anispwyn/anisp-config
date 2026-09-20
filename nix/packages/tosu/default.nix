@@ -10,6 +10,7 @@
   node-gyp,
   makeWrapper,
   callPackage,
+  nix-update-script,
 }: let
   pname = "tosu";
   version = "4.26.2";
@@ -89,7 +90,11 @@ in
       description = "High-performance memory reader and data provider for the rhythm game osu!";
       homepage = "https://github.com/tosuapp/tosu";
       license = lib.licenses.lgpl3Only;
-      maintainers = ["anispwyn"];
+      maintainers = [(lib.maintainers.anispwyn or {name = "anispwyn";})];
       mainProgram = "tosu";
+    };
+
+    passthru.updateScript = nix-update-script {
+      extraArgs = ["--flake"];
     };
   })

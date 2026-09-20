@@ -1,4 +1,8 @@
 {
+  config,
+  lib,
+  ...
+}: {
   programs = {
     ghostty = {
       enable = true;
@@ -30,7 +34,7 @@
       };
     };
     foot = {
-      enable = false;
+      enable = true;
       settings = {
         main.shell = "zellij -l welcome attach --create welcome"; # idk how and where this come from
       };
@@ -39,7 +43,7 @@
       enable = true;
     };
     zellij = {
-      enable = false;
+      enable = config.programs.foot.enable;
       settings = {
         simplified_ui = true;
         pane_frames = false;

@@ -26,12 +26,11 @@
         ryubing
         umu-launcher
         (tetrio-desktop.override {
-          electron = electron_43;
+          electron = electron_44;
         })
         (osu-lazer-bin.override {
           releaseStream = "tachyon";
         })
-        heroic
 
         # idk
         gnupg1
@@ -49,7 +48,6 @@
         wl-clipboard
         _7zz-rar
         openssl
-        pear-desktop
         moltorino
         nicotine-plus
         element-desktop

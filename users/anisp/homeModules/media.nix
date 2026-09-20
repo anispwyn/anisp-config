@@ -4,11 +4,19 @@
   config,
   ...
 }: {
-  imports = [inputs.spicetify-nix.homeManagerModules.spicetify];
+  imports = [
+    inputs.spicetify-nix.homeManagerModules.spicetify
+    inputs.sonora.homeManagerModules.default
+  ];
 
   programs = {
     mpv = {
       enable = true;
+    };
+    sonora = {
+      enable = true;
+      package = inputs.sonora.packages.${pkgs.stdenv.hostPlatform.system}.sonora-src;
+      settings.provider = "youtube";
     };
     spicetify = let
       spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.system};
@@ -16,7 +24,7 @@
       enable = true;
       enabledCustomApps = with spicePkgs.apps; [newReleases lyricsPlus betterLibrary];
       enabledExtensions = with spicePkgs.extensions;
-        [trashbin shuffle powerBar wikify songStats lastfm aiBandBlocker volumePercentage beautifulLyrics adblock betterGenres fullScreen]
+        [trashbin shuffle powerBar wikify songStats lastfm aiBandBlocker volumePercentage beautifulLyrics adblock fullScreen]
         ++ [
           {
             src = pkgs.fetchFromGitHub {

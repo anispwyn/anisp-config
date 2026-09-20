@@ -1,10 +1,11 @@
 {
   lib,
   pkgs,
+  nix-update-script,
 }:
 pkgs.python3Packages.buildPythonApplication {
   pname = "omen-fan";
-  version = "1";
+  version = "0-unstable-2025-12-31";
 
   src = pkgs.fetchFromGitHub {
     owner = "alou-s";
@@ -26,6 +27,13 @@ pkgs.python3Packages.buildPythonApplication {
     install -Dm755 omen-fan.py  $out/bin/omen-fan
     install -Dm755 omen-fand.py $out/bin/omen-fand
   '';
+
+  passthru.updateScript = nix-update-script {
+    extraArgs = [
+      "--flake"
+      "--version=branch"
+    ];
+  };
 
   meta = {
     description = "A script to control a certain laptop brand";

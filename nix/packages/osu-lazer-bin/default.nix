@@ -6,7 +6,8 @@
   fetchzip,
   appimageTools,
   makeWrapper,
-  pipewire_latency ? "64/44100", # reasonable default
+  sample_size ? "64",
+  pipewire_latency ? "${sample_size}/44100", # reasonable default
   nativeWayland ? true,
   gmrun_enable ? true,
   command_prefix ?
@@ -19,17 +20,17 @@
   pname = "osu-lazer-bin";
 
   lazer = {
-    version = "2026.804.2";
-    aarch64-darwin = "sha256-gyqZUMrdiTls+XwbhYQpd8Hi3mjaNgtPO5c1gfJxG4g=";
-    x86_64-darwin = "sha256-M8j0DPxwEojqWM+Nni23XJyvIW75/eFm83pgnUmB0yE=";
-    x86_64-linux = "sha256-0K/dyvIwrlBzcexYDCCilNknJdEZja1OTfAotP6MvjY=";
+    version = "2026.1005.0";
+    aarch64-darwin = "sha256-ZxiW0ghB1ayNjRo9FqAfeBjT5dMM+j74TGDkWHCcdk8=";
+    x86_64-darwin = "sha256-ikpeZbJRRqNkDHsL9rD+supLgc8shZe6pWl6/3p8wbM=";
+    x86_64-linux = "sha256-KEEI5lNzqDOb7spA4sFLFSjBd71s4eshQHY5+OUI2i4=";
   };
 
   tachyon = {
-    version = "2026.918.0";
-    aarch64-darwin = "sha256-NN3ziGjqgdowCAqKdJtv/bkEbhhmzOvA4f5JzS9UMEQ=";
-    x86_64-darwin = "sha256-4q3EVN6ACK6wDz+3iUBo7gkUoxoDXrOuML17Tksibyc=";
-    x86_64-linux = "sha256-4wwtNWDqghwuJyvKz8pXuy0UfKAlwamV7UW82im6CFQ=";
+    version = "2026.1013.0";
+    aarch64-darwin = "sha256-SyDb7AcC4aubrQ3RJYF/avHl2m29i7odllpZOCYRj1E=";
+    x86_64-darwin = "sha256-Ws3AFXi6MF/IBwoaevvciX9ry4RmOJvHQpDSn1s5J/E=";
+    x86_64-linux = "sha256-MrbuzWj0cEkchGvzp8Rmjiidf61ibpi2qZyFFQJIULo=";
   };
 
   useTachyon = releaseStream == "tachyon" && (lib.versionOlder lazer.version tachyon.version);
@@ -138,10 +139,11 @@ in
 
         wrapProgram $out/bin/osu! \
           ${lib.optionalString nativeWayland "--set SDL_VIDEODRIVER wayland"} \
+          --set OSU_TEMP_TESTING_BASS_CONFIG_DEV_PERIOD "-${sample_size}" \
+          --set PIPEWIRE_ALSA '{ "alsa.period-bytes": 512, "alsa.periods": 2 }' \
           --set PIPEWIRE_LATENCY "${pipewire_latency}" \
           --set OSU_EXTERNAL_UPDATE_PROVIDER 1 \
           --set OSU_EXTERNAL_UPDATE_STREAM "${releaseStream}" \
-          --set vblank_mode "0"
 
         ${
           # a hack to infiltrate the command in the wrapper

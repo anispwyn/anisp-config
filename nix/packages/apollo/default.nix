@@ -1,17 +1,19 @@
 {
   pkgs,
   lib,
+  nix-update-script,
   ...
 }: let
   inherit (pkgs.stdenv.hostPlatform) isLinux;
 in
   pkgs.sunshine.overrideAttrs (finalAttrs: oldAttrs: {
     pname = "apollo";
+    version = "0.4.8-unstable-2026-05-21";
     src = pkgs.fetchFromGitHub {
       owner = "ClassicOldSong";
       repo = "Apollo";
-      rev = "f253c8f";
-      hash = "sha256-KLmMeCu6NGGVrHSawk2giVub7fqrjK2nT3+swuKtKEM=";
+      rev = "adc5c5a0bd80831ce495434bb16aee2cd4175fb8";
+      hash = "sha256-2HKjpv/NK8eMq4fUC6sFSfSDSIvT8crP//MMDoF/Bxs=";
       fetchSubmodules = true;
     };
     ui = pkgs.buildNpmPackage {
@@ -61,4 +63,11 @@ in
           --subst-var-by SUNSHINE_SERVICE_START_COMMAND 'ExecStart=$out/bin/sunshine' \
           --replace-fail '/bin/sleep' '${lib.getExe' pkgs.coreutils "sleep"}'
       '';
+
+    passthru.updateScript = nix-update-script {
+      extraArgs = [
+        "--flake"
+        "--version=branch"
+      ];
+    };
   })

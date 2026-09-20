@@ -10,6 +10,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    oniri = {
+      url = "github:Antiz96/oniri";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ghostty = {
       url = "github:ghostty-org/ghostty";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -31,6 +35,10 @@
     };
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    sonora = {
+      url = "github:sonorahq/sonora";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
@@ -68,16 +76,16 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dms = {
-      url = "github:AvengeMedia/DankMaterialShell";
+    dux = {
+      url = "github:duxlabs-dev/dux-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dms-plugin-registry = {
-      url = "github:AvengeMedia/dms-plugin-registry";
+    dux-plugin-registry = {
+      url = "github:duxlabs-dev/dux-plugin-registry";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri = {

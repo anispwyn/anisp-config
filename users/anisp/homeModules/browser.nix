@@ -27,6 +27,8 @@
       {id = "bpaoeijjlplfjbagceilcgbkcdjbomjd";} # TTV lol pro
       {id = "gppongmhjkpfnbhagpmjfkannfbllamg";} # wappalyzer
       {id = "bhchdcejhohfmigjafbampogmaanbfkg";} # user agent switcher
+      {id = "effdbpeggelllpfkjppbokhmmiinhlmg";} # better lyrics
+      {id = "mffpncjphfmkppebdoaehdlnagnlpfai";} # shaders for ^
     ];
   };
   programs.zen-browser = {
@@ -103,10 +105,10 @@
         inherit (pkgs.firefox-addons) buildFirefoxXpiAddon;
         oldtwitter = buildFirefoxXpiAddon rec {
           pname = "oldtwitter";
-          version = "1.9.8";
+          version = "1.9.8.1";
           addonId = "oldtwitter@dimden.dev";
-          url = "https://github.com/dimdenGD/OldTwitter/releases/download/v${version}/OldTwitterFirefox.zip";
-          sha256 = "sha256-2PLvHDiDs15CnKJd9k58Fd2Ni4ghbK6pBDSiIj4qK+Y=";
+          url = "https://github.com/dimdenGD/OldTwitter/releases/download/${version}/OldTwitterFirefox.zip";
+          sha256 = "sha256-wpzGRpT5YYJWfdNSJfW111OdvfvbCR6XyT4R2JyzAKA=";
           meta = with lib; {
             homepage = "https://github.com/dimdenGD/OldTwitter";
             description = "Browser extension to return old Twitter layout from 2015 (and option to use 2018 design). This extension doesn't add any CSS on top of original Twitter. It's fully original client that replaces Twitter, making it much faster than alternatives.";

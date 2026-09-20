@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: let
   cfg = config.my.desktop;
@@ -12,7 +13,7 @@
   isNiri = cfg.enable && presetName == "niri";
 in {
   imports = [
-    ./dms.nix
+    ./dux.nix
     ./niri.nix
     ./plasma.nix
   ];
@@ -32,13 +33,14 @@ in {
   };
 
   config = lib.mkIf isNiri {
-    home.packages = with pkgs; [
-      nautilus
-      file-roller
-      kdePackages.gwenview
-      rose-pine-cursor
-      oniri
-      gcr_4 # HACK https://github.com/nix-community/home-manager/issues/1454
-    ];
+    home.packages = with pkgs;
+      [
+        nautilus
+        file-roller
+        kdePackages.gwenview
+        rose-pine-cursor
+        gcr_4 # HACK https://github.com/nix-community/home-manager/issues/1454
+      ]
+      ++ [inputs.oniri.packages.${stdenv.hostPlatform.system}.default];
   };
 }

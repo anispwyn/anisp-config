@@ -73,7 +73,7 @@
   };
 
   programs = {
-    openvpn3.enable = true;
+    openvpn3.enable = false;
     fish.enable = true;
     gnupg.agent = {
       enable = true;

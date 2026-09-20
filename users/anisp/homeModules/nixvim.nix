@@ -19,6 +19,12 @@
       mapleader = " ";
     };
 
+    diagnostic = {
+      settings = {
+        virtual_text = true;
+      };
+    };
+
     opts = {
       scrolloff = 10;
       tabclose = "uselast";
@@ -63,8 +69,6 @@
     withNodeJs = false;
     withPython3 = false;
 
-    plugins.diffview.enable = true;
-
     colorschemes.rose-pine = {
       enable = true;
       settings = {
@@ -76,652 +80,626 @@
         };
       };
     };
-
-    plugins.dap.enable = true;
-    plugins.dap-ui.enable = true;
-
-    plugins.nvim-surround.enable = true;
-    plugins.flash.enable = true;
-
-    plugins.snacks = {
-      enable = true;
-      settings = {
-        animate.enabled = true;
-        dim.enable = true;
-        bigfile.enabled = true;
-        bufdelete.enabled = true;
-        gitbrowse.enabled = false;
-        indent.enabled = true;
-        notifier.enabled = true;
-        picker.enabled = false;
-        quickfile.enabled = true;
-        rename.enabled = true;
-        scope.enabled = true;
-        scroll.enabled = true;
-        statuscolumn.enabled = true;
-        terminal.enabled = true;
-        toggle.enabled = true;
-        words.enabled = true;
-        zen.enabled = false;
-      };
-    };
-
-    plugins.neo-tree = {
-      enable = true;
-      settings = {
-        filesystem = {
-          use_libuv_file_watcher = true;
-          filtered_items = {
-            hide_git_ignored = false;
-          };
-          window = {
-            position = "float";
-            popup = {
-              position = {
-                col = "100%";
-                row = "2";
-              };
-              size = {
-                __raw = ''
-                  function(state)
-                    local root_name = vim.fn.fnamemodify(state.path, ":~")
-                    local root_len = string.len(root_name) + 4
-                    return {
-                      width = math.max(root_len, 50),
-                      height = vim.o.lines - 6
-                    }
-                  end
-                '';
-              };
-            };
-          };
-        };
-        git_status = {
-          window = {
-            position = "float";
-            popup = {
-              position = {
-                col = "100%";
-                row = "2";
-              };
-              size = {
-                __raw = ''
-                  function(state)
-                    local root_name = vim.fn.fnamemodify(state.path, ":~")
-                    local root_len = string.len(root_name) + 4
-                    return {
-                      width = math.max(root_len, 50),
-                      height = vim.o.lines - 6
-                    }
-                  end
-                '';
-              };
-            };
-          };
-        };
-        buffers = {
-          window = {
-            position = "float";
-            popup = {
-              position = {
-                col = "100%";
-                row = "2";
-              };
-              size = {
-                __raw = ''
-                  function(state)
-                    local root_name = vim.fn.fnamemodify(state.path or "", ":~")
-                    local root_len = string.len(root_name) + 4
-                    return {
-                      width = math.max(root_len, 50),
-                      height = vim.o.lines - 6
-                    }
-                  end
-                '';
-              };
-            };
-          };
+    plugins = {
+      diffview.enable = true;
+      dap.enable = true;
+      dap-ui.enable = true;
+      nvim-surround.enable = true;
+      flash.enable = true;
+      snacks = {
+        enable = true;
+        settings = {
+          animate.enabled = true;
+          dim.enable = true;
+          bigfile.enabled = true;
+          bufdelete.enabled = true;
+          gitbrowse.enabled = false;
+          indent.enabled = true;
+          notifier.enabled = true;
+          picker.enabled = false;
+          quickfile.enabled = true;
+          rename.enabled = true;
+          scope.enabled = true;
+          scroll.enabled = true;
+          statuscolumn.enabled = true;
+          terminal.enabled = true;
+          toggle.enabled = true;
+          words.enabled = true;
+          zen.enabled = false;
         };
       };
-    };
-
-    plugins.rainbow-delimiters.enable = true;
-    plugins.web-devicons.enable = true;
-
-    plugins.todo-comments.enable = true;
-    plugins.treesitter-context.enable = true;
-
-    diagnostic = {
-      settings = {
-        virtual_text = true;
-        virtual_lines = false;
-      };
-    };
-
-    plugins.lsp = {
-      enable = true;
-      inlayHints = true;
-      servers = {
-        tailwindcss.enable = true;
-        roslyn_ls.enable = true;
-        zls = {
-          enable = true;
-          cmd = ["zls"];
-        };
-        luau_lsp = {
-          enable = true;
-          cmd = [(lib.getExe pkgs.luau-lsp) "lsp"];
-          filetypes = ["luau"];
-          rootMarkers = [".git"];
-        };
-        vue_ls.enable = true;
-        vtsls.enable = true;
-        # ts_ls.enable = true;
-        denols.enable = true;
-        clangd.enable = true;
-        cssls.enable = true;
-        gopls = {
-          enable = true;
-          settings = {
-            gopls = {
-              hints = {
-                assignVariableTypes = true;
-                compositeLiteralFields = true;
-                compositeLiteralTypes = true;
-                constantValues = true;
-                functionTypeParameters = true;
-                parameterNames = true;
-                rangeVariableTypes = true;
-              };
+      neo-tree = {
+        enable = true;
+        settings = {
+          filesystem = {
+            use_libuv_file_watcher = true;
+            filtered_items = {
+              hide_git_ignored = false;
             };
-          };
-        };
-        qmlls.enable = true;
-        html.enable = true;
-        jdtls.enable = true;
-        jsonls.enable = true;
-        taplo.enable = true;
-        yamlls.enable = true;
-        lua_ls.enable = true;
-        nixd.enable = true;
-        rust_analyzer = {
-          enable = true;
-          installRustc = false;
-          installCargo = false;
-        };
-        sqls.enable = true;
-        svelte.enable = true;
-        slint_lsp.enable = true;
-        basedpyright.enable = true;
-      };
-    };
-
-    plugins.conform-nvim = {
-      enable = true;
-      settings = {
-        format_on_save = {
-          __raw = ''
-            function(bufnr)
-              if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-                return
-              end
-              return { timeout_ms = 3000, lsp_fallback = true }
-            end
-          '';
-        };
-        formatters_by_ft = {
-          typescript = ["oxfmt"];
-          javascript = ["oxfmt"];
-          typescriptreact = ["oxfmt"];
-          javascriptreact = ["oxfmt"];
-          vue = {
-            __raw = ''{ "oxfmt", "lsp", stop_after_first = true }'';
-          };
-          lua = ["stylua"];
-          luau = ["stylua"];
-          go = ["gofumpt"];
-          nix = ["alejandra"];
-        };
-        formatters = {
-          stylua = {
-            command = lib.getExe pkgs.stylua;
-            args = ["--search-parent-directories" "--respect-ignores" "--stdin-filepath" "$FILENAME" "-"];
-            range_args = {
-              __raw = ''
-                function(self, ctx)
-                    local util = require("conform.util")
-                    local start_offset, end_offset = util.get_offsets_from_range(ctx.buf, ctx.range)
-                    return {
-                      "--search-parent-directories",
-                      "--stdin-filepath",
-                      "$FILENAME",
-                      "--range-start",
-                      tostring(start_offset),
-                      "--range-end",
-                      tostring(end_offset),
-                      "-",
-                    }
-                  end
-              '';
-            };
-            cwd = {
-              __raw = ''require("conform.util").root_file({ ".stylua.toml", "stylua.toml" })'';
-            };
-            require_cwd = true;
-          };
-          oxfmt = {
-            command = {
-              __raw = ''
-                function(self, ctx)
-                    local root = require("conform.util").root_file({ "package.json", ".git" })(self, ctx)
-                    local local_cmd = root and root .. "/node_modules/.bin/oxfmt"
-                    if local_cmd and vim.fn.executable(local_cmd) == 1 then
-                      return local_cmd
-                    end
-                    return "oxfmt"
-                  end
-              '';
-            };
-            args = ["--stdin-filepath" "$FILENAME"];
-            cwd = {
-              __raw = ''require("conform.util").root_file({ ".oxfmtrc.json", ".oxfmtrc.jsonc", "package.json" })'';
-            };
-            require_cwd = false;
-            stdin = true;
-          };
-        };
-      };
-    };
-
-    plugins.fzf-lua = {
-      enable = true;
-      profile = "fzf-native";
-    };
-
-    plugins.gitsigns = {
-      enable = true;
-      settings = {
-        current_line_blame = true;
-        current_line_blame_opts = {
-          delay = 200;
-          virt_text = true;
-          virt_text_pos = "eol";
-        };
-        current_line_blame_formatter = "   <author>, <author_time:%Y-%m-%d> • <summary>";
-        on_attach = {
-          __raw = ''
-            function(bufnr)
-              local gs = package.loaded.gitsigns
-              local function map(mode, l, r, opts)
-                opts = opts or {}
-                opts.buffer = bufnr
-                vim.keymap.set(mode, l, r, opts)
-              end
-
-              map('n', ']c', function()
-                if vim.wo.diff then return ']c' end
-                vim.schedule(function() gs.next_hunk() end)
-                return '<Ignore>'
-              end, {expr = true, desc = "Next Change"})
-
-              map('n', '[c', function()
-                if vim.wo.diff then return '[c' end
-                vim.schedule(function() gs.prev_hunk() end)
-                return '<Ignore>'
-              end, {expr = true, desc = "Prev Change"})
-
-              map('n', '<leader>hb', function() gs.blame_line({ full = true }) end, { desc = "Blame Line (Popup)" })
-            end
-          '';
-        };
-      };
-    };
-    plugins.neogit.enable = true;
-
-    plugins.blink-cmp = {
-      enable = true;
-      settings = {
-        signature = {
-          enabled = true;
-          window = {
-            border = "single";
-            winhighlight = "Normal:Normal,FloatBorder:FloatBorder";
-          };
-        };
-        completion = {
-          documentation = {
-            auto_show = true;
-            auto_show_delay_ms = 0;
             window = {
-              border = "single";
-              winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:BlinkCmpDocCursorLine,Search:None";
-            };
-          };
-          menu = {
-            border = "single";
-            winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:BlinkCmpMenuSelection,Search:None";
-          };
-        };
-        cmdline = {
-          enabled = false;
-          keymap = {preset = "inherit";};
-        };
-        keymap.preset = "enter";
-      };
-    };
-    plugins.friendly-snippets.enable = true;
-
-    plugins.nvim-autopairs.enable = true;
-    plugins.lualine = {
-      enable = true;
-      settings = {
-        options = {
-          always_divide_middle = true;
-          component_separators = {
-            left = "";
-            right = "";
-          };
-          disabled_filetypes = {
-            statusline = ["alpha"];
-            winbar = [];
-          };
-          globalstatus = true;
-          icons_enabled = true;
-          ignore_focus = ["NvimTree"];
-          refresh = {
-            statusline = 1000;
-            tabline = 1000;
-            winbar = 1000;
-          };
-          section_separators = {
-            left = "";
-            right = "";
-          };
-          theme = "auto";
-        };
-        extensions = [
-          "neo-tree"
-          {
-            filetypes = [
-              "snacks_picker_list"
-              "snacks_picker_input"
-            ];
-            sections = {
-              lualine_a = [
-                {
+              position = "float";
+              popup = {
+                position = {
+                  col = "100%";
+                  row = "2";
+                };
+                size = {
                   __raw = ''
-                    function()
-                      return vim.fn.fnamemodify(vim.fn.getcwd(), ":~")
+                    function(state)
+                      local root_name = vim.fn.fnamemodify(state.path, ":~")
+                      local root_len = string.len(root_name) + 4
+                      return {
+                        width = math.max(root_len, 50),
+                        height = vim.o.lines - 6
+                      }
                     end
                   '';
-                }
-              ];
+                };
+              };
             };
-          }
-        ];
-        sections = {
-          lualine_a = [
-            {
-              __unkeyed = "mode";
-              icons_enabled = true;
-              separator = {
-                left = "▎";
-                right = "";
+          };
+          git_status = {
+            window = {
+              position = "float";
+              popup = {
+                position = {
+                  col = "100%";
+                  row = "2";
+                };
+                size = {
+                  __raw = ''
+                    function(state)
+                      local root_name = vim.fn.fnamemodify(state.path, ":~")
+                      local root_len = string.len(root_name) + 4
+                      return {
+                        width = math.max(root_len, 50),
+                        height = vim.o.lines - 6
+                      }
+                    end
+                  '';
+                };
               };
-            }
-            {
-              __unkeyed = "";
-              draw_empty = true;
-              separator = {
-                left = "";
-                right = "";
+            };
+          };
+          buffers = {
+            window = {
+              position = "float";
+              popup = {
+                position = {
+                  col = "100%";
+                  row = "2";
+                };
+                size = {
+                  __raw = ''
+                    function(state)
+                      local root_name = vim.fn.fnamemodify(state.path or "", ":~")
+                      local root_len = string.len(root_name) + 4
+                      return {
+                        width = math.max(root_len, 50),
+                        height = vim.o.lines - 6
+                      }
+                    end
+                  '';
+                };
               };
-            }
-          ];
-          lualine_b = [
-            {
-              __unkeyed = "filetype";
-              colored = true;
-              icon_only = true;
-              icon = {
-                align = "left";
+            };
+          };
+        };
+      };
+      rainbow-delimiters.enable = true;
+      web-devicons.enable = true;
+      todo-comments.enable = true;
+      treesitter-context.enable = true;
+      rustaceanvim.enable = true;
+      lsp = {
+        enable = true;
+        inlayHints = true;
+        servers = {
+          tailwindcss.enable = true;
+          zls = {
+            enable = true;
+            cmd = ["zls"];
+          };
+          luau_lsp = {
+            enable = true;
+            cmd = [(lib.getExe pkgs.luau-lsp) "lsp"];
+            filetypes = ["luau"];
+            rootMarkers = [".git"];
+          };
+          vue_ls.enable = true;
+          vtsls.enable = true;
+          # ts_ls.enable = true;
+          denols.enable = true;
+          clangd.enable = true;
+          cssls.enable = true;
+          gopls = {
+            enable = true;
+            settings = {
+              gopls = {
+                hints = {
+                  assignVariableTypes = true;
+                  compositeLiteralFields = true;
+                  compositeLiteralTypes = true;
+                  constantValues = true;
+                  functionTypeParameters = true;
+                  parameterNames = true;
+                  rangeVariableTypes = true;
+                };
               };
-            }
-            {
-              __unkeyed = "filename";
-              symbols = {
-                modified = " ";
-                readonly = " ";
-              };
-              separator = {
-                right = "";
-              };
-            }
-            {
-              __unkeyed = "";
-              draw_empty = true;
-              separator = {
-                left = "";
-                right = "";
-              };
-            }
-          ];
-          lualine_c = [
-            {
-              __unkeyed = "diff";
-              colored = false;
-              diff_color = {
-                added = "DiffAdd";
-                modified = "DiffChange";
-                removed = "DiffDelete";
-              };
-              symbols = {
-                added = "+";
-                modified = "~";
-                removed = "-";
-              };
-              separator = {
-                right = "";
-              };
-            }
-          ];
-          lualine_x = [
-            {
-              __unkeyed = {
+            };
+          };
+          qmlls.enable = true;
+          html.enable = true;
+          jdtls.enable = true;
+          jsonls.enable = true;
+          taplo.enable = true;
+          yamlls.enable = true;
+          lua_ls.enable = true;
+          nixd.enable = true;
+          sqls.enable = true;
+          svelte.enable = true;
+          slint_lsp.enable = true;
+          basedpyright.enable = true;
+        };
+      };
+      conform-nvim = {
+        enable = true;
+        settings = {
+          format_on_save = {
+            __raw = ''
+              function(bufnr)
+                if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+                  return
+                end
+                return { timeout_ms = 3000, lsp_fallback = true }
+              end
+            '';
+          };
+          formatters_by_ft = {
+            typescript = ["oxfmt"];
+            javascript = ["oxfmt"];
+            typescriptreact = ["oxfmt"];
+            javascriptreact = ["oxfmt"];
+            vue = {
+              __raw = ''{ "oxfmt", "lsp", stop_after_first = true }'';
+            };
+            lua = ["stylua"];
+            luau = ["stylua"];
+            go = ["gofumpt"];
+            nix = ["alejandra"];
+          };
+          formatters = {
+            stylua = {
+              command = lib.getExe pkgs.stylua;
+              args = ["--search-parent-directories" "--respect-ignores" "--stdin-filepath" "$FILENAME" "-"];
+              range_args = {
                 __raw = ''
-                  function()
-                    local buf_ft = vim.bo.filetype
-                    local excluded_buf_ft = { toggleterm = true, NvimTree = true, ["neo-tree"] = true, TelescopePrompt = true }
-
-                    if excluded_buf_ft[buf_ft] then
-                      return ""
+                  function(self, ctx)
+                      local util = require("conform.util")
+                      local start_offset, end_offset = util.get_offsets_from_range(ctx.buf, ctx.range)
+                      return {
+                        "--search-parent-directories",
+                        "--stdin-filepath",
+                        "$FILENAME",
+                        "--range-start",
+                        tostring(start_offset),
+                        "--range-end",
+                        tostring(end_offset),
+                        "-",
+                      }
                     end
-
-                    local bufnr = vim.api.nvim_get_current_buf()
-                    local clients = vim.lsp.get_clients({ bufnr = bufnr })
-
-                    if vim.tbl_isempty(clients) then
-                      return "No Active LSP"
-                    end
-
-                    local active_clients = {}
-                    for _, client in ipairs(clients) do
-                      table.insert(active_clients, client.name)
-                    end
-
-                    return table.concat(active_clients, ", ")
-                  end
                 '';
               };
-              icon = " ";
-              separator = {
-                left = "";
+              cwd = {
+                __raw = ''require("conform.util").root_file({ ".stylua.toml", "stylua.toml" })'';
               };
-            }
+              require_cwd = true;
+            };
+            oxfmt = {
+              command = {
+                __raw = ''
+                  function(self, ctx)
+                      local root = require("conform.util").root_file({ "package.json", ".git" })(self, ctx)
+                      local local_cmd = root and root .. "/node_modules/.bin/oxfmt"
+                      if local_cmd and vim.fn.executable(local_cmd) == 1 then
+                        return local_cmd
+                      end
+                      return "oxfmt"
+                    end
+                '';
+              };
+              args = ["--stdin-filepath" "$FILENAME"];
+              cwd = {
+                __raw = ''require("conform.util").root_file({ ".oxfmtrc.json", ".oxfmtrc.jsonc", "package.json" })'';
+              };
+              require_cwd = false;
+              stdin = true;
+            };
+          };
+        };
+      };
+      fzf-lua = {
+        enable = true;
+        profile = "fzf-native";
+      };
+      gitsigns = {
+        enable = true;
+        settings = {
+          current_line_blame = true;
+          current_line_blame_opts = {
+            delay = 200;
+            virt_text = true;
+            virt_text_pos = "eol";
+          };
+          current_line_blame_formatter = "   <author>, <author_time:%Y-%m-%d> • <summary>";
+          on_attach = {
+            __raw = ''
+              function(bufnr)
+                local gs = package.loaded.gitsigns
+                local function map(mode, l, r, opts)
+                  opts = opts or {}
+                  opts.buffer = bufnr
+                  vim.keymap.set(mode, l, r, opts)
+                end
+
+                map('n', ']c', function()
+                  if vim.wo.diff then return ']c' end
+                  vim.schedule(function() gs.next_hunk() end)
+                  return '<Ignore>'
+                end, {expr = true, desc = "Next Change"})
+
+                map('n', '[c', function()
+                  if vim.wo.diff then return '[c' end
+                  vim.schedule(function() gs.prev_hunk() end)
+                  return '<Ignore>'
+                end, {expr = true, desc = "Prev Change"})
+
+                map('n', '<leader>hb', function() gs.blame_line({ full = true }) end, { desc = "Blame Line (Popup)" })
+              end
+            '';
+          };
+        };
+      };
+      neogit.enable = true;
+      blink-cmp = {
+        enable = true;
+        settings = {
+          signature = {
+            enabled = true;
+            window = {
+              border = "single";
+              winhighlight = "Normal:Normal,FloatBorder:FloatBorder";
+            };
+          };
+          completion = {
+            documentation = {
+              auto_show = true;
+              auto_show_delay_ms = 0;
+              window = {
+                border = "single";
+                winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:BlinkCmpDocCursorLine,Search:None";
+              };
+            };
+            menu = {
+              border = "single";
+              winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:BlinkCmpMenuSelection,Search:None";
+            };
+          };
+          cmdline = {
+            enabled = false;
+            keymap = {preset = "inherit";};
+          };
+          keymap.preset = "enter";
+        };
+      };
+      friendly-snippets.enable = true;
+      nvim-autopairs.enable = true;
+      lualine = {
+        enable = true;
+        settings = {
+          options = {
+            always_divide_middle = true;
+            component_separators = {
+              left = "";
+              right = "";
+            };
+            disabled_filetypes = {
+              statusline = ["alpha"];
+              winbar = [];
+            };
+            globalstatus = true;
+            icons_enabled = true;
+            ignore_focus = ["NvimTree"];
+            refresh = {
+              statusline = 1000;
+              tabline = 1000;
+              winbar = 1000;
+            };
+            section_separators = {
+              left = "";
+              right = "";
+            };
+            theme = "auto";
+          };
+          extensions = [
+            "neo-tree"
             {
-              __unkeyed = "diagnostics";
-              sources = ["nvim_lsp" "nvim_diagnostic" "vim_lsp"];
-              symbols = {
-                error = "󰅙  ";
-                warn = "  ";
-                info = "  ";
-                hint = "󰌵 ";
-              };
-              colored = true;
-              update_in_insert = false;
-              always_visible = false;
-              diagnostics_color = {
-                color_error = {fg = "red";};
-                color_warn = {fg = "yellow";};
-                color_info = {fg = "cyan";};
+              filetypes = [
+                "snacks_picker_list"
+                "snacks_picker_input"
+              ];
+              sections = {
+                lualine_a = [
+                  {
+                    __raw = ''
+                      function()
+                        return vim.fn.fnamemodify(vim.fn.getcwd(), ":~")
+                      end
+                    '';
+                  }
+                ];
               };
             }
           ];
-          lualine_y = [
+          sections = {
+            lualine_a = [
+              {
+                __unkeyed = "mode";
+                icons_enabled = true;
+                separator = {
+                  left = "▎";
+                  right = "";
+                };
+              }
+              {
+                __unkeyed = "";
+                draw_empty = true;
+                separator = {
+                  left = "";
+                  right = "";
+                };
+              }
+            ];
+            lualine_b = [
+              {
+                __unkeyed = "filetype";
+                colored = true;
+                icon_only = true;
+                icon = {
+                  align = "left";
+                };
+              }
+              {
+                __unkeyed = "filename";
+                symbols = {
+                  modified = " ";
+                  readonly = " ";
+                };
+                separator = {
+                  right = "";
+                };
+              }
+              {
+                __unkeyed = "";
+                draw_empty = true;
+                separator = {
+                  left = "";
+                  right = "";
+                };
+              }
+            ];
+            lualine_c = [
+              {
+                __unkeyed = "diff";
+                colored = false;
+                diff_color = {
+                  added = "DiffAdd";
+                  modified = "DiffChange";
+                  removed = "DiffDelete";
+                };
+                symbols = {
+                  added = "+";
+                  modified = "~";
+                  removed = "-";
+                };
+                separator = {
+                  right = "";
+                };
+              }
+            ];
+            lualine_x = [
+              {
+                __unkeyed = {
+                  __raw = ''
+                    function()
+                      local buf_ft = vim.bo.filetype
+                      local excluded_buf_ft = { toggleterm = true, NvimTree = true, ["neo-tree"] = true, TelescopePrompt = true }
+
+                      if excluded_buf_ft[buf_ft] then
+                        return ""
+                      end
+
+                      local bufnr = vim.api.nvim_get_current_buf()
+                      local clients = vim.lsp.get_clients({ bufnr = bufnr })
+
+                      if vim.tbl_isempty(clients) then
+                        return "No Active LSP"
+                      end
+
+                      local active_clients = {}
+                      for _, client in ipairs(clients) do
+                        table.insert(active_clients, client.name)
+                      end
+
+                      return table.concat(active_clients, ", ")
+                    end
+                  '';
+                };
+                icon = " ";
+                separator = {
+                  left = "";
+                };
+              }
+              {
+                __unkeyed = "diagnostics";
+                sources = ["nvim_lsp" "nvim_diagnostic" "vim_lsp"];
+                symbols = {
+                  error = "󰅙  ";
+                  warn = "  ";
+                  info = "  ";
+                  hint = "󰌵 ";
+                };
+                colored = true;
+                update_in_insert = false;
+                always_visible = false;
+                diagnostics_color = {
+                  color_error = {fg = "red";};
+                  color_warn = {fg = "yellow";};
+                  color_info = {fg = "cyan";};
+                };
+              }
+            ];
+            lualine_y = [
+              {
+                __unkeyed = "";
+                draw_empty = true;
+                separator = {
+                  left = "";
+                  right = "";
+                };
+              }
+              {
+                __unkeyed = "searchcount";
+                maxcount = 999;
+                timeout = 120;
+                separator = {
+                  left = "";
+                };
+              }
+              {
+                __unkeyed = "branch";
+                icon = " •";
+                separator = {
+                  left = "";
+                };
+              }
+            ];
+            lualine_z = [
+              {
+                __unkeyed = "";
+                draw_empty = true;
+                separator = {
+                  left = "";
+                  right = "";
+                };
+              }
+              {
+                __unkeyed = "progress";
+                separator = {
+                  left = "";
+                };
+              }
+              {
+                __unkeyed = "location";
+              }
+              {
+                __unkeyed = "fileformat";
+                color = {
+                  fg = "black";
+                };
+                symbols = {
+                  unix = "";
+                  dos = "";
+                  mac = "";
+                };
+              }
+            ];
+          };
+        };
+      };
+      bufferline = {
+        enable = true;
+        settings.options = {
+          always_show_bufferline = false;
+          numbers = "none";
+        };
+      };
+      which-key = {
+        enable = true;
+        settings = {
+          preset = "helix";
+          spec = [
             {
-              __unkeyed = "";
-              draw_empty = true;
-              separator = {
-                left = "";
-                right = "";
-              };
+              __unkeyed-1 = "<leader>b";
+              group = "Buffers";
             }
             {
-              __unkeyed = "searchcount";
-              maxcount = 999;
-              timeout = 120;
-              separator = {
-                left = "";
-              };
+              __unkeyed-1 = "<leader>bs";
+              group = "Sort buffers";
             }
             {
-              __unkeyed = "branch";
-              icon = " •";
-              separator = {
-                left = "";
-              };
-            }
-          ];
-          lualine_z = [
-            {
-              __unkeyed = "";
-              draw_empty = true;
-              separator = {
-                left = "";
-                right = "";
-              };
+              __unkeyed-1 = "<leader>d";
+              group = "Debugger";
             }
             {
-              __unkeyed = "progress";
-              separator = {
-                left = "";
-              };
+              __unkeyed-1 = "<leader>f";
+              group = "Find";
             }
             {
-              __unkeyed = "location";
+              __unkeyed-1 = "<leader>g";
+              group = "Git";
             }
             {
-              __unkeyed = "fileformat";
-              color = {
-                fg = "black";
-              };
-              symbols = {
-                unix = "";
-                dos = "";
-                mac = "";
-              };
+              __unkeyed-1 = "<leader>j";
+              group = "Jujutsu";
+            }
+            {
+              __unkeyed-1 = "<leader>l";
+              group = "LSP";
+            }
+            {
+              __unkeyed-1 = "<leader>t";
+              group = "Terminal";
+            }
+            {
+              __unkeyed-1 = "<leader>u";
+              group = "UI/UX";
+            }
+            {
+              __unkeyed-1 = "<leader>x";
+              group = "Lists";
             }
           ];
         };
       };
-    };
-
-    plugins.bufferline = {
-      enable = true;
-      settings.options = {
-        always_show_bufferline = false;
-        numbers = "none";
-      };
-    };
-
-    plugins.which-key = {
-      enable = true;
-      settings = {
-        preset = "helix";
-        spec = [
-          {
-            __unkeyed-1 = "<leader>b";
-            group = "Buffers";
-          }
-          {
-            __unkeyed-1 = "<leader>bs";
-            group = "Sort buffers";
-          }
-          {
-            __unkeyed-1 = "<leader>d";
-            group = "Debugger";
-          }
-          {
-            __unkeyed-1 = "<leader>f";
-            group = "Find";
-          }
-          {
-            __unkeyed-1 = "<leader>g";
-            group = "Git";
-          }
-          {
-            __unkeyed-1 = "<leader>j";
-            group = "Jujutsu";
-          }
-          {
-            __unkeyed-1 = "<leader>l";
-            group = "LSP";
-          }
-          {
-            __unkeyed-1 = "<leader>t";
-            group = "Terminal";
-          }
-          {
-            __unkeyed-1 = "<leader>u";
-            group = "UI/UX";
-          }
-          {
-            __unkeyed-1 = "<leader>x";
-            group = "Lists";
-          }
-        ];
-      };
-    };
-
-    plugins.comment.enable = true;
-    plugins.colorful-menu.enable = true;
-    plugins.colorizer.enable = true;
-
-    plugins.ts-autotag.enable = true;
-    plugins.treesitter = {
-      enable = true;
-      settings = {
-        highlight.enable = true;
-        indent.enable = true;
-      };
-    };
-    plugins.treesitter-textobjects.enable = true;
-
-    plugins.markview.enable = true;
-    plugins.crates = {
-      enable = true;
-      settings = {
-        completion.crates.enabled = true;
-        lsp = {
-          enabled = true;
-          actions = true;
-          completion = true;
-          hover = true;
+      comment.enable = true;
+      colorful-menu.enable = true;
+      colorizer.enable = true;
+      ts-autotag.enable = true;
+      treesitter = {
+        enable = true;
+        settings = {
+          highlight.enable = true;
+          indent.enable = true;
         };
       };
+      treesitter-textobjects.enable = true;
+      markview.enable = true;
+      crates = {
+        enable = true;
+        settings = {
+          completion.crates.enabled = true;
+          lsp = {
+            enabled = true;
+            actions = true;
+            completion = true;
+            hover = true;
+          };
+        };
+      };
+      neocord.enable = true;
+      roslyn.enable = true;
     };
-
-    plugins.neocord.enable = true;
 
     extraPlugins = [
       (pkgs.vimUtils.buildVimPlugin {

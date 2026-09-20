@@ -3,6 +3,7 @@
   fetchFromGitHub,
   dotnet-sdk_10,
   clang,
+  nix-update-script,
 }: let
   osuSrc = fetchFromGitHub {
     owner = "ppy";
@@ -42,4 +43,8 @@ in
 
     selfContainedBuild = true;
     executables = [];
+
+    passthru.updateScript = nix-update-script {
+      extraArgs = ["--flake"];
+    };
   })

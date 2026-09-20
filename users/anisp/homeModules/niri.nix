@@ -100,12 +100,12 @@ in {
         overview.workspace-shadow.enable = false;
         layer-rules = [
           {
-            matches = [{namespace = "^dms:.*";}];
+            matches = [{namespace = "^dux:.*";}];
             place-within-backdrop = true;
             background-effect.xray = false;
           }
           {
-            matches = [{namespace = "^dms:notification.*$";}];
+            matches = [{namespace = "^dux:notification.*$";}];
             block-out-from = "screencast";
           }
         ];
