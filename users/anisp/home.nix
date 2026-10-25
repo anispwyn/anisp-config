@@ -48,7 +48,6 @@
         wl-clipboard
         _7zz-rar
         openssl
-        moltorino
         nicotine-plus
         element-desktop
         feishin

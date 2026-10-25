@@ -48,7 +48,10 @@
     rtkit.enable = true;
   };
   services = {
-    nohang.enable = true;
+    nohang = {
+      enable = true;
+      configPath = ../../assets/nixos/nohang-desktop-custom.conf;
+    };
     resolved = {
       enable = true;
     };
@@ -90,7 +93,6 @@
     firewall = {
       enable = true;
       trustedInterfaces = lib.optionals config.services.tailscale.enable ["tailscale0"] ++ lib.optionals config.virtualisation.libvirtd.enable ["virbr0"];
-      allowedUDPPorts = lib.optional config.services.tailscale.enable config.services.tailscale.port;
       # kdeconnect both udp and tcp
       allowedTCPPortRanges = [
         {

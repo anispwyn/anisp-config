@@ -1,6 +1,10 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    kawl = {
+      url = "github:anispwyn/kawl";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -12,10 +16,6 @@
     };
     oniri = {
       url = "github:Antiz96/oniri";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    ghostty = {
-      url = "github:ghostty-org/ghostty";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     musnix = {
@@ -118,7 +118,6 @@
       withOverlays = with inputs; [
         niri.overlays.niri
         firefox-addons.overlays.default
-        ghostty.overlays.default
       ];
     };
 }

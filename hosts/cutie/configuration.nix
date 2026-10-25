@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./nixosModules
   ];
@@ -36,7 +32,7 @@
       enable32Bit = true;
     };
     nvidia = {
-      open = false;
+      open = true;
       branch = "bleeding_edge";
       dynamicBoost.enable = true;
       prime = {
@@ -68,7 +64,6 @@
     # etc."systemd/resolved.conf.d/nextdns.conf".source = config.sops.templates."resolved-nextdns".path;
     systemPackages = with pkgs; [
       omen-fan
-      mcp-nixos
       (steam.override {
         extraLibraries = p:
           with p; [

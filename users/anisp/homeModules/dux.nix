@@ -28,7 +28,7 @@ in {
       niri = {
         enableSpawn = false;
         includes = {
-          enable = true;
+          enable = isNiri;
           override = true;
           originalFileName = "hm";
           filesToInclude = ["alttab" "layout" "wpblur" "cursor"];
@@ -40,7 +40,7 @@ in {
       enableAudioWavelength = true;
       enableClipboardPaste = true;
       session = let
-        wp = ../assets/Wallpapers/HLoAT6paUAA2nXU.jpg;
+        wp = ../../../assets/users/anisp/Wallpapers/HLoAT6paUAA2nXU.jpg;
       in {
         wallpaperPath = wp;
         wallpaperPathLight = wp;
@@ -358,10 +358,13 @@ in {
         osdMediaPlaybackEnabled = true;
         osdPowerProfileEnabled = true;
         osdWorkspaceEnabled = true;
+        screenPreferences = {
+          wallpaper = [];
+        };
         barConfigs = [
           {
             attachToScreenEdge = false;
-            autoHide = false;
+            autoHide = true;
             autoHideDelay = 1000;
             autoHideStrict = false;
             borderEnabled = false;
@@ -410,7 +413,7 @@ in {
             noBackground = true;
             openOnOverview = true;
             popupGapsAuto = true;
-            position = 0;
+            position = 1;
             rightWidgets = [
               {
                 enabled = true;

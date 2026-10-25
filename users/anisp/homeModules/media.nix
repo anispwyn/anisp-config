@@ -15,7 +15,9 @@
     };
     sonora = {
       enable = true;
-      package = inputs.sonora.packages.${pkgs.stdenv.hostPlatform.system}.sonora-src;
+      package = inputs.sonora.packages.${pkgs.stdenv.hostPlatform.system}.sonora-src.overrideAttrs (oldAttrs: {
+        buildInputs = oldAttrs.buildInputs ++ [pkgs.aws-lc];
+      });
       settings.provider = "youtube";
     };
     spicetify = let

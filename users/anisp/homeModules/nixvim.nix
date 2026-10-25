@@ -238,8 +238,9 @@
           nixd.enable = true;
           sqls.enable = true;
           svelte.enable = true;
-          slint_lsp.enable = true;
+          slint_lsp.enable = false;
           basedpyright.enable = true;
+          wgsl_analyzer.enable = true;
         };
       };
       conform-nvim = {

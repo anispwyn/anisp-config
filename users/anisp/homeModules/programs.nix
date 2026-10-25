@@ -2,9 +2,6 @@
   imports = [inputs.nix-index-database.homeModules.default];
   # common programs goes here
   programs = {
-    neovide = {
-      enable = true;
-    };
     mangohud = {
       enable = true;
     };

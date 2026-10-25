@@ -34,6 +34,18 @@ in
         runHook postInstall
       '';
     };
+    buildInputs =
+      oldAttrs.buildInputs
+      ++ [
+        pkgs.libayatana-appindicator
+        pkgs.gtk3
+      ];
+    # use the build-deps snapshot bundled in Apollo's source (NVENC SDK 12),
+    # not the newer prebuilt ffmpeg inherited from the nixpkgs sunshine package
+    cmakeFlags =
+      lib.filter
+      (flag: !(lib.hasPrefix "-DFFMPEG_PREPARED_BINARIES" flag))
+      oldAttrs.cmakeFlags;
     postPatch =
       # don't look for npm since we build webui separately
       ''
@@ -43,6 +55,8 @@ in
       # use system boost instead of FetchContent.
       # FETCH_CONTENT_BOOST_USED prevents Simple-Web-Server from re-finding boost
       + ''
+        sed -i -E 's/set\(BOOST_VERSION "[^"]*"\)/set(BOOST_VERSION "${pkgs.boost.version}")/' \
+          cmake/dependencies/Boost_Sunshine.cmake
         echo 'set(FETCH_CONTENT_BOOST_USED TRUE)' >> cmake/dependencies/Boost_Sunshine.cmake
       ''
       # remove upstream dependency on systemd and udev

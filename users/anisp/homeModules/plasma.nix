@@ -431,7 +431,7 @@ in {
         kxkbrc.Layout.VariantList = ",";
         plasma-localerc.Formats.LANG = "en_US.UTF-8";
         plasmanotifyrc.Notifications.PopupPosition = "TopRight";
-        plasmarc.Wallpapers.usersWallpapers = "/home/anisp/nixos/users/anisp/assets/Wallpapers/HLoAT6paUAA2nXU.jpg";
+        plasmarc.Wallpapers.usersWallpapers = "/home/anisp/nixos/assets/users/anisp/Wallpapers/HLoAT6paUAA2nXU.jpg";
         spectaclerc.General.clipboardGroup = "PostScreenshotCopyImage";
         spectaclerc.ImageSave.translatedScreenshotsFolder = "Screenshots";
         spectaclerc.VideoSave.translatedScreencastsFolder = "Screencasts";

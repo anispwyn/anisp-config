@@ -27,10 +27,10 @@
   };
 
   tachyon = {
-    version = "2026.1013.0";
-    aarch64-darwin = "sha256-SyDb7AcC4aubrQ3RJYF/avHl2m29i7odllpZOCYRj1E=";
-    x86_64-darwin = "sha256-Ws3AFXi6MF/IBwoaevvciX9ry4RmOJvHQpDSn1s5J/E=";
-    x86_64-linux = "sha256-MrbuzWj0cEkchGvzp8Rmjiidf61ibpi2qZyFFQJIULo=";
+    version = "2026.1026.0";
+    aarch64-darwin = "sha256-ikV2nQFtvq3Q4FOYrNSK/CObkPBR6mYmfhzfxfe7iAM=";
+    x86_64-darwin = "sha256-69dBiwj5+j6qTEHMw/xW5xbvyYLsXkPLBnr1jU8fXq4=";
+    x86_64-linux = "sha256-gF6wrkVfdSolzYXX/Y9ZHqjlKD7fwbm7eJ1NrdQuiwA=";
   };
 
   useTachyon = releaseStream == "tachyon" && (lib.versionOlder lazer.version tachyon.version);
@@ -125,11 +125,6 @@ in
         ;
 
       extraPkgs = pkgs: with pkgs; [icu];
-
-      # fix OpenGL renderer on nvidia + wayland
-      extraBwrapArgs = [
-        "--ro-bind-try /etc/egl/egl_external_platform.d /etc/egl/egl_external_platform.d"
-      ];
 
       extraInstallCommands = let
         contents = appimageTools.extract {inherit pname version src;};

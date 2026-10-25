@@ -46,6 +46,18 @@ in {
   #   };
   # };
   config = lib.mkIf isNiri {
+    home.packages = with pkgs;
+      [
+        nautilus
+        file-roller
+        kdePackages.gwenview
+        rose-pine-cursor
+        gcr_4 # HACK https://github.com/nix-community/home-manager/issues/1454
+      ]
+      ++ [
+        inputs.oniri.packages.${stdenv.hostPlatform.system}.default
+        inputs.kawl.packages.${stdenv.hostPlatform.system}.default
+      ];
     programs.niri = {
       package = pkgs.niri-unstable;
       enable = true;
@@ -64,6 +76,9 @@ in {
           {
             argv = ["oniri" "-T" "-R"];
           }
+          {
+            argv = ["kawl"];
+          }
           # {
           #   argv = ["niri-sidebar" "listen"];
           # }
@@ -72,7 +87,14 @@ in {
         environment = {
           XDG_CURRENT_DESKTOP = "niri";
         };
-        gestures.hot-corners.enable = false;
+        gestures = {
+          hot-corners = {
+            top-left = false;
+            top-right = false;
+            bottom-left = false;
+            bottom-right = false;
+          };
+        };
         prefer-no-csd = true;
         layout = {
           background-color = "transparent";
@@ -89,13 +111,13 @@ in {
           shadow.enable = false;
           focus-ring.enable = false;
           border.enable = false;
-          # struts = {
-          #   top = 0;
-          #   bottom = 0;
-          #   left = 4;
-          #   right = 4;
-          # };
-          gaps = 0;
+          struts = {
+            top = 0;
+            bottom = 0;
+            left = 16;
+            right = 16;
+          };
+          gaps = 2;
         };
         overview.workspace-shadow.enable = false;
         layer-rules = [
@@ -200,14 +222,14 @@ in {
               curve = "ease-out-expo";
               duration-ms = 1400;
             };
-            custom-shader = builtins.readFile ../assets/niri/window-open.glsl;
+            custom-shader.path = ../../../assets/users/anisp/niri/window-open.glsl;
           };
           window-close = {
             kind.easing = {
               curve = "ease-out-expo";
               duration-ms = 1400;
             };
-            custom-shader = builtins.readFile ../assets/niri/window-close.glsl;
+            custom-shader.path = ../../../assets/users/anisp/niri/window-close.glsl;
           };
           horizontal-view-movement.kind.spring = {
             damping-ratio = 0.85;
@@ -241,7 +263,9 @@ in {
         };
 
         input = {
-          focus-follows-mouse.enable = true;
+          focus-follows-mouse = {
+            enable = true;
+          };
           touchpad = {
             tap = true;
             natural-scroll = true;
@@ -257,7 +281,7 @@ in {
         };
 
         blur = {
-          enable = true;
+          enable = false;
           passes = 1;
         };
 

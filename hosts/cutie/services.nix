@@ -58,10 +58,6 @@
         Domains = "~.";
       };
     };
-    scx = {
-      enable = false;
-      scheduler = "scx_rustland";
-    };
     openssh = {
       enable = false;
       ports = [2222];
@@ -94,10 +90,9 @@
       enable = config.services.suwayomi-server.enable;
     };
     tailscale = {
+      openFirewall = true;
       enable = true;
-      extraUpFlags = [
-        "--accept-dns=false"
-      ];
+      extraSetFlags = ["--ssh"];
     };
     nextdns = {
       enable = true;
@@ -129,6 +124,7 @@
       defaultNetwork.settings = {dns_enabled = true;};
     };
     libvirtd.enable = false;
+    virtualbox.host.enable = false;
   };
 
   # security.sudo.extraRules = [

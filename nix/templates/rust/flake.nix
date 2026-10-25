@@ -26,6 +26,7 @@
 
       packages.default = {pkgs, ...}: let
         craneLib = crane.mkLib pkgs;
+        projectInfo = (fromTOML (builtins.readFile ./Cargo.toml)).package;
 
         commonArgs = {
           nativeBuildInputs = [
@@ -46,14 +47,16 @@
       in
         craneLib.buildPackage ({
             src = ./.;
-            pname = "something";
-            version = "0.0.1";
+            pname = projectInfo.name;
+            version = projectInfo.version;
             cargoArtifacts = deps;
           }
           // commonArgs);
 
       devShell.packages = pkgs: [
         pkgs.fenix.default.toolchain
+        pkgs.pkg-config
+        pkgs.openssl
       ];
 
       formatter = pkgs:
